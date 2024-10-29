@@ -96,7 +96,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             flightData[2] += "\n" + str(export_flight_error(setting))
         # Register time
         i+=1
-        logging.getLogger().info(f"Curent iteration: {i:06d} | Average Time per Iteration: {(process_time() - initial_cpu_time)/i:2.6f} s")
+        if(i % 10 == 0):
+            logging.getLogger().info(f"Curent iteration: {i:06d} | Average Time per Iteration: {(process_time() - initial_cpu_time)/i:2.6f} s")
     return flightData
 
 def flight_settings(analysis_parameters, total_number):
