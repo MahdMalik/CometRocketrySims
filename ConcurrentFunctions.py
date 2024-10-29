@@ -1,7 +1,94 @@
 from rocketpy import Environment, SolidMotor, Rocket, Flight
-from ConcurrentFunctions import *
 from numpy.random import normal, choice
 from time import process_time
+
+def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_cpu_time):
+    env = Environment(latitude=envParams["latitude"], longitude=envParams["longitude"], elevation=envParams["elevation"])
+    env.set_atmospheric_model(type=envParams["type"], file = envParams["file"])
+    flightData = ["", "", ""]
+    i=0
+    for setting in flight_settings(analysis_parameters, numOfSims):
+        start_time = process_time()
+        MotorOne = SolidMotor(
+            thrust_source="AeroTech_M1850W.eng", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
+            burn_time = 2.14,#Straight from thrustcurve.org
+            reshape_thrust_curve=(setting["burn_time"], setting["impulse"]),
+            nozzle_radius= setting["nozzle_radius"], # Part List
+            throat_radius= setting["throat_radius"], # Part List
+            grain_number=5, #Based on cross-section
+            grain_separation= setting["grain_separation"], # Good
+            grain_density= setting["grain_density"], #Calculated mass of grain / volume of grain , for this i did - the core since it should be empty? not sure
+            grain_outer_radius= setting["grain_outer_radius"], # Good
+            grain_initial_inner_radius= setting["grain_initial_inner_radius"], # Good
+            grain_initial_height= setting["grain_initial_height"] , # Good
+            interpolation_method = "linear",
+            coordinate_system_orientation="combustion_chamber_to_nozzle",
+            nozzle_position = setting["nozzle_position"] - 3.05-(0.762/2)+0.241-0.203/2,#eyeballed
+            grains_center_of_mass_position= 0,
+            dry_mass=setting["motor_dry_mass"], #kg thrustcurve
+            dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
+            center_of_dry_mass_position= 0,
+        )
+
+        #Pretty Much done except grain density and maybe nozz)le position
+
+        Sp25 = Rocket(
+            mass = setting["rocket_mass"], #OpenRocket
+            radius = setting["radius"], #OpenRocket
+            inertia = (setting["rocket_inertia_11"], setting["rocket_inertia_11"],setting["rocket_inertia_33"]), # Calculated via Open Rocket
+            coordinate_system_orientation = "nose_to_tail",
+            center_of_mass_without_motor = 1.64, # OpenRocket
+            power_off_drag ="CD_OFF_L3_Rocket.csv", #Uploaded to drive
+            power_on_drag = "CD_ON_L3_Rocket.csv", #Uploaded to drive
+        )
+
+        Sp25.power_off_drag *= setting["power_off_drag"]
+        Sp25.power_on_drag *= setting["power_on_drag"]
+
+        Sp25.add_motor(MotorOne, 2.4225)
+
+
+        nose_cone = Sp25.add_nose(
+            length = setting["nose_length"], kind = "lvhaack", position = 0)
+
+        fin_set = Sp25.add_trapezoidal_fins(n=3, root_chord= setting["fin_root_chord"], tip_chord=setting["fin_tip_chord"], span=setting["fin_span"],
+            position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
+
+        rail_buttons = Sp25.set_rail_buttons(
+            upper_button_position=1.57+0.444,
+            lower_button_position=1.57+0.888,
+            angular_position=135
+        )
+
+        lightRadius = 3.05/2
+
+        Drogue = Sp25.add_parachute(
+            "Drogue",
+            cd_s = setting["cd_s_drogue"],
+            trigger = "apogee"
+        )
+        Light = Sp25.add_parachute(
+            "Light",
+            cd_s = 2.2*3.1415*(lightRadius)**2,
+            trigger = "apogee"
+        )
+
+        # Run trajectory simulation
+        try:
+            testFlight = Flight(
+                rocket=Sp25, environment=env,rail_length = setting["rail_length"],inclination = setting["inclination"],heading=setting["heading"],
+            )
+            inputOutput = export_flight_data(setting, testFlight, process_time() - start_time, env)
+            flightData[0] += "\n" + str(inputOutput[0])
+            flightData[1] += "\n" + str(inputOutput[1])
+        except Exception as E:
+            print(E)
+            flightData[2] += "\n" + str(export_flight_error(setting))
+        # Register time
+        i+=1
+        if(i % 10 == 0):
+            print(f"Curent iteration: {i:06d} | Average Time per Iteration: {(process_time() - initial_cpu_time)/i:2.6f} s")
+    return flightData
 
 def flight_settings(analysis_parameters, total_number):
     i = 0
@@ -62,96 +149,8 @@ def export_flight_data(flight_setting, flight_data, exec_time, env):
         flight_result["drogue_inflated_time"] = 0
         flight_result["drogue_inflated_velocity"] = 0
     # Write flight setting and results to file
-    # MonteCarloInputFile.write(str(flight_setting) + "\n")
-    # MonteCarloOutputFile.write(str(flight_result) + "\n")
-
+    return [flight_setting, flight_result]
 
 def export_flight_error(flight_setting):
     print()
-    # MonteCarloErrorFile.write(str(flight_setting) + "\n")
-
-def runFlightWithMonteCarlo(numOfSims, env, analysis_parameters, initial_cpu_time):
-    testFlight = ""
-    i=0
-    for setting in flight_settings(analysis_parameters, numOfSims):
-        start_time = process_time()
-        MotorOne = SolidMotor(
-            thrust_source="AeroTech_M1850W.eng", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
-            burn_time = 2.14,#Straight from thrustcurve.org
-            reshape_thrust_curve=(setting["burn_time"], setting["impulse"]),
-            nozzle_radius= setting["nozzle_radius"], # Part List
-            throat_radius= setting["throat_radius"], # Part List
-            grain_number=5, #Based on cross-section
-            grain_separation= setting["grain_separation"], # Good
-            grain_density= setting["grain_density"], #Calculated mass of grain / volume of grain , for this i did - the core since it should be empty? not sure
-            grain_outer_radius= setting["grain_outer_radius"], # Good
-            grain_initial_inner_radius= setting["grain_initial_inner_radius"], # Good
-            grain_initial_height= setting["grain_initial_height"] , # Good
-            interpolation_method = "linear",
-            coordinate_system_orientation="combustion_chamber_to_nozzle",
-            nozzle_position = setting["nozzle_position"] - 3.05-(0.762/2)+0.241-0.203/2,#eyeballed
-            grains_center_of_mass_position= 0,
-            dry_mass=setting["motor_dry_mass"], #kg thrustcurve
-            dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
-            center_of_dry_mass_position= 0,
-        )
-
-        #Pretty Much done except grain density and maybe nozz)le position
-
-
-        Sp25 = Rocket(
-            mass = setting["rocket_mass"], #OpenRocket
-            radius = setting["radius"], #OpenRocket
-            inertia = (setting["rocket_inertia_11"], setting["rocket_inertia_11"],setting["rocket_inertia_33"]), # Calculated via Open Rocket
-            coordinate_system_orientation = "nose_to_tail",
-            center_of_mass_without_motor = 1.64, # OpenRocket
-            power_off_drag ="CD_OFF_L3_Rocket.csv", #Uploaded to drive
-            power_on_drag = "CD_ON_L3_Rocket.csv", #Uploaded to drive
-        )
-
-        Sp25.power_off_drag *= setting["power_off_drag"]
-        Sp25.power_on_drag *= setting["power_on_drag"]
-
-        Sp25.add_motor(MotorOne, 2.4225)
-
-
-        nose_cone = Sp25.add_nose(
-            length = setting["nose_length"], kind = "lvhaack", position = 0)
-
-        fin_set = Sp25.add_trapezoidal_fins(n=3, root_chord= setting["fin_root_chord"], tip_chord=setting["fin_tip_chord"], span=setting["fin_span"],
-            position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
-
-        rail_buttons = Sp25.set_rail_buttons(
-            upper_button_position=1.57+0.444,
-            lower_button_position=1.57+0.888,
-            angular_position=135
-        )
-
-        lightRadius = 3.05/2
-
-        Drogue = Sp25.add_parachute(
-            "Drogue",
-            cd_s = setting["cd_s_drogue"],
-            trigger = "apogee"
-        )
-        Light = Sp25.add_parachute(
-            "Light",
-            cd_s = 2.2*3.1415*(lightRadius)**2,
-            trigger = "apogee"
-        )
-
-        # Run trajectory simulation
-        try:
-            testFlight = Flight(
-                rocket=Sp25, environment=env,rail_length = setting["rail_length"],inclination = setting["inclination"],heading=setting["heading"],
-            )
-            # export_flight_data(setting, testFlight, process_time() - start_time, env)
-        except Exception as E:
-            print(E)
-            # export_flight_error(setting)
-
-        # Register time
-        i+=1
-        if(i % 10 == 0):
-            print(f"Curent iteration: {i:06d} | Average Time per Iteration: {(process_time() - initial_cpu_time)/i:2.6f} s")
-    return testFlight
+    return flight_setting
