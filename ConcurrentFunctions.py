@@ -2,7 +2,17 @@ from rocketpy import Environment, SolidMotor, Rocket, Flight
 from numpy.random import normal, choice
 from time import process_time
 
+import logging
+
+# Configure logging
 def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_cpu_time):
+    logging.basicConfig(
+    filename='app.log',  # Change this to your desired log file
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filemode='a',  # 'w' for overwrite, 'a' for append
+    )
+    
     env = Environment(latitude=envParams["latitude"], longitude=envParams["longitude"], elevation=envParams["elevation"])
     env.set_atmospheric_model(type=envParams["type"], file = envParams["file"])
     flightData = ["", "", ""]
@@ -86,8 +96,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             flightData[2] += "\n" + str(export_flight_error(setting))
         # Register time
         i+=1
-        if(i % 10 == 0):
-            print(f"Curent iteration: {i:06d} | Average Time per Iteration: {(process_time() - initial_cpu_time)/i:2.6f} s")
+        logging.getLogger().info(f"Curent iteration: {i:06d} | Average Time per Iteration: {(process_time() - initial_cpu_time)/i:2.6f} s")
     return flightData
 
 def flight_settings(analysis_parameters, total_number):
