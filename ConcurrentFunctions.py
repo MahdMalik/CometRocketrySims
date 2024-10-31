@@ -25,7 +25,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         
         MotorOne = SolidMotor(
             thrust_source="thrustcurve.csv", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
-            burn_time = 2.14,#Straight from thrustcurve.org
+            burn_time = 2.505,#Straight from thrustcurve.org
             reshape_thrust_curve=(setting["burn_time"], setting["impulse"]),
             nozzle_radius= setting["nozzle_radius"], # Part List
             throat_radius= setting["throat_radius"], # Part List
@@ -52,8 +52,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             inertia = (setting["rocket_inertia_11"], setting["rocket_inertia_11"],setting["rocket_inertia_33"]), # Calculated via Open Rocket
             coordinate_system_orientation = "nose_to_tail",
             center_of_mass_without_motor = 1.93, # OpenRocket
-            power_off_drag ="Sp25CDOFF10.7.csv", #Uploaded to drive
-            power_on_drag = "Sp25CDON10.7.csv", #Uploaded to drive
+            power_off_drag ="Sp25CDOFF10.31.csv", #Uploaded to drive
+            power_on_drag = "Sp25CDON10.31.csv", #Uploaded to drive
         )
 
         # CHANGE ONCE YOU FIND A GOOD WAY TO DO SO
