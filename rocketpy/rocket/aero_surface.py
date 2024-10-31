@@ -994,6 +994,7 @@ class TrapezoidalFins(Fins):
         root_chord,
         tip_chord,
         span,
+        finPosition,
         rocket_radius,
         cant_angle=0,
         sweep_length=None,
@@ -1078,6 +1079,7 @@ class TrapezoidalFins(Fins):
         self._tip_chord = tip_chord
         self._sweep_length = sweep_length
         self._sweep_angle = sweep_angle
+        self._fin_Position = finPosition
 
         self.evaluate_geometrical_parameters()
         self.evaluate_center_of_pressure()
@@ -1086,6 +1088,18 @@ class TrapezoidalFins(Fins):
 
         self.prints = _TrapezoidalFinsPrints(self)
         self.plots = _TrapezoidalFinsPlots(self)
+
+    @property
+    def fin_Position(self):
+        return self._fin_Position
+
+    @fin_Position.setter
+    def fin_Position(self, value):
+        self.fin_Position = value
+        self.evaluate_geometrical_parameters()
+        self.evaluate_center_of_pressure()
+        self.evaluate_lift_coefficient()
+        self.evaluate_roll_parameters()
 
     @property
     def tip_chord(self):

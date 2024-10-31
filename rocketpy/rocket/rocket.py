@@ -898,7 +898,7 @@ class Rocket:
         root_chord,
         tip_chord,
         span,
-        position,
+        fin_Position,
         cant_angle=0,
         sweep_length=None,
         sweep_angle=None,
@@ -980,6 +980,7 @@ class Rocket:
             root_chord,
             tip_chord,
             span,
+            fin_Position,
             radius,
             cant_angle,
             sweep_length,
@@ -989,7 +990,7 @@ class Rocket:
         )
 
         # Add fin set to the list of aerodynamic surfaces
-        self.add_surfaces(fin_set, position)
+        self.add_surfaces(fin_set, fin_Position)
         return fin_set
 
     def add_elliptical_fins(

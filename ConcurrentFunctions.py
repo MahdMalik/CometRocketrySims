@@ -1,6 +1,7 @@
 from rocketpy import Environment, SolidMotor, Rocket, Flight
 from numpy.random import normal, choice
 from time import process_time
+import numpy as np
 
 import logging
 
@@ -19,13 +20,16 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
     i=0
     for setting in flight_settings(analysis_parameters, numOfSims):
         start_time = process_time()
+        
+        numGrain = 5
+        
         MotorOne = SolidMotor(
-            thrust_source="AeroTech_M1850W.eng", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
+            thrust_source="thrustcurve.csv", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
             burn_time = 2.14,#Straight from thrustcurve.org
             reshape_thrust_curve=(setting["burn_time"], setting["impulse"]),
             nozzle_radius= setting["nozzle_radius"], # Part List
             throat_radius= setting["throat_radius"], # Part List
-            grain_number=5, #Based on cross-section
+            grain_number=numGrain, #Based on cross-section
             grain_separation= setting["grain_separation"], # Good
             grain_density= setting["grain_density"], #Calculated mass of grain / volume of grain , for this i did - the core since it should be empty? not sure
             grain_outer_radius= setting["grain_outer_radius"], # Good
@@ -33,7 +37,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             grain_initial_height= setting["grain_initial_height"] , # Good
             interpolation_method = "linear",
             coordinate_system_orientation="combustion_chamber_to_nozzle",
-            nozzle_position = setting["nozzle_position"] - 3.05-(0.762/2)+0.241-0.203/2,#eyeballed
+            nozzle_position = setting["nozzle_position"],#eyeballed
             grains_center_of_mass_position= 0,
             dry_mass=setting["motor_dry_mass"], #kg thrustcurve
             dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
@@ -47,40 +51,44 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             radius = setting["radius"], #OpenRocket
             inertia = (setting["rocket_inertia_11"], setting["rocket_inertia_11"],setting["rocket_inertia_33"]), # Calculated via Open Rocket
             coordinate_system_orientation = "nose_to_tail",
-            center_of_mass_without_motor = 1.64, # OpenRocket
-            power_off_drag ="CD_OFF_L3_Rocket.csv", #Uploaded to drive
-            power_on_drag = "CD_ON_L3_Rocket.csv", #Uploaded to drive
+            center_of_mass_without_motor = 1.93, # OpenRocket
+            power_off_drag ="Sp25CDOFF10.7.csv", #Uploaded to drive
+            power_on_drag = "Sp25CDON10.7.csv", #Uploaded to drive
         )
 
-        Sp25.power_off_drag *= setting["power_off_drag"]
-        Sp25.power_on_drag *= setting["power_on_drag"]
+        # CHANGE ONCE YOU FIND A GOOD WAY TO DO SO
+        # Sp25.power_off_drag *= setting["power_off_drag"]
+        # Sp25.power_on_drag *= setting["power_on_drag"]
 
-        Sp25.add_motor(MotorOne, 2.4225)
-
+        spLength = .152 + .305 + .559 + .508 + .356 + .152
 
         nose_cone = Sp25.add_nose(
             length = setting["nose_length"], kind = "lvhaack", position = 0)
 
-        fin_set = Sp25.add_trapezoidal_fins(n=3, root_chord= setting["fin_root_chord"], tip_chord=setting["fin_tip_chord"], span=setting["fin_span"],
-            position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
+        fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= setting["fin_root_chord"], tip_chord=setting["fin_tip_chord"], span=setting["fin_span"],
+            fin_Position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
 
+        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.127/2,length = 0.203,position = spLength)
+
+        Sp25.add_motor(MotorOne, spLength + nose_cone.length + setting["grain_initial_height"]/2 - (setting["grain_initial_height"] * numGrain)/2)
+        
+        topRB = 2.77-0.26-0.26
         rail_buttons = Sp25.set_rail_buttons(
-            upper_button_position=1.57+0.444,
-            lower_button_position=1.57+0.888,
+            upper_button_position= topRB,
+            lower_button_position= 2.77,
             angular_position=135
         )
-
-        lightRadius = 3.05/2
 
         Drogue = Sp25.add_parachute(
             "Drogue",
             cd_s = setting["cd_s_drogue"],
             trigger = "apogee"
         )
+        lightRadius = 3.05/2
         Light = Sp25.add_parachute(
             "Light",
             cd_s = 2.2*3.1415*(lightRadius)**2,
-            trigger = "apogee"
+            trigger = 450
         )
 
         # Run trajectory simulation
