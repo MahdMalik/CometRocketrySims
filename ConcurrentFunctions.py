@@ -67,8 +67,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
 
         fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= setting["fin_root_chord"], tip_chord=setting["fin_tip_chord"], span=setting["fin_span"],
             fin_Position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
-
-        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.127/2,length = 0.203,position = spLength)
+        boattailPos = 0.813+0.152+0.305+0.559+0.508+0.356+0.152
+        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.127/2,length = 0.203,position = boattailPos)
 
         Sp25.add_motor(MotorOne, spLength + nose_cone.length + setting["grain_initial_height"]/2 - (setting["grain_initial_height"] * numGrain)/2)
         
