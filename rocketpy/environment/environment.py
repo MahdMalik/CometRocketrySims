@@ -1430,7 +1430,7 @@ class Environment:
         None
         """
         # Initialize an estimate of the maximum expected atmospheric model height
-        max_expected_height = 1000
+        max_expected_height = 2000
 
         # Save pressure profile
         if pressure is None:

@@ -419,6 +419,8 @@ class Flight:
         Rocket's static margin during flight in calibers.
     Flight.stability_margin : Function
             Rocket's stability margin during flight, in calibers.
+    Flight.out_of_rail_stability_margin : Function
+            Rocket's stability margin at moment leaving the rail, in calibers.
     Flight.stream_velocity_x : Function
         Freestream velocity x (East) component, in m/s, as a function of
         time. Can be called or accessed as array.
@@ -2616,6 +2618,13 @@ class Flight:
     def static_margin(self):
         """Static margin of the rocket."""
         return self.rocket.static_margin
+    
+    
+    @cached_property
+    def out_of_rail_stability_margin(self):
+        stabilityFunction = self.stability_margin
+        return stabilityFunction.get_value(self.out_of_rail_time)
+
 
     @funcify_method("Time (s)", "Stability Margin (c)", "linear", "zero")
     def stability_margin(self):
@@ -2636,7 +2645,7 @@ class Flight:
             center of gravity, divided by the rocket diameter.
         """
         return [(t, self.rocket.stability_margin(m, t)) for t, m in self.mach_number]
-
+ 
     # Rail Button Forces
 
     @funcify_method("Time (s)", "Upper Rail Button Normal Force (N)", "spline", "zero")

@@ -13,16 +13,14 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
     format='%(asctime)s - %(levelname)s - %(message)s',
     filemode='a',  # 'w' for overwrite, 'a' for append
     )
-    
-    env = Environment(latitude=envParams["latitude"], longitude=envParams["longitude"], elevation=envParams["elevation"])
-    env.set_atmospheric_model(type=envParams["type"], file = envParams["file"])
     flightData = ["", "", ""]
+    env = Environment(latitude=envParams["latitude"], longitude=envParams["longitude"], elevation=envParams["elevation"])
     i=0
     for setting in flight_settings(analysis_parameters, numOfSims):
         start_time = process_time()
         
         numGrain = 5
-        
+        env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= setting["wind_u_speed"], wind_v= setting["wind_v_speed"])
         MotorOne = SolidMotor(
             thrust_source="thrustcurve.csv", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
             burn_time = 2.505,#Straight from thrustcurve.org
@@ -61,11 +59,13 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         # Sp25.power_on_drag *= setting["power_on_drag"]
 
         spLength = .152 + .305 + .559 + .508 + .356 + .152
-
+        noseLength = .813
         nose_cone = Sp25.add_nose(
-            length = setting["nose_length"], kind = "lvhaack", position = 0)
-
-        fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= setting["fin_root_chord"], tip_chord=setting["fin_tip_chord"], span=setting["fin_span"],
+            length = noseLength, kind = "lvhaack", position = 0)
+        finSpan = 0.216
+        root_chord=0.279
+        tip_chord=0.091
+        fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= root_chord, tip_chord=tip_chord, span=finSpan,
             fin_Position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
         boattailPos = 0.813+0.152+0.305+0.559+0.508+0.356+0.152
         boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.127/2,length = 0.203,position = boattailPos)
@@ -92,9 +92,10 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         )
 
         # Run trajectory simulation
+        rail_length = 5.7-(spLength-topRB)
         try:
             testFlight = Flight(
-                rocket=Sp25, environment=env,rail_length = setting["rail_length"],inclination = setting["inclination"],heading=setting["heading"],
+                rocket=Sp25, environment=env,rail_length = rail_length,inclination = setting["inclination"],heading=setting["heading"],
             )
             inputOutput = export_flight_data(setting, testFlight, process_time() - start_time, env)
             flightData[0] += "\n" + str(inputOutput[0])
@@ -146,6 +147,7 @@ def export_flight_data(flight_setting, flight_data, exec_time, env):
         "out_of_rail_static_margin": flight_data.rocket.static_margin(
             flight_data.out_of_rail_time
         ),
+        "out_of_rail_stability_margin": flight_data.out_of_rail_stability_margin,
         "final_static_margin": flight_data.rocket.static_margin(
             flight_data.rocket.motor.burn_out_time
         ),
