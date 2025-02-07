@@ -36,7 +36,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             interpolation_method = "linear",
             coordinate_system_orientation="combustion_chamber_to_nozzle",
             nozzle_position = setting["nozzle_position"],#eyeballed
-            grains_center_of_mass_position= 0,
+            grains_center_of_mass_position= setting["grains_center_of_mass_position"],
             dry_mass=setting["motor_dry_mass"], #kg thrustcurve
             dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
             center_of_dry_mass_position= 0,
