@@ -1,1 +1,0 @@
-Completed 2 iterations successfully. Total CPU time: 1.640625 s. Total wall time: 9.268451452255249 s
