@@ -388,6 +388,89 @@ class Environment:
         )
 
         return None
+    
+     # Create function to compute pressure at a given geometric height
+    @staticmethod
+    def pressure_function2(height):
+        # Convert geometric to geopotential height
+        the_earth_radius = 6.3781 * (10**6)
+        ER = the_earth_radius
+        H = ER * height / (ER + height)
+
+        # Check if height is within bounds, return extrapolated value if not
+
+        pressure2 = [
+            1.27774e5,
+            1.01325e5,
+            2.26320e4,
+            5.47487e3,
+            8.680164e2,
+            1.10906e2,
+            6.69384e1,
+            3.95639e0,
+            8.86272e-2,
+        ] 
+
+        beta2 = [
+            -6.5e-3,
+            -6.5e-3,
+            0,
+            1e-3,
+            2.8e-3,
+            0,
+            -2.8e-3,
+            -2e-3,
+            0,
+        ] 
+
+        geopotential_height2 = [
+            -2e3,
+            0,
+            11e3,
+            20e3,
+            32e3,
+            47e3,
+            51e3,
+            71e3,
+            80e3,
+        ] 
+
+        temperature2 = [
+            301.15,
+            288.15,
+            216.65,
+            216.65,
+            228.65,
+            270.65,
+            270.65,
+            214.65,
+            196.65,
+        ]
+
+        if H < -2000:
+            return pressure2[0]
+        elif H > 80000:
+            return pressure2[-1]
+
+        # Find layer that contains height h
+        layer = bisect.bisect(geopotential_height2, H) - 1
+
+        # Retrieve layer base geopotential height, temp, beta and pressure
+        Hb = geopotential_height2[layer]
+        Tb = temperature2[layer]
+        Pb = pressure2[layer]
+        B = beta2[layer]
+        air_gas_constant = 287.05287
+        gravity = 9.80665
+        # Compute pressure
+        if B != 0:
+            P = Pb * (1 + (B / Tb) * (H - Hb)) ** (gravity / (B * air_gas_constant))
+        else:
+            T = Tb + B * (H - Hb)
+            P = Pb * np.exp(-(H - Hb) * (gravity / (air_gas_constant * T)))
+
+        # Return answer
+        return P
 
     def set_date(self, date, timezone="UTC"):
         """Set date and time of launch and update weather conditions if
@@ -2859,7 +2942,7 @@ class Environment:
         self.calculate_dynamic_viscosity()
 
         return None
-
+    
     def load_international_standard_atmosphere(self):
         """Defines the pressure and temperature profile functions set
         by `ISO 2533` for the International Standard atmosphere and saves
@@ -2931,7 +3014,7 @@ class Environment:
         g = self.standard_g
         R = self.air_gas_constant
 
-        # Create function to compute pressure at a given geometric height
+
         def pressure_function(h):
             # Convert geometric to geopotential height
             H = ER * h / (ER + h)
