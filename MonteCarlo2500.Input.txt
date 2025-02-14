@@ -1,7 +1,0 @@
-
-
-
-
-
-{'rocket_mass': 16.400716294640294, 'rocket_inertia_11': 0.786503071291337, 'rocket_inertia_33': 0.016426934982477315, 'motor_dry_mass': 4.337464240114113, 'motor_inertia_11': -0.0025622665014473165, 'motor_inertia_33': 0.21166136418381207, 'motor_dry_mass_position': 0.5282035494300241, 'impulse': 9200.488708624049, 'burn_time': 1.9924501123695582, 'nozzle_radius': 0.04019114851644864, 'throat_radius': 0.014616854084875315, 'grain_separation': -0.0011018361593445058, 'grain_density': 1492.5719149022473, 'grain_outer_radius': 0.04033903582533538, 'grain_initial_inner_radius': 0.021983088134600884, 'grain_initial_height': 0.15473419257841994, 'radius': 0.076403971573027, 'nozzle_position': -1.109611431850395, 'grains_center_of_mass_position': -3.0702723179716163, 'power_off_drag': 1.0175344032737135, 'power_on_drag': 0.9672031696316933, 'nose_distance_to_CM': 1.197766887733725, 'fin_distance_to_CM': 0.4898399774313176, 'inclination': 88.63645199824363, 'heading': 89.86611706380563, 'cd_s_drogue': 0.30243903264043076, 'cd_s_light': 16.044653429589573, 'lag_rec': 0.203035794003209, 'lag_se': 0.06315562885464458, 'temperature': 299.02851440533505, 'atmosphere_pressure': 85775.07792874739, 'wind_u_speed': 0.44282152593284185, 'wind_v_speed': -3.450727695067383}
-Completed 5 iterations successfully. Total CPU time: 3.5 s. Total wall time: 3.478301763534546 s
