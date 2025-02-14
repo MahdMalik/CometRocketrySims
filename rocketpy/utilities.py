@@ -164,7 +164,7 @@ def calculate_equilibrium_altitude(
         t_span=(0, estimated_final_time),
         y0=u0,
         vectorized=True,
-        method="LSODA",
+        method="RK45",
         max_step=max_step,
     )
 
