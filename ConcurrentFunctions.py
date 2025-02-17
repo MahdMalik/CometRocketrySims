@@ -36,7 +36,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             interpolation_method = "linear",
             coordinate_system_orientation="combustion_chamber_to_nozzle",
             nozzle_position = setting["nozzle_position"],#eyeballed
-            grains_center_of_mass_position= 0,
+            grains_center_of_mass_position= setting["grains_center_of_mass_position"],
             dry_mass=setting["motor_dry_mass"], #kg thrustcurve
             dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
             center_of_dry_mass_position= 0,
@@ -49,7 +49,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             radius = setting["radius"], #OpenRocket
             inertia = (setting["rocket_inertia_11"], setting["rocket_inertia_11"],setting["rocket_inertia_33"]), # Calculated via Open Rocket
             coordinate_system_orientation = "nose_to_tail",
-            center_of_mass_without_motor = 1.93, # OpenRocket
+            center_of_mass_without_motor = 1.87, # OpenRocket
             power_off_drag ="Sp25CDOFF10.31.csv", #Uploaded to drive
             power_on_drag = "Sp25CDON10.31.csv", #Uploaded to drive
         )
@@ -68,14 +68,14 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= root_chord, tip_chord=tip_chord, span=finSpan,
             fin_Position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
         boattailPos = 0.813+0.152+0.305+0.559+0.508+0.356+0.152
-        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.127/2,length = 0.203,position = boattailPos)
+        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.129/2,length = 0.203,position = boattailPos)
 
         Sp25.add_motor(MotorOne, spLength + nose_cone.length + setting["grain_initial_height"]/2 - (setting["grain_initial_height"] * numGrain)/2)
         
-        topRB = 2.77-0.26-0.26
+        topRB = 2.79-0.274-0.274
         rail_buttons = Sp25.set_rail_buttons(
             upper_button_position= topRB,
-            lower_button_position= 2.77,
+            lower_button_position= 2.79,
             angular_position=135
         )
 
@@ -87,7 +87,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         lightRadius = 3.05/2
         Light = Sp25.add_parachute(
             "Light",
-            cd_s = 2.2*3.1415*(lightRadius)**2,
+            cd_s = setting["cd_s_light"],
             trigger = 450
         )
 
