@@ -35,8 +35,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             grain_initial_height= setting["grain_initial_height"] , # Good
             interpolation_method = "linear",
             coordinate_system_orientation="combustion_chamber_to_nozzle",
-            nozzle_position = .1524*3.3,#eyeballed
-            grains_center_of_mass_position= 0,
+            nozzle_position = setting["nozzle_position"],#eyeballed
+            grains_center_of_mass_position= setting["grains_center_of_mass_position"],
             dry_mass=setting["motor_dry_mass"], #kg thrustcurve
             dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
             center_of_dry_mass_position= 0,
@@ -54,6 +54,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             power_on_drag = "Sp25CDON12.3.csv", #Uploaded to drive
         )
 
+        Sp25.draw()
         # CHANGE ONCE YOU FIND A GOOD WAY TO DO SO
         # Sp25.power_off_drag *= setting["power_off_drag"]
         # Sp25.power_on_drag *= setting["power_on_drag"]
@@ -66,7 +67,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         root_chord=0.279
         tip_chord=0.091
         fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= root_chord, tip_chord=tip_chord, span=finSpan,
-            fin_Position=2.62,cant_angle=0, sweep_length=0.173)
+            fin_Position=setting["fin_distance_to_CM"] + Sp25.center_of_dry_mass_position,cant_angle=0, sweep_length=0.173)
         boattailPos = 0.813+0.152+0.305+0.559+0.508+0.356+0.152
         boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.129/2,length = 0.203,position = boattailPos)
 
