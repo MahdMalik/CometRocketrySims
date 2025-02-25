@@ -95,7 +95,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         rail_length = 5.7-(spLength-topRB)
         try:
             testFlight = Flight(
-                rocket=Sp25, environment=env,rail_length = rail_length,inclination = setting["inclination"],heading=setting["heading"],
+                rocket=Sp25, environment=env,rail_length = rail_length,inclination = setting["inclination"],heading=setting["heading"], terminate_on_apogee = True
             )
             inputOutput = export_flight_data(setting, testFlight, process_time() - start_time, env)
             flightData[0] += "\n" + str(inputOutput[0])
@@ -139,36 +139,15 @@ def export_flight_data(flight_setting, flight_data, exec_time, env):
         "apogee_altitude": flight_data.apogee - env.elevation,
         "apogee_x": flight_data.apogee_x,
         "apogee_y": flight_data.apogee_y,
-        "impact_time": flight_data.t_final,
-        "impact_x": flight_data.x_impact,
-        "impact_y": flight_data.y_impact,
-        "impact_velocity": flight_data.impact_velocity,
         "initial_static_margin": flight_data.rocket.static_margin(0),
         "out_of_rail_static_margin": flight_data.rocket.static_margin(
             flight_data.out_of_rail_time
         ),
         "out_of_rail_stability_margin": flight_data.out_of_rail_stability_margin,
-        "final_static_margin": flight_data.rocket.static_margin(
-            flight_data.rocket.motor.burn_out_time
-        ),
-        "number_of_events": len(flight_data.parachute_events),
         "execution_time": exec_time,
     }
 
     # Take care of parachute results
-    if len(flight_data.parachute_events) > 0:
-        flight_result["drogue_triggerTime"] = flight_data.parachute_events[0][0]
-        flight_result["drogue_inflated_time"] = (
-            flight_data.parachute_events[0][0] + flight_data.parachute_events[0][1].lag
-        )
-        flight_result["drogue_inflated_velocity"] = flight_data.speed(
-            flight_data.parachute_events[0][0] + flight_data.parachute_events[0][1].lag
-        )
-    else:
-        flight_result["drogue_triggerTime"] = 0
-        flight_result["drogue_inflated_time"] = 0
-        flight_result["drogue_inflated_velocity"] = 0
-    # Write flight setting and results to file
     return [flight_setting, flight_result]
 
 def export_flight_error(flight_setting):
