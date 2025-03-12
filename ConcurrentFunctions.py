@@ -2,6 +2,7 @@ from rocketpy import Environment, SolidMotor, Rocket, Flight
 from numpy.random import normal, choice
 from time import process_time
 import numpy as np
+from wind import windArray_u, windArray_v
 
 import logging
 
@@ -20,7 +21,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         start_time = process_time()
         
         numGrain = 5
-        env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= setting["wind_u_speed"], wind_v= setting["wind_v_speed"])
+        env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= windArray_u(0,0), wind_v= windArray_v(0,0))
         MotorOne = SolidMotor(
             thrust_source="thrustcurve.csv", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
             burn_time = 2.505,#Straight from thrustcurve.org
@@ -95,7 +96,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         rail_length = 5.7-(spLength-topRB)
         try:
             testFlight = Flight(
-                rocket=Sp25, environment=env,rail_length = rail_length,inclination = setting["inclination"],heading=setting["heading"], terminate_on_apogee = True
+                rocket=Sp25, environment=env,rail_length = rail_length,inclination = setting["inclination"],heading=setting["heading"], terminate_on_apogee = False
             )
             inputOutput = export_flight_data(setting, testFlight, process_time() - start_time, env)
             flightData[0] += "\n" + str(inputOutput[0])
@@ -139,6 +140,8 @@ def export_flight_data(flight_setting, flight_data, exec_time, env):
         "apogee_altitude": flight_data.apogee - env.elevation,
         "apogee_x": flight_data.apogee_x,
         "apogee_y": flight_data.apogee_y,
+        "impact_x": flight_data.x_impact,
+        "impact_y": flight_data.y_impact,
         "initial_static_margin": flight_data.rocket.static_margin(0),
         "out_of_rail_static_margin": flight_data.rocket.static_margin(
             flight_data.out_of_rail_time
