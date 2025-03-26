@@ -25,18 +25,28 @@ import logging
 
 # Iterate the loop to read the cell values
 
-dryMotorMass = 4.3367
-grainInner =(43.942*10**-3)/2
-grainOuter =(82.27*10**-3)/2
-grainHeight = 0.1524
-numGrain = 5
+dryMotorMass = 6.032 - 4.122
+grainInnerRadius = 0.022225/2
+grainOuterRadius = 0.0654558/2
+grainHeight = 0.1317752
+numGrain = 6
 totalHeight = grainHeight*numGrain
-centralAxis = (0.08333)*dryMotorMass*(grainOuter)**2
-centralDiameter = ((1/4)*dryMotorMass*(grainOuter)**2) + (1/12)*dryMotorMass*(totalHeight)**2
-the_nozzle_radius = (79.32*10**-3)/2
-the_throat_radius= (29.21*10**-3)/2
-the_nozzle_position = grainHeight*3.8
-density = dryMotorMass / (((np.pi*grainOuter**2)-(np.pi*grainInner**2))*totalHeight)
+# This might be wrong, as we're not using the grain's outer radius anymore.
+# centralAxis = (0.08333)*dryMotorMass*(grainOuterRadius)**2
+motorRadius = 75 / 2 * 10^(-3)
+centralAxis = (0.08333)*dryMotorMass*(motorRadius)**2
+# centralDiameter = ((1/4)*dryMotorMass*(grainOuterRadius)**2) + (1/12)*dryMotorMass*(totalHeight)**2
+motorLength = .923
+centralDiameter = ((1/4)*dryMotorMass*(motorRadius)**2) + (1/12)*dryMotorMass*(motorLength)**2
+
+the_nozzle_radius = .047625/2
+the_throat_radius= .017399/2
+# the_nozzle_position = grainHeight*3.8
+the_nozzle_position = .1317752 * 3 + 0.08
+
+# density = dryMotorMass / (((np.pi*grainOuterRadius**2)-(np.pi*grainInnerRadius**2))*totalHeight)
+volume = grainHeight * 0.0114332036534 + (grainHeight * .011908241951)*5
+density = 4.122/volume
 
 # M1850W.all_info()
 
@@ -116,9 +126,9 @@ analysis_parameters = {
     # Motor's grain density (kg/m^3)
     "grain_density": (density, 20),
     # Motor's grain outer radius (m)
-    "grain_outer_radius": (grainOuter, 0.3 / 1000),
+    "grain_outer_radius": (grainOuterRadius, 0.3 / 1000),
     # Motor's grain inner radius (m)
-    "grain_initial_inner_radius": (grainInner, 0.3 / 1000),
+    "grain_initial_inner_radius": (grainInnerRadius, 0.3 / 1000),
     # Motor's grain height (m)
     "grain_initial_height": (grainHeight, 1 / 1000),
     # Rocket's radius (kg*m^2)
@@ -137,7 +147,7 @@ analysis_parameters = {
     # Axial distance between rocket's center of dry mass and nearest point in its fin (m)
     "fin_distance_to_CM": (the_fin_position - rocket_center_of_dry_mass_position, 0.001),
     # Launch rail inclination angle relative to the horizontal plane (degrees)
-    "inclination": (90, 1),
+    "inclination": (88, 1),
     # Launch rail heading relative to north (degrees)
     "heading": (90, 2),
     # Drag coefficient times reference area for the drogue chute (m^2)
@@ -444,3 +454,4 @@ for finDistance in range (2550, 2621, 10):
     plt.savefig(str(filename) + ".pdf", bbox_inches="tight", pad_inches=0)
     plt.savefig(str(filename) + ".svg", bbox_inches="tight", pad_inches=0)
     plt.show()
+    print("\n\n\n----------------------------------------------------------------------------------------------------\n\n\n")
