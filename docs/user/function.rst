@@ -40,14 +40,15 @@ A ``list`` or ``numpy.ndarray`` of datapoints that maps input values to an outpu
     # Create a Function object with this dataset
     f = Function(source, "x", "y")
 
-One may print the source attribute from the ``Function`` object to check the inputed dataset.
+One may print the source attribute from the ``Function`` object to check the input dataset.
 
 .. jupyter-execute::
 
     # Print the source to see the dataset
     print(f.source)
 
-Furthermore, in order to visualize the dataset, one may use the ``plot`` method from the ``Function`` object:
+Furthermore, in order to visualize the dataset, one may use the ``plot`` method
+from the ``Function`` object:
 
 .. jupyter-execute::
 
@@ -56,7 +57,9 @@ Furthermore, in order to visualize the dataset, one may use the ``plot`` method 
 
 |
 
-The dataset can be defined as a *multidimensional* array (more than one input maps to an output), where each row is a datapoint. For example, let us define a dataset that follows the plane :math:`z = x + y`:
+The dataset can be defined as a *multidimensional* array (more than one input
+maps to an output), where each row is a data point. For example, let us define
+a dataset that follows the plane :math:`z = x + y`:
 
 .. jupyter-execute::
 
@@ -70,13 +73,15 @@ The dataset can be defined as a *multidimensional* array (more than one input ma
     # Create a Function object with this dataset
     f = Function(source, ["x", "y"], "z")
 
-One may print the source attribute from the ``Function`` object to check the input dataset.
+One may print the source attribute from the ``Function`` object to check the
+input dataset.
 
 .. jupyter-execute::
 
     print(f.source)
 
-Two dimensional plots are also supported, therefore this data source can be plotted as follows:
+Two dimensional plots are also supported, therefore this data source can be
+plotted as follows:
 
 .. jupyter-execute::
 
@@ -84,12 +89,17 @@ Two dimensional plots are also supported, therefore this data source can be plot
     f.plot()
 
 .. important::
-    The ``Function`` class only supports interpolation ``shepard`` and extrapolation ``natural`` for datasets higher than one dimension (more than one input). 
+
+    The ``Function`` class only supports interpolation ``shepard`` and \
+    extrapolation ``natural`` for datasets higher than one dimension (more than \
+    one input). 
 
 CSV File
 ^^^^^^^^
 
-A CSV file path can be passed as ``string`` to the ``Function`` source. The file must contain a dataset structured so that each line is a datapoint: the last column is the output and the previous columns are the inputs.
+A CSV file path can be passed as ``string`` to the ``Function`` source.
+The file must contain a dataset structured so that each line is a data point:
+the last column is the output and the previous columns are the inputs.
 
 .. jupyter-execute::
 
@@ -120,7 +130,7 @@ Having the csv file, we can define a ``Function`` object with it:
     print(f.source)
 
 .. note::
-    A header in the csv file is optional, but if present must be in a string like format, i.e. beginning and ending with quotation marks.
+    A single header line in the csv file is optional.
 
 b. Function Map
 ~~~~~~~~~~~~~~~
@@ -170,7 +180,7 @@ A special case of the python function source is the definition of a constant ``F
 
 In this section we are going to delve deeper on ``Function`` creation and its parameters:
 
-- source: the ``Function`` datasource. We have explored this parameter in the section above;
+- source: the ``Function`` data source. We have explored this parameter in the section above;
 - inputs: a list of strings containing each input variable name. If the source only has one input, may be abbreviated as a string (e.g. "speed (m/s)");
 - outputs: a list of strings containing each output variable name. If the source only has one output, may be abbreviated as a string (e.g. "total energy (J)");
 - interpolation: a string that is the interpolation method to be used if the source is a dataset. Defaults to ``spline``;
@@ -249,11 +259,17 @@ A ``Function`` objects maps input data to an output, therefore should you want t
 
 Equivalently, the same operation is defined by the Python dunder method 
 ``__call__`` so that the object can be used like a common function.
- For instance:
+For instance:
 
 .. jupyter-execute::
 
     print(f(9), f(25))
+
+.. note::
+
+    A dunder method is a method that is surrounded by double underscores, such \
+    as ``__call__``. These methods are used by Python to implement operator \
+    overloading.
 
 Furthermore, both the :meth:`rocketpy.Function.get_value` and the dunder
 ``__call__`` method can be used to get a list of outputs from a list of inputs:
@@ -346,6 +362,7 @@ d. Differentiation and Integration
 One of the most useful ``Function`` features for data analysis is easily differentiating and integrating the data source. These methods are divided as follow:
 
 - :meth:`rocketpy.Function.differentiate`: differentiate the ``Function`` at a given point, returning the derivative value as the result;
+- :meth:`rocketpy.Function.differentiate_complex_step`: differentiate the ``Function`` at a given point using the complex step method, returning the derivative value as the result;
 - :meth:`rocketpy.Function.integral`: performs a definite integral over specified limits, returns the integral value (area under ``Function``);
 - :meth:`rocketpy.Function.derivative_function`: computes the derivative of the given `Function`, returning another `Function` that is the derivative of the original at each point;
 - :meth:`rocketpy.Function.integral_function`: calculates the definite integral of the function from a given point up to a variable, returns a ``Function``.
@@ -362,6 +379,19 @@ Let's make a familiar example of differentiation: the derivative of the function
 
     # Differentiate it at x = 3
     print(f.differentiate(3))
+
+RocketPy also supports the complex step method for differentiation, which is a very accurate method for numerical differentiation. Let's compare the results of the complex step method with the standard method:
+
+.. jupyter-execute::
+
+    # Define the function x^2
+    f = Function(lambda x: x**2)
+
+    # Differentiate it at x = 3 using the complex step method
+    print(f.differentiate_complex_step(3))
+
+The complex step method can be as twice as faster as the standard method,  but
+it requires the function to be differentiable in the complex plane.
 
 Also one may compute the derivative function:
 
@@ -405,6 +435,62 @@ Here we have shown that we can integrate the gaussian function over a defined in
 
     # Compare the function with the integral
     Function.compare_plots([f, f_int], lower=-4, upper=4)
+
+e. Export to a text file (CSV or TXT)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since rocketpy version 1.2.0, the ``Function`` class supports exporting the
+source data to a CSV or TXT file. This is accomplished by the method
+:meth:`rocketpy.Function.savetxt` and allows for easy data exportation for
+further analysis.
+
+Let's export the gaussian function to a CSV file:
+
+.. jupyter-execute::
+
+    # Define the gaussian function
+    def gaussian(x):
+        return 1 / np.sqrt(2*np.pi) * np.exp(-x**2/2)
+
+    f = Function(gaussian, inputs="x", outputs="f(x)")
+
+    # Export to CSV
+    f.savetxt("gaussian.csv", lower=-4, upper=4, samples=20, fmt="%.2f")
+
+    # Read the CSV file
+    import pandas as pd
+    pd.read_csv("gaussian.csv")
+
+
+.. jupyter-execute::
+
+    # Delete the CSV file
+    import os
+    os.remove("gaussian.csv")
+
+f. Filter data
+~~~~~~~~~~~~~~
+
+Since rocketpy version 1.2.0, the ``Function`` class supports filtering the
+source data. This is accomplished by the method :meth:`rocketpy.Function.low_pass_filter`
+and allows for easy data filtering for further analysis.
+
+Let's filter an example function:
+
+.. jupyter-execute::
+
+    x = np.linspace(-4, 4, 1000)
+    y = np.sin(x) + np.random.normal(0, 0.1, 1000)
+
+    f = Function(list(zip(x, y)), inputs="x", outputs="f(x)")
+
+    # Filter the function
+    f_filtered = f.low_pass_filter(0.5)
+
+    # Compare the function with the filtered function
+    Function.compare_plots(
+        [(f, "Original"), (f_filtered, "Filtered")], lower=-4, upper=4
+    )
 
 ........
 

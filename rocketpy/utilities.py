@@ -1,3 +1,5 @@
+import ast
+import inspect
 import traceback
 import warnings
 
@@ -7,11 +9,11 @@ from scipy.integrate import solve_ivp
 
 from .environment.environment import Environment
 from .mathutils.function import Function
+from .plots.plot_helpers import show_or_save_plot
 from .rocket.aero_surface import TrapezoidalFins
 from .simulation.flight import Flight
 
 
-# TODO: Needs tests
 def compute_cd_s_from_drop_test(
     terminal_velocity, rocket_mass, air_density=1.225, g=9.80665
 ):
@@ -36,13 +38,34 @@ def compute_cd_s_from_drop_test(
     -------
     cd_s : float
         Number equal to drag coefficient times reference area for parachute.
-
     """
-
     return 2 * rocket_mass * g / ((terminal_velocity**2) * air_density)
 
 
-# TODO: Needs tests
+def check_constant(f, eps):
+    """
+    Check for three consecutive elements in the list that are approximately
+    equal within a tolerance.
+
+    Parameters
+    ----------
+    f : list or array
+        A list or array of numerical values.
+    eps : float
+        The tolerance level for comparing the elements.
+
+    Returns
+    -------
+    int or None
+        The index of the first element in the first sequence of three
+        consecutive elements that are approximately equal within the tolerance.
+        Returns None if no such sequence is found.
+    """
+    for i in range(len(f) - 2):
+        if abs(f[i + 2] - f[i + 1]) < eps and abs(f[i + 1] - f[i]) < eps:
+            return i
+
+
 def calculate_equilibrium_altitude(
     rocket_mass,
     cd_s,
@@ -87,7 +110,6 @@ def calculate_equilibrium_altitude(
         affect the final result if the value is not high enough. Increase the
         estimative in case the final solution is not founded.
 
-
     Returns
     -------
     altitude_function: Function
@@ -100,33 +122,10 @@ def calculate_equilibrium_altitude(
     """
     final_sol = {}
 
-    if not v0 < 0:
-        print("Please set a valid negative value for v0")
-        return None
+    if v0 >= 0:  # pragma: no cover
+        raise ValueError("Please set a valid negative value for v0")
 
-    # TODO: Improve docs
-    def check_constant(f, eps):
-        """_summary_
-
-        Parameters
-        ----------
-        f : array, list
-
-            _description_
-        eps : float
-            _description_
-
-        Returns
-        -------
-        int, None
-            _description_
-        """
-        for i in range(len(f) - 2):
-            if abs(f[i + 2] - f[i + 1]) < eps and abs(f[i + 1] - f[i]) < eps:
-                return i
-        return None
-
-    if env == None:
+    if env is None:
         environment = Environment(
             latitude=0,
             longitude=0,
@@ -136,21 +135,20 @@ def calculate_equilibrium_altitude(
     else:
         environment = env
 
-    # TODO: Improve docs
     def du(z, u):
-        """_summary_
+        """Returns the derivative of the velocity at a given altitude.
 
         Parameters
         ----------
         z : float
-            _description_
+            altitude, in meters, at a given time
         u : float
             velocity, in m/s, at a given z altitude
 
         Returns
         -------
         float
-            _description_
+            velocity at a given altitude
         """
         return (
             u[1],
@@ -164,7 +162,7 @@ def calculate_equilibrium_altitude(
         t_span=(0, estimated_final_time),
         y0=u0,
         vectorized=True,
-        method="RK45",
+        method="LSODA",
         max_step=max_step,
     )
 
@@ -199,8 +197,15 @@ def calculate_equilibrium_altitude(
     return altitude_function, velocity_function, final_sol
 
 
+# pylint: disable=too-many-statements
 def fin_flutter_analysis(
-    fin_thickness, shear_modulus, flight, see_prints=True, see_graphs=True
+    fin_thickness,
+    shear_modulus,
+    flight,
+    see_prints=True,
+    see_graphs=True,
+    *,
+    filename=None,
 ):
     """Calculate and plot the Fin Flutter velocity using the pressure profile
     provided by the selected atmospheric model. It considers the Flutter
@@ -216,62 +221,78 @@ def fin_flutter_analysis(
         The fin thickness, in meters
     shear_modulus : float
         Shear Modulus of fins' material, must be given in Pascal
-    flight : rocketpy.Flight
+    flight : Flight
         Flight object containing the rocket's flight data
     see_prints : boolean, optional
         True if you want to see the prints, False otherwise.
     see_graphs : boolean, optional
         True if you want to see the graphs, False otherwise. If False, the
         function will return the vectors containing the data for the graphs.
+    filename : str | None, optional
+        The path the plot should be saved to. By default None, in which case the
+        plot will be shown instead of saved. Supported file endings are: eps,
+        jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff and webp
+        (these are the formats supported by matplotlib).
 
     Return
     ------
     None
     """
+    found_fin = False
+    surface_area = None
+    aspect_ratio = None
+    lambda_ = None
 
-    # First, we need identify if there is at least a fin set in the rocket
-    for aero_surface in flight.rocket.aerodynamic_surfaces:
+    # First, we need identify if there is at least one fin set in the rocket
+    for aero_surface in flight.rocket.fins:
         if isinstance(aero_surface, TrapezoidalFins):
-            # s: surface area; ar: aspect ratio; la: lambda
             root_chord = aero_surface.root_chord
-            s = (aero_surface.tip_chord + root_chord) * aero_surface.span / 2
-            ar = aero_surface.span * aero_surface.span / s
-            la = aero_surface.tip_chord / root_chord
+            surface_area = (aero_surface.tip_chord + root_chord) * aero_surface.span / 2
+            aspect_ratio = aero_surface.span * aero_surface.span / surface_area
+            lambda_ = aero_surface.tip_chord / root_chord
+            if not found_fin:
+                found_fin = True
+            else:
+                warnings.warn("More than one fin set found. The last one will be used.")
+    if not found_fin:  # pragma: no cover
+        raise AttributeError(
+            "There is no TrapezoidalFins in the rocket, can't run Flutter Analysis."
+        )
 
-    # This ensures that a fin set was found in the rocket, if not, break
-    try:
-        s = s
-    except NameError:
-        print("There is no fin set in the rocket, can't run a Flutter Analysis.")
-        return None
-
-    # Calculate the Fin Flutter Mach Number
-    flutter_mach = (
-        (shear_modulus * 2 * (ar + 2) * (fin_thickness / root_chord) ** 3)
-        / (1.337 * (ar**3) * (la + 1) * flight.pressure)
-    ) ** 0.5
-
+    # Calculate variables
+    flutter_mach = _flutter_mach_number(
+        fin_thickness, shear_modulus, flight, root_chord, aspect_ratio, lambda_
+    )
     safety_factor = _flutter_safety_factor(flight, flutter_mach)
 
-    # Prints everything
+    # Prints and plots
     if see_prints:
         _flutter_prints(
             fin_thickness,
             shear_modulus,
-            s,
-            ar,
-            la,
+            surface_area,
+            aspect_ratio,
+            lambda_,
             flutter_mach,
             safety_factor,
             flight,
         )
-
-    # Plots everything
     if see_graphs:
-        _flutter_plots(flight, flutter_mach, safety_factor)
-        return None
+        _flutter_plots(flight, flutter_mach, safety_factor, filename)
     else:
         return flutter_mach, safety_factor
+
+
+def _flutter_mach_number(
+    fin_thickness, shear_modulus, flight, root_chord, aspect_ratio, lambda_
+):
+    flutter_mach = (
+        (shear_modulus * 2 * (aspect_ratio + 2) * (fin_thickness / root_chord) ** 3)
+        / (1.337 * (aspect_ratio**3) * (lambda_ + 1) * flight.pressure)
+    ) ** 0.5
+    flutter_mach.set_title("Fin Flutter Mach Number")
+    flutter_mach.set_outputs("Mach")
+    return flutter_mach
 
 
 def _flutter_safety_factor(flight, flutter_mach):
@@ -290,29 +311,13 @@ def _flutter_safety_factor(flight, flutter_mach):
     rocketpy.Function
         The safety factor for the fin flutter analysis.
     """
-    safety_factor = [[t, 0] for t in flutter_mach[:, 0]]
-    for i in range(len(flutter_mach)):
-        try:
-            safety_factor[i][1] = flutter_mach[i][1] / flight.mach_number[i][1]
-        except ZeroDivisionError:
-            safety_factor[i][1] = np.nan
-
-    # Function needs to remove NaN and Inf values from the source
-    safety_factor = np.array(safety_factor)
-    safety_factor = safety_factor[~np.isnan(safety_factor).any(axis=1)]
-    safety_factor = safety_factor[~np.isinf(safety_factor).any(axis=1)]
-
-    safety_factor = Function(
-        source=safety_factor,
-        inputs="Time (s)",
-        outputs="Fin Flutter Safety Factor",
-        interpolation="linear",
-    )
-
+    safety_factor = flutter_mach / flight.mach_number
+    safety_factor.set_title("Fin Flutter Safety Factor")
+    safety_factor.set_outputs("Safety Factor")
     return safety_factor
 
 
-def _flutter_plots(flight, flutter_mach, safety_factor):
+def _flutter_plots(flight, flutter_mach, safety_factor, *, filename=None):
     """Plot the Fin Flutter Mach Number and the Safety Factor for the flutter.
 
     Parameters
@@ -325,12 +330,18 @@ def _flutter_plots(flight, flutter_mach, safety_factor):
     safety_factor : rocketpy.Function
         Function containing the Safety Factor for the fin flutter.
         See fin_flutter_analysis for more details.
+    filename : str | None, optional
+        The path the plot should be saved to. By default None, in which case the
+        plot will be shown instead of saved. Supported file endings are: eps,
+        jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff and webp
+        (these are the formats supported by matplotlib).
 
     Returns
     -------
     None
     """
-    fig = plt.figure(figsize=(6, 6))
+    # TODO: move to rocketpy.plots submodule
+    _ = plt.figure(figsize=(6, 6))
     ax1 = plt.subplot(211)
     ax1.plot(
         flutter_mach[:, 0],
@@ -359,17 +370,15 @@ def _flutter_plots(flight, flutter_mach, safety_factor):
     ax2.grid()
 
     plt.subplots_adjust(hspace=0.5)
-    plt.show()
-
-    return None
+    show_or_save_plot(filename)
 
 
 def _flutter_prints(
     fin_thickness,
     shear_modulus,
-    s,
-    ar,
-    la,
+    surface_area,
+    aspect_ratio,
+    lambda_,
     flutter_mach,
     safety_factor,
     flight,
@@ -383,11 +392,11 @@ def _flutter_prints(
         The fin thickness, in meters
     shear_modulus : float
         Shear Modulus of fins' material, must be given in Pascal
-    s : float
+    surface_area : float
         Fin surface area, in squared meters
-    ar : float
+    aspect_ratio : float
         Fin aspect ratio
-    la : float
+    lambda_ : float
         Fin lambda, defined as the tip_chord / root_chord ratio
     flutter_mach : rocketpy.Function
         The Mach Number at which the fin flutter occurs, considering the
@@ -403,6 +412,7 @@ def _flutter_prints(
     -------
     None
     """
+    # TODO: move to rocketpy.prints submodule
     time_index = np.argmin(flutter_mach[:, 1])
     time_min_mach = flutter_mach[time_index, 0]
     min_mach = flutter_mach[time_index, 1]
@@ -414,9 +424,9 @@ def _flutter_prints(
     altitude_min_sf = flight.z(time_min_sf) - flight.env.elevation
 
     print("\nFin's parameters")
-    print(f"Surface area (S): {s:.4f} m2")
-    print(f"Aspect ratio (AR): {ar:.3f}")
-    print(f"tip_chord/root_chord ratio = \u03BB = {la:.3f}")
+    print(f"Surface area (S): {surface_area:.4f} m2")
+    print(f"Aspect ratio (AR): {aspect_ratio:.3f}")
+    print(f"tip_chord/root_chord ratio = \u03bb = {lambda_:.3f}")
     print(f"Fin Thickness: {fin_thickness:.5f} m")
     print(f"Shear Modulus (G): {shear_modulus:.3e} Pa")
 
@@ -426,10 +436,8 @@ def _flutter_prints(
     print(f"Minimum Safety Factor: {min_sf:.3f} at {time_min_sf:.2f} s")
     print(f"Altitude of minimum Safety Factor: {altitude_min_sf:.3f} m (AGL)\n")
 
-    return None
 
-
-def create_dispersion_dictionary(filename):
+def create_dispersion_dictionary(filename):  # pragma: no cover
     """Creates a dictionary with the rocket data provided by a .csv file.
     File should be organized in four columns: attribute_class, parameter_name,
     mean_value, standard_deviation. The first row should be the header.
@@ -483,30 +491,34 @@ def create_dispersion_dictionary(filename):
                     }
             }
     """
+    warnings.warn(
+        "This function is deprecated and will be removed in v1.10.0.",
+        DeprecationWarning,
+    )
     try:
         file = np.genfromtxt(
             filename, usecols=(1, 2, 3), skip_header=1, delimiter=";", dtype=str
         )
     except ValueError:
         warnings.warn(
-            f"Error caught: the recommended delimiter is ';'. If using ',' "
-            + "instead, be aware that some resources might not work as "
-            + "expected if your data set contains lists where the items are "
-            + "separated by commas. Please consider changing the delimiter to "
-            + "';' if that is the case."
+            "Error caught: the recommended delimiter is ';'. If using ',' "
+            "instead, be aware that some resources might not work as "
+            "expected if your data set contains lists where the items are "
+            "separated by commas. Please consider changing the delimiter to "
+            "';' if that is the case."
         )
         warnings.warn(traceback.format_exc())
         file = np.genfromtxt(
             filename, usecols=(1, 2, 3), skip_header=1, delimiter=",", dtype=str
         )
-    analysis_parameters = dict()
+    analysis_parameters = {}
     for row in file:
         if row[0] != "":
             if row[2] == "":
                 try:
                     analysis_parameters[row[0].strip()] = float(row[1])
                 except ValueError:
-                    analysis_parameters[row[0].strip()] = eval(row[1])
+                    analysis_parameters[row[0].strip()] = ast.literal_eval(row[1])
             else:
                 try:
                     analysis_parameters[row[0].strip()] = (float(row[1]), float(row[2]))
@@ -654,3 +666,25 @@ def liftoff_speed_by_mass(flight, min_mass, max_mass, points=10, plot=True):
     if plot:
         retfunc.plot(min_mass, max_mass, points)
     return retfunc
+
+
+def get_instance_attributes(instance):
+    """Returns a dictionary with all attributes of a given instance.
+
+    Parameters
+    ----------
+    instance : object
+        Instance of a class.
+
+    Returns
+    -------
+    dictionary
+        Dictionary with all attributes of the given instance.
+    """
+    attributes_dict = {}
+    members = inspect.getmembers(instance)
+    for member in members:
+        # Filter out methods and protected attributes
+        if not inspect.ismethod(member[1]) and not member[0].startswith("__"):
+            attributes_dict[member[0]] = member[1]
+    return attributes_dict

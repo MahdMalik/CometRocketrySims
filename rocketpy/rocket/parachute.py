@@ -1,4 +1,8 @@
+from inspect import signature
+
 import numpy as np
+
+from rocketpy.tools import from_hex_decode, to_hex_encode
 
 from ..mathutils.function import Function
 from ..prints.parachute_prints import _ParachutePrints
@@ -14,12 +18,8 @@ class Parachute:
         simulation, as it is only used to display data in a more
         organized matter.
     Parachute.cd_s : float
-        Drag coefficient times reference area for parachute. It is
-        used to compute the drag force exerted on the parachute by
-        the equation F = ((1/2)*rho*V^2)*cd_s, that is, the drag
-        force is the dynamic pressure computed on the parachute
-        times its cd_s coefficient. Has units of area and must be
-        given in squared meters.
+        Drag coefficient times reference area for parachute. It has units of
+        area and must be given in squared meters.
     Parachute.trigger : callable, float, str
         This parameter defines the trigger condition for the parachute ejection
         system. It can be one of the following:
@@ -31,46 +31,50 @@ class Parachute:
 
            `[x, y, z, vx, vy, vz, e0, e1, e2, e3, wx, wy, wz]`.
 
-        The function should return True if the parachute ejection system should
-        be triggered and False otherwise.
+        4. A list of sensors that are attached to the rocket. The most recent
+           measurements of the sensors are provided with the
+           ``sensor.measurement`` attribute. The sensors are listed in the same
+           order as they are added to the rocket.
+
+        The function should return ``True`` if the parachute ejection system
+        should be triggered and False otherwise. The function will be called
+        according to the specified sampling rate.
 
         - A float value, representing an absolute height in meters. In this
         case, the parachute will be ejected when the rocket reaches this height
         above ground level.
 
-        - The string "apogee," which triggers the parachute at apogee, i.e.,
+        - The string "apogee" which triggers the parachute at apogee, i.e.,
         when the rocket reaches its highest point and starts descending.
 
-        Note: The function will be called according to the sampling rate
-        specified.
+
     Parachute.triggerfunc : function
-        This parameter defines the trigger function created from the trigger
-        parameter. It is used to evaluate the trigger condition for the
-        parachute ejection system. It is a callable function that takes three
-        arguments:
+        Trigger function created from the trigger used to evaluate the trigger
+        condition for the parachute ejection system. It is a callable function
+        that takes three arguments: Freestream pressure in Pa, Height above
+        ground level in meters, and the state vector of the simulation. The
+        returns ``True`` if the parachute ejection system should be triggered
+        and ``False`` otherwise.
 
-        1. Freestream pressure in pascals.
-        2. Height in meters above ground level.
-        3. The state vector of the simulation, which is defined as:
+        .. note:
 
-           `[x, y, z, vx, vy, vz, e0, e1, e2, e3, wx, wy, wz]`.
+            The function will be called according to the sampling rate specified.
 
-        The function should return True if the parachute ejection system should
-        be triggered and False otherwise.
-
-        Note: The function will be called according to the sampling rate
-        specified.
     Parachute.sampling_rate : float
-        Sampling rate, in hertz, for the trigger function.
+        Sampling rate, in Hz, for the trigger function.
     Parachute.lag : float
         Time, in seconds, between the parachute ejection system is triggered
         and the parachute is fully opened.
+    Parachute.noise : tuple, list
+        List in the format (mean, standard deviation, time-correlation).
+        The values are used to add noise to the pressure signal which is passed
+        to the trigger function. Default value is (0, 0, 0). Units are in Pa.
     Parachute.noise_bias : float
         Mean value of the noise added to the pressure signal, which is
-        passed to the trigger function. Unit is in pascal.
+        passed to the trigger function. Unit is in Pa.
     Parachute.noise_deviation : float
         Standard deviation of the noise added to the pressure signal,
-        which is passed to the trigger function. Unit is in pascal.
+        which is passed to the trigger function. Unit is in Pa.
     Parachute.noise_corr : tuple, list
         Tuple with the correlation between noise and time.
     Parachute.noise_signal : list of tuple
@@ -110,27 +114,32 @@ class Parachute:
         cd_s : float
             Drag coefficient times reference area of the parachute.
         trigger : callable, float, str
-            This parameter defines the trigger condition for the parachute
-            ejection system. It can be one of the following:
+            Defines the trigger condition for the parachute ejection system. It
+            can be one of the following:
 
-            - A callable function that takes three arguments:
+            - A callable function that takes three arguments: \
+
                 1. Freestream pressure in pascals.
                 2. Height in meters above ground level.
-                3. The state vector of the simulation, which is defined as:
-                    [x, y, z, vx, vy, vz, e0, e1, e2, e3, wx, wy, wz].
+                3. The state vector of the simulation, which is defined as: \
 
-            The function should return True if the parachute ejection system
-            should be triggered and False otherwise.
+                    .. code-block:: python
 
-            - A float value, representing an absolute height in meters. In this
-            case, the parachute will be ejected when the rocket reaches this
-            height above ground level.
+                        u = [x, y, z, vx, vy, vz, e0, e1, e2, e3, wx, wy, wz]
 
-            - The string "apogee," which triggers the parachute at apogee, i.e.,
-            when the rocket reaches its highest point and starts descending.
+                .. note::
 
-            Note: The function will be called according to the sampling rate
-            specified next.
+                    The function should return ``True`` if the parachute \
+                    ejection system should be triggered and ``False`` otherwise.
+            - A float value, representing an absolute height in meters. In this \
+                case, the parachute will be ejected when the rocket reaches this \
+                height above ground level.
+            - The string "apogee" which triggers the parachute at apogee, i.e., \
+                when the rocket reaches its highest point and starts descending.
+
+            .. note::
+
+                The function will be called according to the sampling rate specified.
         sampling_rate : float
             Sampling rate in which the parachute trigger will be checked at.
             It is used to simulate the refresh rate of onboard sensors such
@@ -143,17 +152,15 @@ class Parachute:
         noise : tuple, list, optional
             List in the format (mean, standard deviation, time-correlation).
             The values are used to add noise to the pressure signal which is
-            passed to the trigger function. Default value is (0, 0, 0). Units
-            are in pascal.
-        Returns
-        -------
-        None
+            passed to the trigger function. Default value is ``(0, 0, 0)``.
+            Units are in Pa.
         """
         self.name = name
         self.cd_s = cd_s
         self.trigger = trigger
         self.sampling_rate = sampling_rate
         self.lag = lag
+        self.noise = noise
         self.noise_signal = [[-1e-6, np.random.normal(noise[0], noise[1])]]
         self.noisy_pressure_signal = []
         self.clean_pressure_signal = []
@@ -171,30 +178,52 @@ class Parachute:
 
         self.prints = _ParachutePrints(self)
 
-        # evaluate the trigger
+        self.__evaluate_trigger_function(trigger)
+
+    def __evaluate_trigger_function(self, trigger):
+        """This is used to set the triggerfunc attribute that will be used to
+        interact with the Flight class.
+        """
+        # pylint: disable=unused-argument, function-redefined
+        # The parachute is deployed by a custom function
         if callable(trigger):
-            self.triggerfunc = trigger
+            # work around for having added sensors to parachute triggers
+            # to avoid breaking changes
+            triggerfunc = trigger
+            sig = signature(triggerfunc)
+            if len(sig.parameters) == 3:
+
+                def triggerfunc(p, h, y, sensors):
+                    return trigger(p, h, y)
+
+            self.triggerfunc = triggerfunc
+
         elif isinstance(trigger, (int, float)):
-            # trigger is interpreted as the absolute height at which the parachute will be ejected
-            def triggerfunc(p, h, y):
+            # The parachute is deployed at a given height
+            def triggerfunc(p, h, y, sensors):  # pylint: disable=unused-argument
                 # p = pressure considering parachute noise signal
                 # h = height above ground level considering parachute noise signal
                 # y = [x, y, z, vx, vy, vz, e0, e1, e2, e3, w1, w2, w3]
-                return True if y[5] < 0 and h < trigger else False
+                return y[5] < 0 and h < trigger
 
             self.triggerfunc = triggerfunc
 
-        elif trigger == "apogee":
-            # trigger for apogee
-            def triggerfunc(p, h, y):
+        elif trigger.lower() == "apogee":
+            # The parachute is deployed at apogee
+            def triggerfunc(p, h, y, sensors):  # pylint: disable=unused-argument
                 # p = pressure considering parachute noise signal
                 # h = height above ground level considering parachute noise signal
                 # y = [x, y, z, vx, vy, vz, e0, e1, e2, e3, w1, w2, w3]
-                return True if y[5] < 0 else False
+                return y[5] < 0
 
             self.triggerfunc = triggerfunc
 
-        return None
+        else:
+            raise ValueError(
+                f"Unable to set the trigger function for parachute '{self.name}'. "
+                + "Trigger must be a callable, a float value or the string 'apogee'. "
+                + "See the Parachute class documentation for more information."
+            )
 
     def __str__(self):
         """Returns a string representation of the Parachute class.
@@ -204,20 +233,63 @@ class Parachute:
         string
             String representation of Parachute class. It is human readable.
         """
-        return "Parachute {} with a cd_s of {:.4f} m2".format(
-            self.name.title(),
-            self.cd_s,
+        return f"Parachute {self.name.title()} with a cd_s of {self.cd_s:.4f} m2"
+
+    def __repr__(self):
+        """Representation method for the class, useful when debugging."""
+        return (
+            f"<Parachute {self.name} "
+            + f"(cd_s = {self.cd_s:.4f} m2, trigger = {self.trigger})>"
         )
 
     def info(self):
         """Prints information about the Parachute class."""
         self.prints.all()
 
-        return None
-
     def all_info(self):
         """Prints all information about the Parachute class."""
         self.info()
         # self.plots.all() # Parachutes still doesn't have plots
 
-        return None
+    def to_dict(self, include_outputs=False):
+        trigger = self.trigger
+
+        if callable(self.trigger) and not isinstance(self.trigger, Function):
+            trigger = to_hex_encode(trigger)
+
+        data = {
+            "name": self.name,
+            "cd_s": self.cd_s,
+            "trigger": trigger,
+            "sampling_rate": self.sampling_rate,
+            "lag": self.lag,
+            "noise": self.noise,
+        }
+
+        if include_outputs:
+            data["noise_signal"] = self.noise_signal
+            data["noise_function"] = to_hex_encode(self.noise_function)
+            data["noisy_pressure_signal"] = self.noisy_pressure_signal
+            data["clean_pressure_signal"] = self.clean_pressure_signal
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        trigger = data["trigger"]
+
+        try:
+            trigger = from_hex_decode(trigger)
+        except (TypeError, ValueError):
+            pass
+
+        parachute = cls(
+            name=data["name"],
+            cd_s=data["cd_s"],
+            trigger=trigger,
+            sampling_rate=data["sampling_rate"],
+            lag=data["lag"],
+            noise=data["noise"],
+        )
+
+        return parachute

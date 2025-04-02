@@ -1,7 +1,6 @@
-pytest==6.2.4
+pytest
 pytest-coverage
-black
-flake8-black
 pandas
 numericalunits==1.25
 pylint
+ruff>=0.9

@@ -30,15 +30,14 @@ class Fluid:
             If the density is not a positive number.
         """
 
-        if not isinstance(self.name, str):
+        if not isinstance(self.name, str):  # pragma: no cover
             raise ValueError("The name must be a string.")
-        if self.density < 0:
+        if self.density < 0:  # pragma: no cover
             raise ValueError("The density must be a positive number.")
 
         # Initialize plots and prints object
         self.prints = _FluidPrints(self)
         self.plots = _FluidPlots(self)
-        return None
 
     def __repr__(self):
         """Representation method.
@@ -61,3 +60,10 @@ class Fluid:
         """
 
         return f"Fluid: {self.name}"
+
+    def to_dict(self, include_outputs=False):  # pylint: disable=unused-argument
+        return {"name": self.name, "density": self.density}
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data["name"], data["density"])

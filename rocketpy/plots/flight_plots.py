@@ -1,10 +1,9 @@
+from functools import cached_property
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-try:
-    from functools import cached_property
-except ImportError:
-    from ..tools import cached_property
+from .plot_helpers import show_or_save_plot
 
 
 class _FlightPlots:
@@ -35,7 +34,6 @@ class _FlightPlots:
         None
         """
         self.flight = flight
-        return None
 
     @cached_property
     def first_event_time(self):
@@ -56,106 +54,85 @@ class _FlightPlots:
         else:
             return -1
 
-    def trajectory_3d(self):
+    def trajectory_3d(self, *, filename=None):  # pylint: disable=too-many-statements
         """Plot a 3D graph of the trajectory
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
-        # Get max and min x and y
-        max_z = max(self.flight.z[:, 1] - self.flight.env.elevation)
+        max_z = max(self.flight.altitude[:, 1])
+        min_z = min(self.flight.altitude[:, 1])
         max_x = max(self.flight.x[:, 1])
         min_x = min(self.flight.x[:, 1])
         max_y = max(self.flight.y[:, 1])
         min_y = min(self.flight.y[:, 1])
-        max_xy = max(max_x, max_y)
         min_xy = min(min_x, min_y)
+        max_xy = max(max_x, max_y)
 
-        # Create figure
-        fig1 = plt.figure(figsize=(20, 15))
+        # avoids errors when x_lim and y_lim are the same
+        if abs(min_z - max_z) < 1e-5:
+            max_z += 1
+        if abs(min_xy - max_xy) < 1e-5:
+            max_xy += 1
+
+        _ = plt.figure(figsize=(9, 9))
         ax1 = plt.subplot(111, projection="3d")
-        line1, = ax1.plot(
-            self.flight.x[:, 1], self.flight.y[:, 1], zs=0, zdir="z", linestyle="--", label='Change In Ground Position'
+        ax1.plot(
+            self.flight.x[:, 1], self.flight.y[:, 1], zs=min_z, zdir="z", linestyle="--"
         )
-        line2, = ax1.plot(
+        ax1.plot(
             self.flight.x[:, 1],
-            self.flight.z[:, 1] - self.flight.env.elevation,
-            zs=min_xy,
+            self.flight.altitude[:, 1],
+            zs=min_y,
             zdir="y",
-            linestyle="--", label='Change In East/West And Altitude'
+            linestyle="--",
         )
-        line3, = ax1.plot(
+        ax1.plot(
             self.flight.y[:, 1],
-            self.flight.z[:, 1] - self.flight.env.elevation,
-            zs=min_xy,
+            self.flight.altitude[:, 1],
+            zs=min_x,
             zdir="x",
-            linestyle="--", label='Change In North/South And Altitude'
+            linestyle="--",
         )
-        line4, = ax1.plot(
+        ax1.plot(
             self.flight.x[:, 1],
             self.flight.y[:, 1],
-            self.flight.z[:, 1] - self.flight.env.elevation,
-            linewidth="2", label='Expected Flight Trajectory'
+            self.flight.altitude[:, 1],
+            linewidth="2",
         )
-        ax1.scatter(0, 0, 0)
-        ax1.legend(handles = [line1, line2, line3, line4], fontsize =  16, loc = "upper left")
+        ax1.scatter(
+            self.flight.x(0),
+            self.flight.y(0),
+            self.flight.z(0) - self.flight.env.elevation,
+            color="black",
+        )
+        ax1.scatter(
+            self.flight.x(self.flight.t_final),
+            self.flight.y(self.flight.t_final),
+            self.flight.z(self.flight.t_final) - self.flight.env.elevation,
+            color="red",
+            marker="X",
+        )
         ax1.set_xlabel("X - East (m)")
         ax1.set_ylabel("Y - North (m)")
         ax1.set_zlabel("Z - Altitude Above Ground Level (m)")
-        ax1.set_title("Trajectory Of Flight")
-        ax1.set_zlim3d([0, max_z])
-        ax1.set_ylim3d([min_xy, max_xy] )
-        ax1.set_xlim3d([min_xy, max_xy])
+        ax1.set_title("Flight Trajectory")
+        ax1.set_xlim(min_xy, max_xy)
+        ax1.set_ylim(min_xy, max_xy)
+        ax1.set_zlim(min_z, max_z)
         ax1.view_init(15, 45)
-        plt.show()
+        ax1.set_box_aspect(None, zoom=0.95)  # 95% for label adjustment
+        show_or_save_plot(filename)
 
-        return None
-    
-    @staticmethod
-    def min_max_x_value(flightArray):
-        """Gets range of x positions for all flights
-
-        Returns
-        -------
-        returns list with first value being lowest x value, second value being highest
-        """
-        max_x = max(flightArray[0].x[:, 1])
-        min_x = min(flightArray[0].x[:, 1])
-        returnedArr = list()
-        for i in flightArray:
-            current_max_x = max(i.x[:, 1])
-            if current_max_x > max_x:
-                max_x = current_max_x
-            current_min_x = min(i.x[:, 1])
-            if current_min_x < min_x:
-                min_x = current_min_x
-        returnedArr.append(min_x)
-        returnedArr.append(max_x)
-        return returnedArr
-    
-    @staticmethod
-    def min_max_y_value(flightArray):
-        """Gets range of y positions for all flights
-
-        Returns
-        -------
-        returns list with first value being lowest y value, second value being highest
-        """
-        max_y = max(flightArray[0].y[:, 1])
-        min_y = min(flightArray[0].y[:, 1])
-        returnedArr = list()
-        for i in flightArray:
-            current_max_y = max(i.y[:, 1])
-            if current_max_y > max_y:
-                max_y = current_max_y
-            current_min_y = min(i.y[:, 1])
-            if current_min_y < min_y:
-                min_y = current_min_y
-        returnedArr.append(min_y)
-        returnedArr.append(max_y)
-        return returnedArr
-    
     @staticmethod
     def combinedTrajectories(flightArray):
         """Gets average expected trajectory of all flights given
@@ -267,18 +244,23 @@ class _FlightPlots:
         plt.show()
 
         return None
-        
 
-    def linear_kinematics_data(self):
+    def linear_kinematics_data(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out all Kinematics graphs available about the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
-
-        # Velocity and acceleration plots
-        fig2 = plt.figure(figsize=(9, 12))
+        plt.figure(figsize=(9, 12))
 
         ax1 = plt.subplot(414)
         ax1.plot(self.flight.vx[:, 0], self.flight.vx[:, 1], color="#ff7f0e")
@@ -341,11 +323,18 @@ class _FlightPlots:
         ax4up.tick_params("y", colors="#1f77b4")
 
         plt.subplots_adjust(hspace=0.5)
-        plt.show()
-        return None
+        show_or_save_plot(filename)
 
-    def attitude_data(self):
+    def attitude_data(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out all Angular position graphs available about the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
@@ -353,7 +342,7 @@ class _FlightPlots:
         """
 
         # Angular position plots
-        fig3 = plt.figure(figsize=(9, 12))
+        _ = plt.figure(figsize=(9, 12))
 
         ax1 = plt.subplot(411)
         ax1.plot(self.flight.e0[:, 0], self.flight.e0[:, 1], label="$e_0$")
@@ -392,22 +381,25 @@ class _FlightPlots:
         ax4.grid(True)
 
         plt.subplots_adjust(hspace=0.5)
-        plt.show()
+        show_or_save_plot(filename)
 
-        return None
-
-    def flight_path_angle_data(self):
+    def flight_path_angle_data(self, *, filename=None):
         """Prints out Flight path and Rocket Attitude angle graphs available
         about the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
-
-        # Path, Attitude and Lateral Attitude Angle
-        # Angular position plots
-        fig5 = plt.figure(figsize=(9, 6))
+        plt.figure(figsize=(9, 6))
 
         ax1 = plt.subplot(211)
         ax1.plot(
@@ -439,21 +431,25 @@ class _FlightPlots:
         ax2.grid(True)
 
         plt.subplots_adjust(hspace=0.5)
-        plt.show()
+        show_or_save_plot(filename)
 
-        return None
-
-    def angular_kinematics_data(self):
+    def angular_kinematics_data(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out all Angular velocity and acceleration graphs available
         about the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
-
-        # Angular velocity and acceleration plots
-        fig4 = plt.figure(figsize=(9, 9))
+        plt.figure(figsize=(9, 9))
         ax1 = plt.subplot(311)
         ax1.plot(self.flight.w1[:, 0], self.flight.w1[:, 1], color="#ff7f0e")
         ax1.set_xlim(0, self.first_event_time)
@@ -509,12 +505,18 @@ class _FlightPlots:
         ax3up.tick_params("y", colors="#1f77b4")
 
         plt.subplots_adjust(hspace=0.5)
-        plt.show()
+        show_or_save_plot(filename)
 
-        return None
-
-    def rail_buttons_forces(self):
+    def rail_buttons_forces(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out all Rail Buttons Forces graphs available about the Flight.
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
@@ -525,7 +527,7 @@ class _FlightPlots:
         elif self.flight.out_of_rail_time_index == 0:
             print("No rail phase was found. Skipping rail button plots.")
         else:
-            fig6 = plt.figure(figsize=(9, 6))
+            plt.figure(figsize=(9, 6))
 
             ax1 = plt.subplot(211)
             ax1.plot(
@@ -548,9 +550,11 @@ class _FlightPlots:
             )
             ax1.set_xlim(
                 0,
-                self.flight.out_of_rail_time
-                if self.flight.out_of_rail_time > 0
-                else self.flight.tFinal,
+                (
+                    self.flight.out_of_rail_time
+                    if self.flight.out_of_rail_time > 0
+                    else self.flight.tFinal
+                ),
             )
             ax1.legend()
             ax1.grid(True)
@@ -579,9 +583,11 @@ class _FlightPlots:
             )
             ax2.set_xlim(
                 0,
-                self.flight.out_of_rail_time
-                if self.flight.out_of_rail_time > 0
-                else self.flight.tFinal,
+                (
+                    self.flight.out_of_rail_time
+                    if self.flight.out_of_rail_time > 0
+                    else self.flight.tFinal
+                ),
             )
             ax2.legend()
             ax2.grid(True)
@@ -590,19 +596,24 @@ class _FlightPlots:
             ax2.set_title("Rail Buttons Shear Force")
 
             plt.subplots_adjust(hspace=0.5)
-            plt.show()
-        return None
+            show_or_save_plot(filename)
 
-    def aerodynamic_forces(self):
+    def aerodynamic_forces(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out all Forces and Moments graphs available about the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
-
-        # Aerodynamic force and moment plots
-        fig7 = plt.figure(figsize=(9, 12))
+        plt.figure(figsize=(9, 12))
 
         ax1 = plt.subplot(411)
         ax1.plot(
@@ -673,19 +684,25 @@ class _FlightPlots:
         ax4.grid()
 
         plt.subplots_adjust(hspace=0.5)
-        plt.show()
+        show_or_save_plot(filename)
 
-        return None
-
-    def energy_data(self):
+    def energy_data(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out all Energy components graphs available about the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
 
-        fig8 = plt.figure(figsize=(9, 9))
+        plt.figure(figsize=(9, 9))
 
         ax1 = plt.subplot(411)
         ax1.plot(
@@ -705,9 +722,11 @@ class _FlightPlots:
         )
         ax1.set_xlim(
             0,
-            self.flight.apogee_time
-            if self.flight.apogee_time != 0.0
-            else self.flight.t_final,
+            (
+                self.flight.apogee_time
+                if self.flight.apogee_time != 0.0
+                else self.flight.t_final
+            ),
         )
         ax1.ticklabel_format(style="sci", axis="y", scilimits=(0, 0))
         ax1.set_title("Kinetic Energy Components")
@@ -735,9 +754,11 @@ class _FlightPlots:
         )
         ax2.set_xlim(
             0,
-            self.flight.apogee_time
-            if self.flight.apogee_time != 0.0
-            else self.flight.t_final,
+            (
+                self.flight.apogee_time
+                if self.flight.apogee_time != 0.0
+                else self.flight.t_final
+            ),
         )
         ax2.ticklabel_format(style="sci", axis="y", scilimits=(0, 0))
         ax2.set_title("Total Mechanical Energy Components")
@@ -768,9 +789,11 @@ class _FlightPlots:
         )
         ax4.set_xlim(
             0,
-            self.flight.apogee_time
-            if self.flight.apogee_time != 0.0
-            else self.flight.t_final,
+            (
+                self.flight.apogee_time
+                if self.flight.apogee_time != 0.0
+                else self.flight.t_final
+            ),
         )
         ax3.ticklabel_format(style="sci", axis="y", scilimits=(0, 0))
         ax4.set_title("Drag Absolute Power")
@@ -780,23 +803,27 @@ class _FlightPlots:
         ax4.grid()
 
         plt.subplots_adjust(hspace=1)
-        plt.show()
+        show_or_save_plot(filename)
 
-        return None
-
-    def fluid_mechanics_data(self):
+    def fluid_mechanics_data(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out a summary of the Fluid Mechanics graphs available about
         the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
+        plt.figure(figsize=(9, 16))
 
-        # Trajectory Fluid Mechanics Plots
-        fig10 = plt.figure(figsize=(9, 12))
-
-        ax1 = plt.subplot(411)
+        ax1 = plt.subplot(611)
         ax1.plot(self.flight.mach_number[:, 0], self.flight.mach_number[:, 1])
         ax1.set_xlim(0, self.flight.t_final)
         ax1.set_title("Mach Number")
@@ -804,7 +831,7 @@ class _FlightPlots:
         ax1.set_ylabel("Mach Number")
         ax1.grid()
 
-        ax2 = plt.subplot(412)
+        ax2 = plt.subplot(612)
         ax2.plot(self.flight.reynolds_number[:, 0], self.flight.reynolds_number[:, 1])
         ax2.set_xlim(0, self.flight.t_final)
         ax2.ticklabel_format(style="sci", axis="y", scilimits=(0, 0))
@@ -813,7 +840,7 @@ class _FlightPlots:
         ax2.set_ylabel("Reynolds Number")
         ax2.grid()
 
-        ax3 = plt.subplot(413)
+        ax3 = plt.subplot(613)
         ax3.plot(
             self.flight.dynamic_pressure[:, 0],
             self.flight.dynamic_pressure[:, 1],
@@ -837,7 +864,7 @@ class _FlightPlots:
         ax3.set_ylabel("Pressure (Pa)")
         ax3.grid()
 
-        ax4 = plt.subplot(414)
+        ax4 = plt.subplot(614)
         ax4.plot(self.flight.angle_of_attack[:, 0], self.flight.angle_of_attack[:, 1])
         ax4.set_title("Angle of Attack")
         ax4.set_xlabel("Time (s)")
@@ -846,21 +873,54 @@ class _FlightPlots:
         ax4.set_ylim(0, self.flight.angle_of_attack(self.flight.out_of_rail_time) + 15)
         ax4.grid()
 
+        ax5 = plt.subplot(615)
+        ax5.plot(
+            self.flight.partial_angle_of_attack[:, 0],
+            self.flight.partial_angle_of_attack[:, 1],
+        )
+        ax5.set_title("Partial Angle of Attack")
+        ax5.set_xlabel("Time (s)")
+        ax5.set_ylabel("Partial Angle of Attack (°)")
+        ax5.set_xlim(self.flight.out_of_rail_time, self.first_event_time)
+        ax5.set_ylim(
+            0, self.flight.partial_angle_of_attack(self.flight.out_of_rail_time) + 15
+        )
+        ax5.grid()
+
+        ax6 = plt.subplot(616)
+        ax6.plot(
+            self.flight.angle_of_sideslip[:, 0], self.flight.angle_of_sideslip[:, 1]
+        )
+        ax6.set_title("Angle of Sideslip")
+        ax6.set_xlabel("Time (s)")
+        ax6.set_ylabel("Angle of Sideslip (°)")
+        ax6.set_xlim(self.flight.out_of_rail_time, self.first_event_time)
+        ax6.set_ylim(
+            0, self.flight.angle_of_sideslip(self.flight.out_of_rail_time) + 15
+        )
+        ax6.grid()
+
         plt.subplots_adjust(hspace=0.5)
-        plt.show()
+        show_or_save_plot(filename)
 
-        return None
-
-    def stability_and_control_data(self):
+    def stability_and_control_data(self, *, filename=None):  # pylint: disable=too-many-statements
         """Prints out Rocket Stability and Control parameters graphs available
         about the Flight
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
 
-        fig9 = plt.figure(figsize=(9, 6))
+        plt.figure(figsize=(9, 6))
 
         ax1 = plt.subplot(211)
         ax1.plot(self.flight.stability_margin[:, 0], self.flight.stability_margin[:, 1])
@@ -892,32 +952,33 @@ class _FlightPlots:
         ax1.grid()
 
         ax2 = plt.subplot(212)
-        max_attitude = max(self.flight.attitude_frequency_response[:, 1])
+        x_axis = np.arange(0, 5, 0.01)
+        max_attitude = self.flight.attitude_frequency_response.max
         max_attitude = max_attitude if max_attitude != 0 else 1
         ax2.plot(
-            self.flight.attitude_frequency_response[:, 0],
-            self.flight.attitude_frequency_response[:, 1] / max_attitude,
+            x_axis,
+            self.flight.attitude_frequency_response(x_axis) / max_attitude,
             label="Attitude Angle",
         )
-        max_omega1 = max(self.flight.omega1_frequency_response[:, 1])
+        max_omega1 = self.flight.omega1_frequency_response.max
         max_omega1 = max_omega1 if max_omega1 != 0 else 1
         ax2.plot(
-            self.flight.omega1_frequency_response[:, 0],
-            self.flight.omega1_frequency_response[:, 1] / max_omega1,
+            x_axis,
+            self.flight.omega1_frequency_response(x_axis) / max_omega1,
             label=r"$\omega_1$",
         )
-        max_omega2 = max(self.flight.omega2_frequency_response[:, 1])
+        max_omega2 = self.flight.omega2_frequency_response.max
         max_omega2 = max_omega2 if max_omega2 != 0 else 1
         ax2.plot(
-            self.flight.omega2_frequency_response[:, 0],
-            self.flight.omega2_frequency_response[:, 1] / max_omega2,
+            x_axis,
+            self.flight.omega2_frequency_response(x_axis) / max_omega2,
             label=r"$\omega_2$",
         )
-        max_omega3 = max(self.flight.omega3_frequency_response[:, 1])
+        max_omega3 = self.flight.omega3_frequency_response.max
         max_omega3 = max_omega3 if max_omega3 != 0 else 1
         ax2.plot(
-            self.flight.omega3_frequency_response[:, 0],
-            self.flight.omega3_frequency_response[:, 1] / max_omega3,
+            x_axis,
+            self.flight.omega3_frequency_response(x_axis) / max_omega3,
             label=r"$\omega_3$",
         )
         ax2.set_title("Frequency Response")
@@ -928,12 +989,18 @@ class _FlightPlots:
         ax2.grid()
 
         plt.subplots_adjust(hspace=0.5)
-        plt.show()
+        show_or_save_plot(filename)
 
-        return None
-
-    def pressure_rocket_altitude(self):
+    def pressure_rocket_altitude(self, *, filename=None):
         """Plots out pressure at rocket's altitude.
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
@@ -951,9 +1018,7 @@ class _FlightPlots:
         ax1.set_xlim(0, self.flight.t_final)
         ax1.grid()
 
-        plt.show()
-
-        return None
+        show_or_save_plot(filename)
 
     def pressure_signals(self):
         """Plots out all Parachute Trigger Pressure Signals.
@@ -974,16 +1039,13 @@ class _FlightPlots:
         if len(self.flight.parachute_events) > 0:
             for parachute in self.flight.rocket.parachutes:
                 print("\nParachute: ", parachute.name)
-                self.flight._calculate_pressure_signal()
                 parachute.noise_signal_function()
                 parachute.noisy_pressure_signal_function()
                 parachute.clean_pressure_signal_function()
         else:
             print("\nRocket has no parachutes. No parachute plots available")
 
-        return None
-
-    def all(self):
+    def all(self):  # pylint: disable=too-many-statements
         """Prints out all plots available about the Flight.
 
         Returns
@@ -1024,5 +1086,3 @@ class _FlightPlots:
         print("\n\nRocket and Parachute Pressure Plots\n")
         self.pressure_rocket_altitude()
         self.pressure_signals()
-
-        return None

@@ -23,19 +23,14 @@ class _TankGeometryPlots:
 
         self.tank_geometry = tank_geometry
 
-        return None
-
     def radius(self, upper=None, lower=None):
         self.tank_geometry.radius.plot(lower, upper)
-        return None
 
     def area(self, upper=None, lower=None):
         self.tank_geometry.area.plot(lower, upper)
-        return None
 
     def volume(self, upper=None, lower=None):
         self.tank_geometry.volume.plot(lower, upper)
-        return None
 
     def all(self):
         """Prints out all graphs available about the TankGeometry. It simply calls
@@ -45,7 +40,6 @@ class _TankGeometryPlots:
         -------
         None
         """
-        self.radius()
-        self.area()
-        self.volume()
-        return None
+        self.tank_geometry.radius.plot(equal_axis=True)
+        self.tank_geometry.area()
+        self.tank_geometry.volume()

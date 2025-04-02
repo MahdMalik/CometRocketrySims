@@ -1,6 +1,9 @@
+from functools import cached_property
+
 import numpy as np
 
-from ..mathutils.function import Function, PiecewiseFunction, funcify_method
+from ..mathutils.function import Function, funcify_method
+from ..mathutils.piecewise_function import PiecewiseFunction
 from ..plots.tank_geometry_plots import _TankGeometryPlots
 from ..prints.tank_geometry_prints import _TankGeometryPrints
 
@@ -10,11 +13,6 @@ except ImportError:
     from functools import lru_cache
 
     cache = lru_cache(maxsize=None)
-
-try:
-    from functools import cached_property
-except ImportError:
-    from ..tools import cached_property
 
 
 class TankGeometry:
@@ -62,24 +60,23 @@ class TankGeometry:
         TankGeometry.volume Function.
     """
 
-    def __init__(self, geometry_dict=dict()):
+    def __init__(self, geometry_dict=None):
         """Initialize TankGeometry class.
 
         Parameters
         ----------
-        geometry_dict : dict, optional
+        geometry_dict : Union[dict, None], optional
             Dictionary containing the geometry of the tank. The geometry is
             calculated by a PiecewiseFunction. Hence, the dict keys are disjoint
             tuples containing the lower and upper bounds of the domain of the
             corresponding Function, while the values correspond to the radius
             function from an axis of symmetry.
         """
-        self.geometry = geometry_dict
+        self.geometry = geometry_dict or {}
 
         # Initialize plots and prints object
         self.prints = _TankGeometryPrints(self)
         self.plots = _TankGeometryPlots(self)
-        return None
 
     @property
     def geometry(self):
@@ -103,7 +100,7 @@ class TankGeometry:
         geometry_dict : dict
             Dictionary containing the geometry of the tank.
         """
-        self._geometry = dict()
+        self._geometry = {}
         for domain, function in geometry_dict.items():
             self.add_geometry(domain, function)
 
@@ -235,9 +232,9 @@ class TankGeometry:
         Function
             Tank's first volume moment as a function of height.
 
-        References
-        ----------
-        .. [1] `<https://en.wikipedia.org/wiki/Moment_(physics)#Examples/>`_
+        See Also
+        --------
+        `<https://en.wikipedia.org/wiki/Moment_(physics)#Examples/>`_
         """
         height = self.area.identity_function()
 
@@ -273,9 +270,9 @@ class TankGeometry:
         Function
             Tank volume of inertia as a function of height.
 
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/List_of_moments_of_inertia
+        See Also
+        --------
+        https://en.wikipedia.org/wiki/List_of_moments_of_inertia
         """
         height2 = self.radius.identity_function() ** 2
 
@@ -349,6 +346,33 @@ class TankGeometry:
         self._geometry[domain] = Function(radius_function)
         self.radius = PiecewiseFunction(self._geometry, "Height (m)", "radius (m)")
 
+    def to_dict(self, include_outputs=False):
+        data = {
+            "geometry": {
+                str(domain): function for domain, function in self._geometry.items()
+            }
+        }
+
+        if include_outputs:
+            data["outputs"] = {
+                "average_radius": self.average_radius,
+                "bottom": self.bottom,
+                "top": self.top,
+                "total_height": self.total_height,
+                "total_volume": self.total_volume,
+            }
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        geometry_dict = {}
+        # Reconstruct tuple keys
+        for domain, radius_function in data["geometry"].items():
+            domain = tuple(map(float, domain.strip("()").split(", ")))
+            geometry_dict[domain] = radius_function
+        return cls(geometry_dict)
+
 
 class CylindricalTank(TankGeometry):
     """Class to define the geometry of a cylindrical tank. The cylinder has
@@ -357,7 +381,7 @@ class CylindricalTank(TankGeometry):
     for more information on its attributes and methods.
     """
 
-    def __init__(self, radius, height, spherical_caps=False, geometry_dict=dict()):
+    def __init__(self, radius, height, spherical_caps=False, geometry_dict=None):
         """Initialize CylindricalTank class. The zero reference point of the
         cylinder is its center (i.e. half of its height). Therefore the its
         height coordinate span is (-height/2, height/2).
@@ -372,10 +396,12 @@ class CylindricalTank(TankGeometry):
             If True, the tank will have spherical caps at the top and bottom
             with the same radius as the cylindrical part. If False, the tank
             will have flat caps at the top and bottom. Defaults to False.
-        geometry_dict : dict, optional
+        geometry_dict : Union[dict, None], optional
             Dictionary containing the geometry of the tank. See TankGeometry.
         """
+        geometry_dict = geometry_dict or {}
         super().__init__(geometry_dict)
+        self.__input_radius = radius
         self.height = height
         self.has_caps = False
         if spherical_caps:
@@ -395,11 +421,11 @@ class CylindricalTank(TankGeometry):
             "Warning: Adding spherical caps to the tank will not modify the "
             + f"total height of the tank {self.height} m. "
             + "Its cylindrical portion height will be reduced to "
-            + f"{self.height - 2*self.radius(0)} m."
+            + f"{self.height - 2 * self.__input_radius} m."
         )
 
         if not self.has_caps:
-            radius = self.radius(0)
+            radius = self.__input_radius
             height = self.height
             bottom_cap_range = (-height / 2, -height / 2 + radius)
             upper_cap_range = (height / 2 - radius, height / 2)
@@ -416,6 +442,22 @@ class CylindricalTank(TankGeometry):
         else:
             raise ValueError("Tank already has caps.")
 
+    def to_dict(self, include_outputs=False):
+        data = {
+            "radius": self.__input_radius,
+            "height": self.height,
+            "spherical_caps": self.has_caps,
+        }
+
+        if include_outputs:
+            data.update(super().to_dict(include_outputs))
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data["radius"], data["height"], data["spherical_caps"])
+
 
 class SphericalTank(TankGeometry):
     """Class to define the geometry of a spherical tank. The sphere zero
@@ -423,7 +465,7 @@ class SphericalTank(TankGeometry):
     inherits from the TankGeometry class. See the TankGeometry class for
     more information on its attributes and methods."""
 
-    def __init__(self, radius, geometry_dict=dict()):
+    def __init__(self, radius, geometry_dict=None):
         """Initialize SphericalTank class. The zero reference point of the
         sphere is its center (i.e. half of its height). Therefore, its height
         coordinate ranges between (-radius, radius).
@@ -432,8 +474,22 @@ class SphericalTank(TankGeometry):
         ----------
         radius : float
             Radius of the spherical tank.
-        geometry_dict : dict, optional
+        geometry_dict : Union[dict, None], optional
             Dictionary containing the geometry of the tank. See TankGeometry.
         """
+        geometry_dict = geometry_dict or {}
         super().__init__(geometry_dict)
+        self.__input_radius = radius
         self.add_geometry((-radius, radius), lambda h: (radius**2 - h**2) ** 0.5)
+
+    def to_dict(self, include_outputs=False):
+        data = {"radius": self.__input_radius}
+
+        if include_outputs:
+            data.update(super().to_dict(include_outputs))
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data["radius"])

@@ -1,20 +1,18 @@
 import re
 import warnings
 from abc import ABC, abstractmethod
+from functools import cached_property
+from os import path
 
 import numpy as np
 
 from ..mathutils.function import Function, funcify_method
 from ..plots.motor_plots import _MotorPlots
 from ..prints.motor_prints import _MotorPrints
-from ..tools import tuple_handler
-
-try:
-    from functools import cached_property
-except ImportError:
-    from ..tools import cached_property
+from ..tools import parallel_axis_theorem_from_com, tuple_handler
 
 
+# pylint: disable=too-many-public-methods
 class Motor(ABC):
     """Abstract class to specify characteristics and useful operations for
     motors. Cannot be instantiated.
@@ -32,9 +30,7 @@ class Motor(ABC):
         Radius of motor nozzle outlet in meters.
     Motor.nozzle_position : float
         Motor's nozzle outlet position in meters, specified in the motor's
-        coordinate system. See
-        :doc:`Positions and Coordinate Systems </user/positions>` for more
-        information.
+        coordinate system. See :ref:`positions` for more information.
     Motor.dry_mass : float
         The mass of the motor when devoid of any propellants, measured in
         kilograms (kg). It encompasses the structural weight of the motor,
@@ -53,6 +49,8 @@ class Motor(ABC):
     Motor.propellant_mass : Function
         Total propellant mass in kg as a function of time, including solid,
         liquid and gas phases.
+    Motor.structural_mass_ratio: float
+        Initial ratio between the dry mass and the total mass.
     Motor.total_mass_flow_rate : Function
         Time derivative of propellant total mass in kg/s as a function
         of time as obtained by the thrust source.
@@ -150,13 +148,14 @@ class Motor(ABC):
         'akima' and 'linear'. Default is "linear".
     """
 
+    # pylint: disable=too-many-statements
     def __init__(
         self,
         thrust_source,
-        dry_mass,
         dry_inertia,
         nozzle_radius,
         center_of_dry_mass_position,
+        dry_mass=None,
         nozzle_position=0,
         burn_time=None,
         reshape_thrust_curve=False,
@@ -174,10 +173,10 @@ class Motor(ABC):
             also be given as a callable function, whose argument is time in
             seconds and returns the thrust supplied by the motor in the
             instant. If a string is given, it must point to a .csv or .eng file.
-            The .csv file shall contain no headers and the first column must
-            specify time in seconds, while the second column specifies thrust.
-            Arrays may also be specified, following rules set by the class
-            Function. Thrust units are Newtons.
+            The .csv file can contain a single line header and the first column
+            must specify time in seconds, while the second column specifies
+            thrust. Arrays may also be specified, following rules set by the
+            class Function. Thrust units are Newtons.
 
             .. seealso:: :doc:`Thrust Source Details </user/motors/thrust>`
 
@@ -248,14 +247,13 @@ class Motor(ABC):
             self._csys = 1
         elif coordinate_system_orientation == "combustion_chamber_to_nozzle":
             self._csys = -1
-        else:
+        else:  # pragma: no cover
             raise ValueError(
                 "Invalid coordinate system orientation. Options are "
                 "'nozzle_to_combustion_chamber' and 'combustion_chamber_to_nozzle'."
             )
 
         # Motor parameters
-        self.dry_mass = dry_mass
         self.interpolate = interpolation_method
         self.nozzle_position = nozzle_position
         self.nozzle_radius = nozzle_radius
@@ -271,9 +269,13 @@ class Motor(ABC):
         self.dry_I_23 = inertia[5]
 
         # Handle .eng file inputs
+        self.description_eng_file = None
         if isinstance(thrust_source, str):
-            if thrust_source[-3:] == "eng":
-                _, _, points = Motor.import_eng(thrust_source)
+            if (
+                path.exists(thrust_source)
+                and path.splitext(path.basename(thrust_source))[1] == ".eng"
+            ):
+                _, self.description_eng_file, points = Motor.import_eng(thrust_source)
                 thrust_source = points
 
         # Evaluate raw thrust source
@@ -281,6 +283,9 @@ class Motor(ABC):
         self.thrust = Function(
             thrust_source, "Time (s)", "Thrust (N)", self.interpolate, "zero"
         )
+
+        # Handle dry_mass input
+        self.dry_mass = dry_mass
 
         # Handle burn_time input
         self.burn_time = burn_time
@@ -315,7 +320,6 @@ class Motor(ABC):
         # Initialize plots and prints object
         self.prints = _MotorPrints(self)
         self.plots = _MotorPlots(self)
-        return None
 
     @property
     def burn_time(self):
@@ -342,11 +346,43 @@ class Motor(ABC):
         else:
             if not callable(self.thrust.source):
                 self._burn_time = (self.thrust.x_array[0], self.thrust.x_array[-1])
-            else:
+            else:  # pragma: no cover
                 raise ValueError(
                     "When using a float or callable as thrust source, a burn_time"
                     " argument must be specified."
                 )
+
+    @property
+    def dry_mass(self):
+        """Dry mass of the motor in kg.
+
+        Returns
+        -------
+        self.dry_mass : float
+            Motor dry mass in kg.
+        """
+        return self._dry_mass
+
+    @dry_mass.setter
+    def dry_mass(self, dry_mass):
+        """Sets dry mass of the motor in kg.
+
+        Parameters
+        ----------
+        dry_mass : float
+            Motor dry mass in kg.
+        """
+        if dry_mass is not None:
+            if isinstance(dry_mass, (int, float)):
+                self._dry_mass = dry_mass
+            else:
+                raise ValueError("Dry mass must be a number.")
+        elif self.description_eng_file:
+            self._dry_mass = float(self.description_eng_file[-2]) - float(
+                self.description_eng_file[-3]
+            )
+        else:
+            raise ValueError("Dry mass must be specified.")
 
     @cached_property
     def total_impulse(self):
@@ -383,7 +419,6 @@ class Motor(ABC):
           Tanks's mass flow rates. Therefore the exhaust velocity is generally
           variable, being the ratio of the motor thrust by the mass flow rate.
         """
-        pass
 
     @funcify_method("Time (s)", "Total mass (kg)")
     def total_mass(self):
@@ -427,7 +462,7 @@ class Motor(ABC):
         HybridMotor.mass_flow_rate :
             Numerically equivalent to ``total_mass_flow_rate``.
         LiquidMotor.mass_flow_rate :
-            Independent of ``total_mass_flow_rate`` favoring more accurate
+            Independent of ``total_mass_flow_rate`` favoring more accurate \
             sum of Tanks' mass flow rates.
 
         Notes
@@ -436,21 +471,22 @@ class Motor(ABC):
         dividing the thrust data by the exhaust velocity. This is an
         approximation, and it  is used by the child Motor classes as follows:
 
-        - The ``SolidMotor`` class uses this approximation to compute the
-          grain's mass flow rate;
-        - The ``HybridMotor`` class uses this approximation as a reference
-          to the sum of the oxidizer and fuel (grains) mass flow rates;
-        - The ``LiquidMotor`` class favors the more accurate data from the
-          Tanks's mass flow rates. Therefore this value is numerically
-          independent of the ``LiquidMotor.mass_flow_rate``.
-        - The ``GenericMotor`` class considers the total_mass_flow_rate as the
-        same as the mass_flow_rate.
+        - The ``SolidMotor`` class uses this approximation to compute the \
+            grain's mass flow rate;
+        - The ``HybridMotor`` class uses this approximation as a reference \
+            to the sum of the oxidizer and fuel (grains) mass flow rates;
+        - The ``LiquidMotor`` class favors the more accurate data from the \
+            Tanks's mass flow rates. Therefore this value is numerically \
+            independent of the ``LiquidMotor.mass_flow_rate``.
+        - The ``GenericMotor`` class considers the total_mass_flow_rate as the \
+            same as the mass_flow_rate.
 
-        It should be noted that, for hybrid motors, the oxidizer mass flow
+        It should also be noted that, for hybrid motors, the oxidizer mass flow
         rate should not be greater than `total_mass_flow_rate`, otherwise the
         grains mass flow rate will be negative, losing physical meaning.
         """
-        return -1 * self.thrust / self.exhaust_velocity
+        average_exhaust_velocity = self.total_impulse / self.propellant_initial_mass
+        return self.thrust / -average_exhaust_velocity
 
     @property
     @abstractmethod
@@ -462,7 +498,24 @@ class Motor(ABC):
         float
             Propellant initial mass in kg.
         """
-        pass
+
+    @property
+    def structural_mass_ratio(self):
+        """Calculates the structural mass ratio. The ratio is defined as
+        the dry mass divided by the initial total mass.
+
+        Returns
+        -------
+        float
+            Initial structural mass ratio.
+        """
+        initial_total_mass = self.dry_mass + self.propellant_initial_mass
+        try:
+            return self.dry_mass / initial_total_mass
+        except ZeroDivisionError as e:
+            raise ValueError(
+                "Total motor mass (dry + propellant) cannot be zero"
+            ) from e
 
     @funcify_method("Time (s)", "Motor center of mass (m)")
     def center_of_mass(self):
@@ -492,7 +545,6 @@ class Motor(ABC):
         Function
             Position of the propellant center of mass as a function of time.
         """
-        pass
 
     @funcify_method("Time (s)", "Inertia I_11 (kg m²)")
     def I_11(self):
@@ -509,29 +561,23 @@ class Motor(ABC):
         The e_1 direction is assumed to be the direction perpendicular to the
         motor body axis. Also, due to symmetry, I_11 = I_22.
 
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        See Also
+        --------
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
-        # Propellant inertia tensor 11 component wrt propellant center of mass
-        propellant_I_11 = self.propellant_I_11
 
-        # Dry inertia tensor 11 component wrt dry center of mass
+        prop_I_11 = self.propellant_I_11
         dry_I_11 = self.dry_I_11
 
-        # Steiner theorem the get inertia wrt motor center of mass
-        propellant_I_11 += (
-            self.propellant_mass
-            * (self.center_of_propellant_mass - self.center_of_mass) ** 2
-        )
+        prop_to_cm = self.center_of_propellant_mass - self.center_of_mass
+        dry_to_cm = self.center_of_dry_mass_position - self.center_of_mass
 
-        dry_I_11 += (
-            self.dry_mass
-            * (self.center_of_dry_mass_position - self.center_of_mass) ** 2
+        prop_I_11 = parallel_axis_theorem_from_com(
+            prop_I_11, self.propellant_mass, prop_to_cm
         )
+        dry_I_11 = parallel_axis_theorem_from_com(dry_I_11, self.dry_mass, dry_to_cm)
 
-        # Sum of inertia components
-        return propellant_I_11 + dry_I_11
+        return prop_I_11 + dry_I_11
 
     @funcify_method("Time (s)", "Inertia I_22 (kg m²)")
     def I_22(self):
@@ -549,9 +595,9 @@ class Motor(ABC):
         motor body axis, and perpendicular to e_1. Also, due to symmetry,
         I_22 = I_11.
 
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        See Also
+        --------
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         # Due to symmetry, I_22 = I_11
         return self.I_11
@@ -573,7 +619,7 @@ class Motor(ABC):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         # Propellant inertia tensor 33 component wrt propellant center of mass
         propellant_I_33 = self.propellant_I_33
@@ -606,7 +652,7 @@ class Motor(ABC):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         # Propellant inertia tensor 12 component wrt propellant center of mass
         propellant_I_12 = self.propellant_I_12
@@ -703,9 +749,8 @@ class Motor(ABC):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
-        pass
 
     @property
     @abstractmethod
@@ -726,9 +771,8 @@ class Motor(ABC):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
-        pass
 
     @property
     @abstractmethod
@@ -749,9 +793,8 @@ class Motor(ABC):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
-        pass
 
     @property
     @abstractmethod
@@ -776,9 +819,8 @@ class Motor(ABC):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
-        pass
 
     @property
     @abstractmethod
@@ -805,7 +847,6 @@ class Motor(ABC):
         ----------
         https://en.wikipedia.org/wiki/Moment_of_inertia
         """
-        pass
 
     @property
     @abstractmethod
@@ -832,13 +873,13 @@ class Motor(ABC):
         ----------
         https://en.wikipedia.org/wiki/Moment_of_inertia
         """
-        pass
 
     @staticmethod
     def reshape_thrust_curve(thrust, new_burn_time, total_impulse):
         """Transforms the thrust curve supplied by changing its total
         burn time and/or its total impulse, without altering the
-        general shape of the curve.
+        general shape of the curve. This method does not mutate the original
+        object, it only returns a new thrust curve.
 
         Parameters
         ----------
@@ -853,6 +894,10 @@ class Motor(ABC):
         -------
         Function
             Reshaped thrust curve.
+
+        Tip
+        ---
+        See the User Guide page for examples on how to use this method.
         """
         # Retrieve current thrust curve data points
         time_array, thrust_array = thrust.x_array, thrust.y_array
@@ -983,7 +1028,7 @@ class Motor(ABC):
                     comments.append(re.findall(r";.*", line)[0])
                     line = re.sub(r";.*", "", line)
                 if line.strip():
-                    if description == []:
+                    if not description:
                         # Extract description
                         description = line.strip().split(" ")
                     else:
@@ -1012,51 +1057,118 @@ class Motor(ABC):
         None
         """
         # Open file
-        file = open(file_name, "w")
+        with open(file_name, "w") as file:
+            # Write first line
+            def get_attr_value(obj, attr_name, multiplier=1):
+                return multiplier * getattr(obj, attr_name, 0)
 
-        # Write first line
-        file.write(
-            motor_name
-            + " {:3.1f} {:3.1f} 0 {:2.3} {:2.3} RocketPy\n".format(
-                2000 * self.grain_outer_radius,
-                1000
-                * self.grain_number
-                * (self.grain_initial_height + self.grain_separation),
-                self.propellant_initial_mass,
-                self.propellant_initial_mass,
+            grain_outer_radius = get_attr_value(self, "grain_outer_radius", 2000)
+            grain_number = get_attr_value(self, "grain_number", 1000)
+            grain_initial_height = get_attr_value(self, "grain_initial_height")
+            grain_separation = get_attr_value(self, "grain_separation")
+
+            grain_total = grain_number * (grain_initial_height + grain_separation)
+
+            if grain_outer_radius == 0 or grain_total == 0:
+                warnings.warn(
+                    "The motor object doesn't have some grain-related attributes. "
+                    "Using zeros to write to file."
+                )
+
+            file.write(
+                f"{motor_name} {grain_outer_radius:3.1f} {grain_total:3.1f} 0 "
+                f"{self.propellant_initial_mass:2.3} "
+                f"{self.propellant_initial_mass:2.3} RocketPy\n"
             )
-        )
 
-        # Write thrust curve data points
-        for time, thrust in self.thrust.source[1:-1, :]:
-            # time, thrust = item
-            file.write("{:.4f} {:.3f}\n".format(time, thrust))
+            # Write thrust curve data points
+            for time, thrust in self.thrust.source[1:-1, :]:
+                file.write(f"{time:.4f} {thrust:.3f}\n")
 
-        # Write last line
-        file.write("{:.4f} {:.3f}\n".format(self.thrust.source[-1, 0], 0))
+            # Write last line
+            file.write(f"{self.thrust.source[-1, 0]:.4f} {0:.3f}\n")
 
-        # Close file
-        file.close()
+    def to_dict(self, include_outputs=False):
+        thrust_source = self.thrust_source
 
-        return None
+        if isinstance(thrust_source, str):
+            thrust_source = self.thrust.source
+        elif callable(thrust_source) and not isinstance(thrust_source, Function):
+            thrust_source = Function(thrust_source)
 
-    def info(self):
+        data = {
+            "thrust_source": self.thrust,
+            "dry_I_11": self.dry_I_11,
+            "dry_I_22": self.dry_I_22,
+            "dry_I_33": self.dry_I_33,
+            "dry_I_12": self.dry_I_12,
+            "dry_I_13": self.dry_I_13,
+            "dry_I_23": self.dry_I_23,
+            "nozzle_radius": self.nozzle_radius,
+            "center_of_dry_mass_position": self.center_of_dry_mass_position,
+            "dry_mass": self.dry_mass,
+            "nozzle_position": self.nozzle_position,
+            "burn_time": self.burn_time,
+            "interpolate": self.interpolate,
+            "coordinate_system_orientation": self.coordinate_system_orientation,
+        }
+
+        if include_outputs:
+            data.update(
+                {
+                    "total_mass": self.total_mass,
+                    "propellant_mass": self.propellant_mass,
+                    "mass_flow_rate": self.mass_flow_rate,
+                    "center_of_mass": self.center_of_mass,
+                    "center_of_propellant_mass": self.center_of_propellant_mass,
+                    "total_impulse": self.total_impulse,
+                    "exhaust_velocity": self.exhaust_velocity,
+                    "propellant_initial_mass": self.propellant_initial_mass,
+                    "structural_mass_ratio": self.structural_mass_ratio,
+                    "I_11": self.I_11,
+                    "I_22": self.I_22,
+                    "I_33": self.I_33,
+                    "I_12": self.I_12,
+                    "I_13": self.I_13,
+                    "I_23": self.I_23,
+                    "propellant_I_11": self.propellant_I_11,
+                    "propellant_I_22": self.propellant_I_22,
+                    "propellant_I_33": self.propellant_I_33,
+                    "propellant_I_12": self.propellant_I_12,
+                    "propellant_I_13": self.propellant_I_13,
+                    "propellant_I_23": self.propellant_I_23,
+                }
+            )
+
+        return data
+
+    def info(self, *, filename=None):
         """Prints out a summary of the data and graphs available about the
         Motor.
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
+
+        Returns
+        -------
+        None
         """
         # Print motor details
         self.prints.all()
-        self.plots.thrust()
-        return None
+        self.plots.thrust(filename=filename)
 
-    @abstractmethod
     def all_info(self):
         """Prints out all data and graphs available about the Motor."""
         self.prints.all()
         self.plots.all()
-        return None
 
 
+# TODO: move this class to a separate file, needs a breaking change warning
 class GenericMotor(Motor):
     """Class that represents a simple motor defined mainly by its thrust curve.
     There is no distinction between the propellant types (e.g. Solid, Liquid).
@@ -1092,7 +1204,7 @@ class GenericMotor(Motor):
             also be given as a callable function, whose argument is time in
             seconds and returns the thrust supplied by the motor in the
             instant. If a string is given, it must point to a .csv or .eng file.
-            The .csv file shall contain no headers and the first column must
+            The .csv file can contain a single line header and the first column must
             specify time in seconds, while the second column specifies thrust.
             Arrays may also be specified, following rules set by the class
             Function. Thrust units are Newtons.
@@ -1169,22 +1281,18 @@ class GenericMotor(Motor):
             positions specified. Options are "nozzle_to_combustion_chamber" and
             "combustion_chamber_to_nozzle". Default is
             "nozzle_to_combustion_chamber".
-
-        Returns
-        -------
-        None
         """
         super().__init__(
-            thrust_source,
-            dry_mass,
-            dry_inertia,
-            nozzle_radius,
-            center_of_dry_mass_position,
-            nozzle_position,
-            burn_time,
-            reshape_thrust_curve,
-            interpolation_method,
-            coordinate_system_orientation,
+            thrust_source=thrust_source,
+            dry_inertia=dry_inertia,
+            nozzle_radius=nozzle_radius,
+            center_of_dry_mass_position=center_of_dry_mass_position,
+            dry_mass=dry_mass,
+            nozzle_position=nozzle_position,
+            burn_time=burn_time,
+            reshape_thrust_curve=reshape_thrust_curve,
+            interpolation_method=interpolation_method,
+            coordinate_system_orientation=coordinate_system_orientation,
         )
 
         self.chamber_radius = chamber_radius
@@ -1201,7 +1309,6 @@ class GenericMotor(Motor):
         # Initialize plots and prints object
         self.prints = _MotorPrints(self)
         self.plots = _MotorPlots(self)
-        return None
 
     @cached_property
     def propellant_initial_mass(self):
@@ -1267,7 +1374,7 @@ class GenericMotor(Motor):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         return (
             self.propellant_mass
@@ -1293,7 +1400,7 @@ class GenericMotor(Motor):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         return self.propellant_I_11
 
@@ -1315,7 +1422,7 @@ class GenericMotor(Motor):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         return self.propellant_mass * self.chamber_radius**2 / 2
 
@@ -1331,55 +1438,172 @@ class GenericMotor(Motor):
     def propellant_I_23(self):
         return Function(0)
 
+    @staticmethod
+    def load_from_eng_file(
+        file_name,
+        nozzle_radius=None,
+        chamber_radius=None,
+        chamber_height=None,
+        chamber_position=0,
+        propellant_initial_mass=None,
+        dry_mass=None,
+        burn_time=None,
+        center_of_dry_mass_position=None,
+        dry_inertia=(0, 0, 0),
+        nozzle_position=0,
+        reshape_thrust_curve=False,
+        interpolation_method="linear",
+        coordinate_system_orientation="nozzle_to_combustion_chamber",
+    ):
+        """Loads motor data from a .eng file and processes it.
+
+        Parameters
+        ----------
+        file_name : string
+            Name of the .eng file. E.g. 'test.eng'.
+        nozzle_radius : int, float
+            Motor's nozzle outlet radius in meters.
+        chamber_radius : int, float, optional
+            The radius of a overall cylindrical chamber of propellant in meters.
+        chamber_height : int, float, optional
+            The height of a overall cylindrical chamber of propellant in meters.
+        chamber_position : int, float, optional
+            The position, in meters, of the centroid (half height) of the motor's
+            overall cylindrical chamber of propellant with respect to the motor's
+            coordinate system.
+        propellant_initial_mass : int, float, optional
+            The initial mass of the propellant in the motor.
+        dry_mass : int, float, optional
+            Same as in Motor class. See the :class:`Motor <rocketpy.Motor>` docs
+        burn_time: float, tuple of float, optional
+            Motor's burn time.
+            If a float is given, the burn time is assumed to be between 0 and
+            the given float, in seconds.
+            If a tuple of float is given, the burn time is assumed to be between
+            the first and second elements of the tuple, in seconds.
+            If not specified, automatically sourced as the range between the
+            first and last-time step of the motor's thrust curve. This can only
+            be used if the motor's thrust is defined by a list of points, such
+            as a .csv file, a .eng file or a Function instance whose source is a
+            list.
+        center_of_dry_mass_position : int, float, optional
+            The position, in meters, of the motor's center of mass with respect
+            to the motor's coordinate system when it is devoid of propellant.
+            If not specified, automatically sourced as the chamber position.
+        dry_inertia : tuple, list
+            Tuple or list containing the motor's dry mass inertia tensor
+        nozzle_position : int, float, optional
+            Motor's nozzle outlet position in meters, in the motor's coordinate
+            system. Default is 0, in which case the origin of the
+            coordinate system is placed at the motor's nozzle outlet.
+        reshape_thrust_curve : boolean, tuple, optional
+            If False, the original thrust curve supplied is not altered. If a
+            tuple is given, whose first parameter is a new burn out time and
+            whose second parameter is a new total impulse in Ns, the thrust
+            curve is reshaped to match the new specifications. May be useful
+            for motors whose thrust curve shape is expected to remain similar
+            in case the impulse and burn time varies slightly. Default is
+            False. Note that the Motor burn_time parameter must include the new
+            reshaped burn time.
+        interpolation_method : string, optional
+            Method of interpolation to be used in case thrust curve is given
+        coordinate_system_orientation : string, optional
+            Orientation of the motor's coordinate system. The coordinate system
+            is defined by the motor's axis of symmetry. The origin of the
+            coordinate system may be placed anywhere along such axis, such as
+            at the nozzle area, and must be kept the same for all other
+            positions specified. Options are "nozzle_to_combustion_chamber" and
+            "combustion_chamber_to_nozzle". Default is
+            "nozzle_to_combustion_chamber".
+
+        Returns
+        -------
+        Generic Motor object
+        """
+        if isinstance(file_name, str):
+            if path.splitext(path.basename(file_name))[1] == ".eng":
+                _, description, thrust_source = Motor.import_eng(file_name)
+            else:
+                raise ValueError("File must be a .eng file.")
+        else:
+            raise ValueError("File name must be a string.")
+
+        thrust = Function(thrust_source, "Time (s)", "Thrust (N)", "linear", "zero")
+
+        # handle eng parameters
+        if not chamber_radius:
+            chamber_radius = (
+                float(description[1]) / 1000
+            )  # get motor diameter in meters
+
+        if not chamber_height:
+            chamber_height = float(description[2]) / 1000  # get motor length in meters
+
+        if not propellant_initial_mass:
+            propellant_initial_mass = float(description[-3])
+
+        if not dry_mass:
+            total_mass = float(description[-2])
+            dry_mass = total_mass - propellant_initial_mass
+
+        if not nozzle_radius:
+            nozzle_radius = 0.85 * chamber_radius
+
+        return GenericMotor(
+            thrust_source=thrust,
+            burn_time=burn_time,
+            chamber_radius=chamber_radius,
+            chamber_height=chamber_height,
+            chamber_position=chamber_position,
+            propellant_initial_mass=propellant_initial_mass,
+            nozzle_radius=nozzle_radius,
+            dry_mass=dry_mass,
+            center_of_dry_mass_position=center_of_dry_mass_position,
+            dry_inertia=dry_inertia,
+            nozzle_position=nozzle_position,
+            reshape_thrust_curve=reshape_thrust_curve,
+            interpolation_method=interpolation_method,
+            coordinate_system_orientation=coordinate_system_orientation,
+        )
+
     def all_info(self):
         """Prints out all data and graphs available about the Motor."""
         # Print motor details
         self.prints.all()
         self.plots.all()
-        return None
 
-
-class EmptyMotor:
-    """Class that represents an empty motor with no mass and no thrust."""
-
-    # TODO: This is a temporary solution. It should be replaced by a class that
-    # inherits from the abstract Motor class. Currently cannot be done easily.
-    def __init__(self):
-        """Initializes an empty motor with no mass and no thrust.
-
-        Notes
-        -----
-        This class is a temporary solution to the problem of having a motor
-        with no mass and no thrust. It should be replaced by a class that
-        inherits from the abstract Motor class. Currently cannot be done easily.
-        """
-        self._csys = 1
-        self.dry_mass = 0
-        self.nozzle_radius = 0
-        self.thrust = Function(0, "Time (s)", "Thrust (N)")
-        self.propellant_mass = Function(0, "Time (s)", "Propellant Mass (kg)")
-        self.total_mass = Function(0, "Time (s)", "Total Mass (kg)")
-        self.total_mass_flow_rate = Function(
-            0, "Time (s)", "Mass Depletion Rate (kg/s)"
+    def to_dict(self, include_outputs=False):
+        data = super().to_dict(include_outputs)
+        data.update(
+            {
+                "chamber_radius": self.chamber_radius,
+                "chamber_height": self.chamber_height,
+                "chamber_position": self.chamber_position,
+                "propellant_initial_mass": self.propellant_initial_mass,
+            }
         )
-        self.burn_out_time = 1
-        self.nozzle_position = 0
-        self.nozzle_radius = 0
-        self.center_of_dry_mass_position = 0
-        self.center_of_propellant_mass = Function(
-            0, "Time (s)", "Center of Propellant Mass (kg)"
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            thrust_source=data["thrust_source"],
+            burn_time=data["burn_time"],
+            chamber_radius=data["chamber_radius"],
+            chamber_height=data["chamber_height"],
+            chamber_position=data["chamber_position"],
+            propellant_initial_mass=data["propellant_initial_mass"],
+            nozzle_radius=data["nozzle_radius"],
+            dry_mass=data["dry_mass"],
+            center_of_dry_mass_position=data["center_of_dry_mass_position"],
+            dry_inertia=(
+                data["dry_I_11"],
+                data["dry_I_22"],
+                data["dry_I_33"],
+                data["dry_I_12"],
+                data["dry_I_13"],
+                data["dry_I_23"],
+            ),
+            nozzle_position=data["nozzle_position"],
+            interpolation_method=data["interpolate"],
         )
-        self.center_of_mass = Function(0, "Time (s)", "Center of Mass (kg)")
-        self.dry_I_11 = 0
-        self.dry_I_22 = 0
-        self.dry_I_33 = 0
-        self.dry_I_12 = 0
-        self.dry_I_13 = 0
-        self.dry_I_23 = 0
-        self.I_11 = Function(0)
-        self.I_22 = Function(0)
-        self.I_33 = Function(0)
-        self.I_12 = Function(0)
-        self.I_13 = Function(0)
-        self.I_23 = Function(0)
-        return None

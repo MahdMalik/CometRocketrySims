@@ -37,6 +37,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
+# Unit test / coverage reports / lints reports
 htmlcov/
 .tox/
 .nox/
@@ -50,6 +51,8 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+.pylint-report.txt
+.ruff-report.txt
 
 # Translations
 *.mo
@@ -70,6 +73,9 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+
+# WebServer extension
+.iis
 
 # PyBuilder
 .pybuilder/
@@ -172,3 +178,4 @@ cython_debug/
 .DS_Store
 
 /.history
+.DS_Store

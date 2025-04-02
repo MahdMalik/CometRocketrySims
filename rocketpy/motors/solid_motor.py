@@ -1,3 +1,5 @@
+from functools import cached_property
+
 import numpy as np
 from scipy import integrate
 
@@ -5,11 +7,6 @@ from ..mathutils.function import Function, funcify_method, reset_funcified_metho
 from ..plots.solid_motor_plots import _SolidMotorPlots
 from ..prints.solid_motor_prints import _SolidMotorPrints
 from .motor import Motor
-
-try:
-    from functools import cached_property
-except ImportError:
-    from ..tools import cached_property
 
 
 class SolidMotor(Motor):
@@ -73,6 +70,8 @@ class SolidMotor(Motor):
         of propellant and dry mass.
     SolidMotor.propellant_mass : Function
         Total propellant mass in kg as a function of time.
+    SolidMotor.structural_mass_ratio: float
+        Initial ratio between the dry mass and the total mass.
     SolidMotor.total_mass_flow_rate : Function
         Time derivative of propellant total mass in kg/s as a function
         of time as obtained by the thrust source.
@@ -184,6 +183,7 @@ class SolidMotor(Motor):
         'akima' and 'linear'. Default is "linear".
     """
 
+    # pylint: disable=too-many-arguments
     def __init__(
         self,
         thrust_source,
@@ -198,7 +198,7 @@ class SolidMotor(Motor):
         grain_separation,
         grains_center_of_mass_position,
         center_of_dry_mass_position,
-        nozzle_position=0,
+        nozzle_position=0.0,
         burn_time=None,
         throat_radius=0.01,
         reshape_thrust_curve=False,
@@ -216,10 +216,10 @@ class SolidMotor(Motor):
             also be given as a callable function, whose argument is time in
             seconds and returns the thrust supplied by the motor in the
             instant. If a string is given, it must point to a .csv or .eng file.
-            The .csv file shall contain no headers and the first column must
-            specify time in seconds, while the second column specifies thrust.
-            Arrays may also be specified, following rules set by the class
-            Function. Thrust units are Newtons.
+            The .csv file can contain a single line header and the first column
+            must specify time in seconds, while the second column specifies
+            thrust. Arrays may also be specified, following rules set by the
+            class Function. Thrust units are Newtons.
 
             .. seealso:: :doc:`Thrust Source Details </user/motors/thrust>`
         nozzle_radius : int, float
@@ -305,16 +305,16 @@ class SolidMotor(Motor):
         None
         """
         super().__init__(
-            thrust_source,
-            dry_mass,
-            dry_inertia,
-            nozzle_radius,
-            center_of_dry_mass_position,
-            nozzle_position,
-            burn_time,
-            reshape_thrust_curve,
-            interpolation_method,
-            coordinate_system_orientation,
+            thrust_source=thrust_source,
+            dry_inertia=dry_inertia,
+            nozzle_radius=nozzle_radius,
+            center_of_dry_mass_position=center_of_dry_mass_position,
+            dry_mass=dry_mass,
+            nozzle_position=nozzle_position,
+            burn_time=burn_time,
+            reshape_thrust_curve=reshape_thrust_curve,
+            interpolation_method=interpolation_method,
+            coordinate_system_orientation=coordinate_system_orientation,
         )
         # Nozzle parameters
         self.throat_radius = throat_radius
@@ -342,7 +342,6 @@ class SolidMotor(Motor):
         # Initialize plots and prints object
         self.prints = _SolidMotorPrints(self)
         self.plots = _SolidMotorPlots(self)
-        return None
 
     @funcify_method("Time (s)", "Mass (kg)")
     def propellant_mass(self):
@@ -451,6 +450,7 @@ class SolidMotor(Motor):
         center_of_mass = np.full_like(time_source, self.grains_center_of_mass_position)
         return np.column_stack((time_source, center_of_mass))
 
+    # pylint: disable=too-many-arguments, too-many-statements
     def evaluate_geometry(self):
         """Calculates grain inner radius and grain height as a function of time
         by assuming that every propellant mass burnt is exhausted. In order to
@@ -469,7 +469,7 @@ class SolidMotor(Motor):
         t_span = t[0], t[-1]
 
         density = self.grain_density
-        rO = self.grain_outer_radius
+        grain_outer_radius = self.grain_outer_radius
         n_grain = self.grain_number
 
         # Define system of differential equations
@@ -478,12 +478,20 @@ class SolidMotor(Motor):
             volume_diff = self.mass_flow_rate(t) / (n_grain * density)
 
             # Compute state vector derivative
-            rI, h = y
-            burn_area = 2 * np.pi * (rO**2 - rI**2 + rI * h)
-            rI_dot = -volume_diff / burn_area
-            h_dot = -2 * rI_dot
+            grain_inner_radius, grain_height = y
+            burn_area = (
+                2
+                * np.pi
+                * (
+                    grain_outer_radius**2
+                    - grain_inner_radius**2
+                    + grain_inner_radius * grain_height
+                )
+            )
+            grain_inner_radius_derivative = -volume_diff / burn_area
+            grain_height_derivative = -2 * grain_inner_radius_derivative
 
-            return [rI_dot, h_dot]
+            return [grain_inner_radius_derivative, grain_height_derivative]
 
         # Define jacobian of the system of differential equations
         def geometry_jacobian(t, y):
@@ -491,16 +499,35 @@ class SolidMotor(Motor):
             volume_diff = self.mass_flow_rate(t) / (n_grain * density)
 
             # Compute jacobian
-            rI, h = y
-            factor = volume_diff / (2 * np.pi * (rO**2 - rI**2 + rI * h) ** 2)
-            drI_dot_drI = factor * (h - 2 * rI)
-            drI_dot_dh = factor * rI
-            dh_dot_drI = -2 * drI_dot_drI
-            dh_dot_dh = -2 * drI_dot_dh
+            grain_inner_radius, grain_height = y
+            factor = volume_diff / (
+                2
+                * np.pi
+                * (
+                    grain_outer_radius**2
+                    - grain_inner_radius**2
+                    + grain_inner_radius * grain_height
+                )
+                ** 2
+            )
+            inner_radius_derivative_wrt_inner_radius = factor * (
+                grain_height - 2 * grain_inner_radius
+            )
+            inner_radius_derivative_wrt_height = factor * grain_inner_radius
+            height_derivative_wrt_inner_radius = (
+                -2 * inner_radius_derivative_wrt_inner_radius
+            )
+            height_derivative_wrt_height = -2 * inner_radius_derivative_wrt_height
 
-            return [[drI_dot_drI, drI_dot_dh], [dh_dot_drI, dh_dot_dh]]
+            return [
+                [
+                    inner_radius_derivative_wrt_inner_radius,
+                    inner_radius_derivative_wrt_height,
+                ],
+                [height_derivative_wrt_inner_radius, height_derivative_wrt_height],
+            ]
 
-        def terminate_burn(t, y):
+        def terminate_burn(t, y):  # pylint: disable=unused-argument
             end_function = (self.grain_outer_radius - y[0]) * y[1]
             return end_function
 
@@ -538,8 +565,6 @@ class SolidMotor(Motor):
         )
 
         reset_funcified_methods(self)
-
-        return None
 
     @funcify_method("Time (s)", "burn area (m²)")
     def burn_area(self):
@@ -619,9 +644,9 @@ class SolidMotor(Motor):
         The e_1 direction is assumed to be the direction perpendicular to the
         motor body axis.
 
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        See Also
+        --------
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         grain_mass = self.propellant_mass / self.grain_number
         grain_number = self.grain_number
@@ -657,9 +682,9 @@ class SolidMotor(Motor):
         The e_2 direction is assumed to be the direction perpendicular to the
         motor body axis, and perpendicular to e_1.
 
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        See Also
+        --------
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         return self.propellant_I_11
 
@@ -679,9 +704,9 @@ class SolidMotor(Motor):
         The e_3 direction is assumed to be the axial direction of the rocket
         motor.
 
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        See Also
+        --------
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         I_33 = (
             (1 / 2.0)
@@ -702,19 +727,77 @@ class SolidMotor(Motor):
     def propellant_I_23(self):
         return 0
 
-    def draw(self):
-        """Draw a representation of the SolidMotor."""
-        self.plots.draw()
+    def draw(self, *, filename=None):
+        """Draw a representation of the SolidMotor.
 
-    def info(self):
-        """Prints out basic data about the SolidMotor."""
-        self.prints.all()
-        self.plots.thrust()
-        return None
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
-    def all_info(self):
-        """Prints out all data and graphs available about the SolidMotor."""
-        self.prints.all()
-        self.plots.all()
+        Returns
+        -------
+        None
+        """
+        self.plots.draw(filename=filename)
 
-        return None
+    def to_dict(self, include_outputs=False):
+        data = super().to_dict(include_outputs)
+        data.update(
+            {
+                "nozzle_radius": self.nozzle_radius,
+                "throat_radius": self.throat_radius,
+                "grain_number": self.grain_number,
+                "grain_density": self.grain_density,
+                "grain_outer_radius": self.grain_outer_radius,
+                "grain_initial_inner_radius": self.grain_initial_inner_radius,
+                "grain_initial_height": self.grain_initial_height,
+                "grain_separation": self.grain_separation,
+                "grains_center_of_mass_position": self.grains_center_of_mass_position,
+            }
+        )
+
+        if include_outputs:
+            data.update(
+                {
+                    "grain_inner_radius": self.grain_inner_radius,
+                    "grain_height": self.grain_height,
+                    "burn_area": self.burn_area,
+                    "burn_rate": self.burn_rate,
+                    "Kn": self.Kn,
+                }
+            )
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            thrust_source=data["thrust_source"],
+            dry_mass=data["dry_mass"],
+            dry_inertia=(
+                data["dry_I_11"],
+                data["dry_I_22"],
+                data["dry_I_33"],
+                data["dry_I_12"],
+                data["dry_I_13"],
+                data["dry_I_23"],
+            ),
+            nozzle_radius=data["nozzle_radius"],
+            grain_number=data["grain_number"],
+            grain_density=data["grain_density"],
+            grain_outer_radius=data["grain_outer_radius"],
+            grain_initial_inner_radius=data["grain_initial_inner_radius"],
+            grain_initial_height=data["grain_initial_height"],
+            grain_separation=data["grain_separation"],
+            grains_center_of_mass_position=data["grains_center_of_mass_position"],
+            center_of_dry_mass_position=data["center_of_dry_mass_position"],
+            nozzle_position=data["nozzle_position"],
+            burn_time=data["burn_time"],
+            throat_radius=data["throat_radius"],
+            interpolation_method=data["interpolate"],
+            coordinate_system_orientation=data["coordinate_system_orientation"],
+        )

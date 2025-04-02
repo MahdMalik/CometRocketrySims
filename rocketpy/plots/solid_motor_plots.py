@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 
 from .motor_plots import _MotorPlots
+from .plot_helpers import show_or_save_plot
 
 
 class _SolidMotorPlots(_MotorPlots):
@@ -12,21 +13,6 @@ class _SolidMotorPlots(_MotorPlots):
         SolidMotor object that will be used for the plots.
 
     """
-
-    def __init__(self, solid_motor):
-        """Initializes _MotorClass class.
-
-        Parameters
-        ----------
-        solid_motor : SolidMotor
-            Instance of the SolidMotor class
-
-        Returns
-        -------
-        None
-        """
-
-        super().__init__(solid_motor)
 
     def grain_inner_radius(self, lower_limit=None, upper_limit=None):
         """Plots grain_inner_radius of the solid_motor as a function of time.
@@ -115,7 +101,11 @@ class _SolidMotorPlots(_MotorPlots):
         upper_limit : float
             Upper limit of the plot. Default is none, which means that the plot
             limits will be automatically calculated.
-
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
         Return
         ------
         None
@@ -123,15 +113,22 @@ class _SolidMotorPlots(_MotorPlots):
 
         self.motor.Kn.plot(lower=lower_limit, upper=upper_limit)
 
-    def draw(self):
+    def draw(self, *, filename=None):
         """Draw a representation of the SolidMotor.
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
         _, ax = plt.subplots(figsize=(8, 6), facecolor="#EEEEEE")
-        
         nozzle = self._generate_nozzle(
             translate=(self.motor.nozzle_position, 0), csys=self.motor._csys
         )
@@ -154,7 +151,7 @@ class _SolidMotorPlots(_MotorPlots):
         ax.set_title("Solid Motor Representation")
         self._draw_center_of_mass(ax)
         self._set_plot_properties(ax)
-        plt.show()
+        show_or_save_plot(filename)
 
     def all(self):
         """Prints out all graphs available about the SolidMotor. It simply calls
@@ -176,9 +173,4 @@ class _SolidMotorPlots(_MotorPlots):
         self.burn_rate(self.motor.burn_time[0], self.motor.grain_burn_out)
         self.burn_area(*self.motor.burn_time)
         self.Kn()
-        self.I_11(*self.motor.burn_time)
-        self.I_22(*self.motor.burn_time)
-        self.I_33(*self.motor.burn_time)
-        self.I_12(*self.motor.burn_time)
-        self.I_13(*self.motor.burn_time)
-        self.I_23(*self.motor.burn_time)
+        self.inertia_tensor(*self.motor.burn_time)

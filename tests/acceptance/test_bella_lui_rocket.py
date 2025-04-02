@@ -4,6 +4,7 @@
 # Importing libraries
 import matplotlib as mpl
 import numpy as np
+from scipy.signal import savgol_filter
 
 from rocketpy import Environment, Flight, Function, Rocket, SolidMotor
 
@@ -64,14 +65,14 @@ def test_bella_lui_rocket_data_asserts_acceptance():
     )
     env.set_atmospheric_model(
         type="Reanalysis",
-        file="tests/fixtures/acceptance/EPFL_Bella_Lui/bella_lui_weather_data_ERA5.nc",
+        file="data/weather/bella_lui_weather_data_ERA5.nc",
         dictionary="ECMWF",
     )
     env.max_expected_height = 2000
 
     # Motor Information
     K828FJ = SolidMotor(
-        thrust_source="tests/fixtures/acceptance/EPFL_Bella_Lui/bella_lui_motor_AeroTech_K828FJ.eng",
+        thrust_source="data/motors/aerotech/AeroTech_K828FJ.eng",
         burn_time=parameters.get("burn_time")[0],
         dry_mass=1,
         dry_inertia=(0, 0, 0),
@@ -103,20 +104,20 @@ def test_bella_lui_rocket_data_asserts_acceptance():
     )
     BellaLui.set_rail_buttons(0.1, -0.5)
     BellaLui.add_motor(K828FJ, parameters.get("distance_rocket_nozzle")[0])
-    NoseCone = BellaLui.add_nose(
+    BellaLui.add_nose(
         length=parameters.get("nose_length")[0],
         kind="tangent",
         position=parameters.get("nose_distance_to_cm")[0]
         + parameters.get("nose_length")[0],
     )
-    fin_set = BellaLui.add_trapezoidal_fins(
+    BellaLui.add_trapezoidal_fins(
         3,
         span=parameters.get("fin_span")[0],
         root_chord=parameters.get("fin_root_chord")[0],
         tip_chord=parameters.get("fin_tip_chord")[0],
         position=parameters.get("fin_distance_to_cm")[0],
     )
-    tail = BellaLui.add_tail(
+    BellaLui.add_tail(
         top_radius=parameters.get("tail_top_radius")[0],
         bottom_radius=parameters.get("tail_bottom_radius")[0],
         length=parameters.get("tail_length")[0],
@@ -130,7 +131,7 @@ def test_bella_lui_rocket_data_asserts_acceptance():
         # activate drogue when vz < 0 m/s.
         return True if y[5] < 0 else False
 
-    Drogue = BellaLui.add_parachute(
+    BellaLui.add_parachute(
         "Drogue",
         cd_s=parameters.get("CdS_drogue")[0],
         trigger=drogue_trigger,
@@ -185,7 +186,7 @@ def test_bella_lui_rocket_data_asserts_acceptance():
 
     # Comparison with Real Data
     flight_data = np.loadtxt(
-        "tests/fixtures/acceptance/EPFL_Bella_Lui/bella_lui_flight_data_filtered.csv",
+        "data/rockets/EPFL_Bella_Lui/bella_lui_flight_data_filtered.csv",
         skiprows=1,
         delimiter=",",
         usecols=(2, 3, 4),
@@ -213,7 +214,6 @@ def test_bella_lui_rocket_data_asserts_acceptance():
     acceleration_rcp.append(test_flight.az(test_flight.t_final))
 
     # Acceleration comparison (will not be used in our publication)
-    from scipy.signal import savgol_filter
 
     # Calculate the acceleration as a velocity derivative
     acceleration_kalt = [0]
@@ -228,10 +228,14 @@ def test_bella_lui_rocket_data_asserts_acceptance():
     apogee_time_measured = time_kalt[np.argmax(altitude_kalt)]
     apogee_time_simulated = test_flight.apogee_time
 
-    assert (
-        abs(max(altitude_kalt) - test_flight.apogee + test_flight.env.elevation)
-        / max(altitude_kalt)
-        < 0.015
+    apogee_error_threshold = 0.015
+    apogee_error = abs(
+        max(altitude_kalt) - test_flight.apogee + test_flight.env.elevation
+    ) / max(altitude_kalt)
+    assert apogee_error < apogee_error_threshold, (
+        f"Apogee altitude error exceeded the threshold. "
+        f"Expected the error to be less than {apogee_error_threshold * 100}%, "
+        f"but got an error of {apogee_error * 100:.1f}%."
     )
     assert abs(max(velocity_rcp) - max(vert_vel_kalt)) / max(vert_vel_kalt) < 0.06
     assert (
@@ -241,4 +245,11 @@ def test_bella_lui_rocket_data_asserts_acceptance():
     )
     assert (
         abs(apogee_time_measured - apogee_time_simulated) / apogee_time_simulated < 0.02
+    )
+    # Guarantee the impact velocity is within 30% of the real data.
+    # Use the last 5 real points to avoid outliers
+    assert (
+        abs(test_flight.impact_velocity - np.mean(vert_vel_kalt[-5:]))
+        / abs(test_flight.impact_velocity)
+        < 0.30
     )

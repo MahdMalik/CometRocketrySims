@@ -12,3 +12,6 @@ AeroSurface Classes
    TrapezoidalFins
    EllipticalFins
    RailButtons
+   AirBrakes
+   GenericSurface
+   LinearGenericSurface

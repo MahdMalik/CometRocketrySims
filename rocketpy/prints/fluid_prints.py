@@ -24,7 +24,6 @@ class _FluidPrints:
         None
         """
         self.fluid = fluid
-        return None
 
     def all(self):
         """Prints out all data available about the Fluid.
@@ -33,5 +32,5 @@ class _FluidPrints:
         -------
         None
         """
-
-        return None
+        print(f"Name: {self.fluid.name}")
+        print(f"Density: {self.fluid.density:.4f} kg/m^3")

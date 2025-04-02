@@ -1,3 +1,4 @@
+from .control import _Controller
 from .environment import Environment, EnvironmentAnalysis
 from .mathutils import (
     Function,
@@ -22,11 +23,16 @@ from .motors import (
     TankGeometry,
     UllageBasedTank,
 )
+from .plots.compare import Compare, CompareFlights
 from .rocket import (
     AeroSurface,
+    AirBrakes,
     Components,
     EllipticalFins,
     Fins,
+    FreeFormFins,
+    GenericSurface,
+    LinearGenericSurface,
     NoseCone,
     Parachute,
     RailButtons,
@@ -34,5 +40,18 @@ from .rocket import (
     Tail,
     TrapezoidalFins,
 )
-from .simulation import Flight
-from .plots.compare import Compare, CompareFlights
+from .sensitivity import SensitivityModel
+from .sensors import Accelerometer, Barometer, GnssReceiver, Gyroscope
+from .simulation import Flight, MonteCarlo
+from .stochastic import (
+    StochasticAirBrakes,
+    StochasticEllipticalFins,
+    StochasticEnvironment,
+    StochasticFlight,
+    StochasticNoseCone,
+    StochasticParachute,
+    StochasticRocket,
+    StochasticSolidMotor,
+    StochasticTail,
+    StochasticTrapezoidalFins,
+)

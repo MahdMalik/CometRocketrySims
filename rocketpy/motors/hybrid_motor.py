@@ -1,14 +1,13 @@
+from functools import cached_property
+
+from rocketpy.tools import parallel_axis_theorem_from_com
+
 from ..mathutils.function import Function, funcify_method, reset_funcified_methods
 from ..plots.hybrid_motor_plots import _HybridMotorPlots
 from ..prints.hybrid_motor_prints import _HybridMotorPrints
 from .liquid_motor import LiquidMotor
 from .motor import Motor
 from .solid_motor import SolidMotor
-
-try:
-    from functools import cached_property
-except ImportError:
-    from ..tools import cached_property
 
 
 class HybridMotor(Motor):
@@ -73,6 +72,8 @@ class HybridMotor(Motor):
     HybridMotor.propellant_mass : Function
         Total propellant mass in kg as a function of time, this includes the
         mass of fluids in each tank and the mass of the solid grains.
+    HybridMotor.structural_mass_ratio: float
+        Initial ratio between the dry mass and the total mass.
     HybridMotor.total_mass_flow_rate : Function
         Time derivative of propellant total mass in kg/s as a function
         of time as obtained by the thrust source.
@@ -182,7 +183,7 @@ class HybridMotor(Motor):
         'akima' and 'linear'. Default is "linear".
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         thrust_source,
         dry_mass,
@@ -214,10 +215,10 @@ class HybridMotor(Motor):
             also be given as a callable function, whose argument is time in
             seconds and returns the thrust supplied by the motor in the
             instant. If a string is given, it must point to a .csv or .eng file.
-            The .csv file shall contain no headers and the first column must
-            specify time in seconds, while the second column specifies thrust.
-            Arrays may also be specified, following rules set by the class
-            Function. Thrust units are Newtons.
+            The .csv file can contain a single line header and the first column
+            must specify time in seconds, while the second column specifies
+            thrust. Arrays may also be specified, following rules set by the
+            class Function. Thrust units are Newtons.
 
             .. seealso:: :doc:`Thrust Source Details </user/motors/thrust>`
         dry_mass : int, float
@@ -303,16 +304,16 @@ class HybridMotor(Motor):
         None
         """
         super().__init__(
-            thrust_source,
-            dry_mass,
-            dry_inertia,
-            nozzle_radius,
-            center_of_dry_mass_position,
-            nozzle_position,
-            burn_time,
-            reshape_thrust_curve,
-            interpolation_method,
-            coordinate_system_orientation,
+            thrust_source=thrust_source,
+            dry_inertia=dry_inertia,
+            nozzle_radius=nozzle_radius,
+            center_of_dry_mass_position=center_of_dry_mass_position,
+            dry_mass=dry_mass,
+            nozzle_position=nozzle_position,
+            burn_time=burn_time,
+            reshape_thrust_curve=reshape_thrust_curve,
+            interpolation_method=interpolation_method,
+            coordinate_system_orientation=coordinate_system_orientation,
         )
         self.liquid = LiquidMotor(
             thrust_source,
@@ -360,7 +361,6 @@ class HybridMotor(Motor):
         # Initialize plots and prints object
         self.prints = _HybridMotorPrints(self)
         self.plots = _HybridMotorPlots(self)
-        return None
 
     @funcify_method("Time (s)", "Exhaust velocity (m/s)")
     def exhaust_velocity(self):
@@ -453,24 +453,23 @@ class HybridMotor(Motor):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
-        solid_correction = (
-            self.solid.propellant_mass
-            * (self.solid.center_of_propellant_mass - self.center_of_propellant_mass)
-            ** 2
-        )
-        liquid_correction = (
-            self.liquid.propellant_mass
-            * (self.liquid.center_of_propellant_mass - self.center_of_propellant_mass)
-            ** 2
-        )
 
-        I_11 = (
-            self.solid.propellant_I_11
-            + solid_correction
-            + self.liquid.propellant_I_11
-            + liquid_correction
+        solid_mass = self.solid.propellant_mass
+        liquid_mass = self.liquid.propellant_mass
+
+        cm = self.center_of_propellant_mass
+        solid_cm_to_cm = self.solid.center_of_propellant_mass - cm
+        liquid_cm_to_cm = self.liquid.center_of_propellant_mass - cm
+
+        solid_prop_inertia = self.solid.propellant_I_11
+        liquid_prop_inertia = self.liquid.propellant_I_11
+
+        I_11 = parallel_axis_theorem_from_com(
+            solid_prop_inertia, solid_mass, solid_cm_to_cm
+        ) + parallel_axis_theorem_from_com(
+            liquid_prop_inertia, liquid_mass, liquid_cm_to_cm
         )
 
         return I_11
@@ -493,7 +492,7 @@ class HybridMotor(Motor):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         return self.propellant_I_11
 
@@ -515,7 +514,7 @@ class HybridMotor(Motor):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
+        https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor
         """
         return self.solid.propellant_I_33 + self.liquid.propellant_I_33
 
@@ -602,23 +601,84 @@ class HybridMotor(Motor):
         )
         reset_funcified_methods(self)
 
-    def draw(self):
-        """Draws a representation of the HybridMotor."""
-        self.plots.draw()
+    def draw(self, *, filename=None):
+        """Draws a representation of the HybridMotor.
 
-    def info(self):
-        """Prints out basic data about the Motor."""
-        self.prints.all()
-        self.plots.thrust()
-        return None
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
-    def all_info(self):
-        """Prints out all data and graphs available about the Motor.
-
-        Return
-        ------
+        Returns
+        -------
         None
         """
-        self.prints.all()
-        self.plots.all()
-        return None
+        self.plots.draw(filename=filename)
+
+    def to_dict(self, include_outputs=False):
+        data = super().to_dict(include_outputs)
+        data.update(
+            {
+                "grain_number": self.grain_number,
+                "grain_density": self.grain_density,
+                "grain_outer_radius": self.grain_outer_radius,
+                "grain_initial_inner_radius": self.grain_initial_inner_radius,
+                "grain_initial_height": self.grain_initial_height,
+                "grain_separation": self.grain_separation,
+                "grains_center_of_mass_position": self.grains_center_of_mass_position,
+                "throat_radius": self.throat_radius,
+                "positioned_tanks": [
+                    {"tank": tank["tank"], "position": tank["position"]}
+                    for tank in self.positioned_tanks
+                ],
+            }
+        )
+
+        if include_outputs:
+            data.update(
+                {
+                    "grain_inner_radius": self.solid.grain_inner_radius,
+                    "grain_height": self.solid.grain_height,
+                    "burn_area": self.solid.burn_area,
+                    "burn_rate": self.solid.burn_rate,
+                }
+            )
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        motor = cls(
+            thrust_source=data["thrust_source"],
+            burn_time=data["burn_time"],
+            nozzle_radius=data["nozzle_radius"],
+            dry_mass=data["dry_mass"],
+            center_of_dry_mass_position=data["center_of_dry_mass_position"],
+            dry_inertia=(
+                data["dry_I_11"],
+                data["dry_I_22"],
+                data["dry_I_33"],
+                data["dry_I_12"],
+                data["dry_I_13"],
+                data["dry_I_23"],
+            ),
+            interpolation_method=data["interpolate"],
+            coordinate_system_orientation=data["coordinate_system_orientation"],
+            grain_number=data["grain_number"],
+            grain_density=data["grain_density"],
+            grain_outer_radius=data["grain_outer_radius"],
+            grain_initial_inner_radius=data["grain_initial_inner_radius"],
+            grain_initial_height=data["grain_initial_height"],
+            grain_separation=data["grain_separation"],
+            grains_center_of_mass_position=data["grains_center_of_mass_position"],
+            nozzle_position=data["nozzle_position"],
+            throat_radius=data["throat_radius"],
+        )
+
+        for tank in data["positioned_tanks"]:
+            motor.add_tank(tank["tank"], tank["position"])
+
+        return motor

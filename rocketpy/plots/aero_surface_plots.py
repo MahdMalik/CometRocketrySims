@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Ellipse
 
+from .plot_helpers import show_or_save_plot
+
 
 class _AeroSurfacePlots(ABC):
     """Abstract class that contains all aero surface plots."""
@@ -21,10 +23,9 @@ class _AeroSurfacePlots(ABC):
         None
         """
         self.aero_surface = aero_surface
-        return None
 
     @abstractmethod
-    def draw(self):
+    def draw(self, *, filename=None):
         pass
 
     def lift(self):
@@ -37,7 +38,6 @@ class _AeroSurfacePlots(ABC):
         None
         """
         self.aero_surface.cl()
-        return None
 
     def all(self):
         """Plots all aero surface plots.
@@ -48,31 +48,23 @@ class _AeroSurfacePlots(ABC):
         """
         self.draw()
         self.lift()
-        return None
 
 
 class _NoseConePlots(_AeroSurfacePlots):
     """Class that contains all nosecone plots. This class inherits from the
     _AeroSurfacePlots class."""
 
-    def __init__(self, nosecone):
-        """Initialize the class
+    def draw(self, *, filename=None):
+        """Draw the nosecone shape along with some important information,
+        including the center line and the center of pressure position.
 
         Parameters
         ----------
-        nosecone : rocketpy.AeroSurface.NoseCone
-            Nosecone object to be plotted
-
-        Returns
-        -------
-        None
-        """
-        super().__init__(nosecone)
-        return None
-
-    def draw(self):
-        """Draw the nosecone shape along with some important information,
-        including the center line and the center of pressure position.
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
@@ -82,7 +74,7 @@ class _NoseConePlots(_AeroSurfacePlots):
         nosecone_x, nosecone_y = self.aero_surface.shape_vec
 
         # Figure creation and set up
-        fig_ogive, ax = plt.subplots()
+        _, ax = plt.subplots()
         ax.set_xlim(-0.05, self.aero_surface.length * 1.02)  # Horizontal size
         ax.set_ylim(
             -self.aero_surface.base_radius * 1.05, self.aero_surface.base_radius * 1.05
@@ -140,32 +132,15 @@ class _NoseConePlots(_AeroSurfacePlots):
         ax.set_ylabel("Radius")
         ax.set_title(self.aero_surface.kind + " Nose Cone")
         ax.legend(bbox_to_anchor=(1, -0.2))
-        # Show Plot
-        plt.show()
-        return None
+        show_or_save_plot(filename)
 
 
 class _FinsPlots(_AeroSurfacePlots):
     """Abstract class that contains all fin plots. This class inherits from the
     _AeroSurfacePlots class."""
 
-    def __init__(self, fin_set):
-        """Initialize the class
-
-        Parameters
-        ----------
-        fin_set : rocketpy.AeroSurface.fin_set
-            fin_set object to be plotted
-
-        Returns
-        -------
-        None
-        """
-        super().__init__(fin_set)
-        return None
-
     @abstractmethod
-    def draw(self):
+    def draw(self, *, filename=None):
         pass
 
     def airfoil(self):
@@ -180,7 +155,6 @@ class _FinsPlots(_AeroSurfacePlots):
         if self.aero_surface.airfoil:
             print("Airfoil lift curve:")
             self.aero_surface.airfoil_cl.plot_1d(force_data=True)
-        return None
 
     def roll(self):
         """Plots the roll parameters of the fin set.
@@ -193,7 +167,6 @@ class _FinsPlots(_AeroSurfacePlots):
         # TODO: lacks a title in the plots
         self.aero_surface.roll_parameters[0]()
         self.aero_surface.roll_parameters[1]()
-        return None
 
     def lift(self):
         """Plots the lift coefficient of the aero surface as a function of Mach
@@ -210,7 +183,6 @@ class _FinsPlots(_AeroSurfacePlots):
         self.aero_surface.cl()
         self.aero_surface.clalpha_single_fin()
         self.aero_surface.clalpha_multiple_fins()
-        return None
 
     def all(self):
         """Plots all available fin plots.
@@ -223,19 +195,23 @@ class _FinsPlots(_AeroSurfacePlots):
         self.airfoil()
         self.roll()
         self.lift()
-        return None
 
 
 class _TrapezoidalFinsPlots(_FinsPlots):
     """Class that contains all trapezoidal fin plots."""
 
-    def __init__(self, fin_set):
-        super().__init__(fin_set)
-        return None
-
-    def draw(self):
+    # pylint: disable=too-many-statements
+    def draw(self, *, filename=None):
         """Draw the fin shape along with some important information, including
         the center line, the quarter line and the center of pressure position.
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
@@ -347,20 +323,24 @@ class _TrapezoidalFinsPlots(_FinsPlots):
         ax.legend(bbox_to_anchor=(1.05, 1.0), loc="upper left")
 
         plt.tight_layout()
-        plt.show()
-        return None
+        show_or_save_plot(filename)
 
 
 class _EllipticalFinsPlots(_FinsPlots):
     """Class that contains all elliptical fin plots."""
 
-    def __init__(self, fin_set):
-        super().__init__(fin_set)
-        return None
-
-    def draw(self):
+    # pylint: disable=too-many-statements
+    def draw(self, *, filename=None):
         """Draw the fin shape along with some important information.
         These being: the center line and the center of pressure position.
+
+        Parameters
+        ----------
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
@@ -422,29 +402,124 @@ class _EllipticalFinsPlots(_FinsPlots):
         ax.legend(bbox_to_anchor=(1.05, 1.0), loc="upper left")
 
         plt.tight_layout()
-        plt.show()
-
-        return None
+        show_or_save_plot(filename)
 
 
-class _TailPlots(_AeroSurfacePlots):
-    """Class that contains all tail plots."""
+class _FreeFormFinsPlots(_FinsPlots):
+    """Class that contains all free form fin plots."""
 
-    def __init__(self, tail):
-        """Initialize the class
+    # pylint: disable=too-many-statements
+    def draw(self, *, filename=None):
+        """Draw the fin shape along with some important information.
+        These being: the center line and the center of pressure position.
 
         Parameters
         ----------
-        tail : rocketpy.AeroSurface.Tail
-            Tail object to be plotted
+        filename : str | None, optional
+            The path the plot should be saved to. By default None, in which case
+            the plot will be shown instead of saved. Supported file endings are:
+            eps, jpg, jpeg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+            and webp (these are the formats supported by matplotlib).
 
         Returns
         -------
         None
         """
-        super().__init__(tail)
-        return None
+        # Color cycle [#348ABD, #A60628, #7A68A6, #467821, #D55E00, #CC79A7,
+        # #56B4E9, #009E73, #F0E442, #0072B2]
 
-    def draw(self):
+        # Center of pressure
+        cp_point = [self.aero_surface.cpz, self.aero_surface.Yma]
+
+        # Mean Aerodynamic Chord
+        yma_line = plt.Line2D(
+            (
+                self.aero_surface.mac_lead,
+                self.aero_surface.mac_lead + self.aero_surface.mac_length,
+            ),
+            (self.aero_surface.Yma, self.aero_surface.Yma),
+            color="#467821",
+            linestyle="--",
+            label="Mean Aerodynamic Chord",
+        )
+
+        # Plotting
+        fig = plt.figure(figsize=(7, 4))
+        with plt.style.context("bmh"):
+            ax = fig.add_subplot(111)
+
+        # Fin
+        ax.scatter(
+            self.aero_surface.shape_vec[0],
+            self.aero_surface.shape_vec[1],
+            color="#A60628",
+        )
+        ax.plot(
+            self.aero_surface.shape_vec[0],
+            self.aero_surface.shape_vec[1],
+            color="#A60628",
+        )
+        # line from the last point to the first point
+        ax.plot(
+            [self.aero_surface.shape_vec[0][-1], self.aero_surface.shape_vec[0][0]],
+            [self.aero_surface.shape_vec[1][-1], self.aero_surface.shape_vec[1][0]],
+            color="#A60628",
+        )
+
+        ax.add_line(yma_line)
+        ax.scatter(*cp_point, label="Center of Pressure", color="red", s=100, zorder=10)
+        ax.scatter(*cp_point, facecolors="none", edgecolors="red", s=500, zorder=10)
+
+        # Plot settings
+        ax.set_xlabel("Root chord (m)")
+        ax.set_ylabel("Span (m)")
+        ax.set_title("Free Form Fin Cross Section")
+        ax.legend(bbox_to_anchor=(1.05, 1.0), loc="upper left")
+
+        plt.tight_layout()
+        show_or_save_plot(filename)
+
+
+class _TailPlots(_AeroSurfacePlots):
+    """Class that contains all tail plots."""
+
+    def draw(self, *, filename=None):
         # This will de done in the future
-        return None
+        pass
+
+
+class _AirBrakesPlots(_AeroSurfacePlots):
+    """Class that contains all air brakes plots."""
+
+    def drag_coefficient_curve(self):
+        """Plots the drag coefficient curve of the air_brakes."""
+        if self.aero_surface.clamp is True:
+            return self.aero_surface.drag_coefficient.plot(0, 1)
+        else:
+            return self.aero_surface.drag_coefficient.plot()
+
+    def draw(self, *, filename=None):
+        raise NotImplementedError
+
+    def all(self):
+        """Plots all available air_brakes plots.
+
+        Returns
+        -------
+        None
+        """
+        self.drag_coefficient_curve()
+
+
+class _GenericSurfacePlots(_AeroSurfacePlots):
+    """Class that contains all generic surface plots."""
+
+    def draw(self, *, filename=None):
+        pass
+
+
+class _LinearGenericSurfacePlots(_AeroSurfacePlots):
+    """Class that contains all linear generic surface plots."""
+
+    def draw(self, *, filename=None):
+        pass
