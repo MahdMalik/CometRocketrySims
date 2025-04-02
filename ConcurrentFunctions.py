@@ -67,7 +67,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         root_chord=0.364
         tip_chord=0.164
         fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= root_chord, tip_chord=tip_chord, span=finSpan,
-            fin_Position = setting["fin_position"],cant_angle=0, sweep_length=0.15)
+            position = setting["fin_position"],cant_angle=0, sweep_length=0.15)
         boattailPos = 2.64-.152
         boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.05,length = 0.152,position = boattailPos)
 
