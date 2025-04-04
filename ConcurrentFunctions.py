@@ -4,10 +4,12 @@ from time import process_time
 import numpy as np
 from wind import windArray_u, windArray_v
 
+import FlightParams
+
 import logging
 
 # Configure logging
-def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_cpu_time):
+def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_cpu_time, termOnApogee):
     logging.basicConfig(
     filename='app.log',  # Change this to your desired log file
     level=logging.INFO,
@@ -19,16 +21,14 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
     i=0
     for setting in flight_settings(analysis_parameters, numOfSims):
         start_time = process_time()
-        
-        numGrain = 6
         env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= windArray_u(0,5), wind_v= windArray_v(0,5)) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
         MotorOne = SolidMotor(
-            thrust_source="ReferencedFiles/AeroTech_M1850WSledge.csv", #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
+            thrust_source="ReferencedFiles/" + FlightParams.motor_thrust_file, #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
             burn_time = setting["burn_time"],#Straight from thrustcurve.org
             reshape_thrust_curve=(setting["burn_time"], setting["impulse"]),
             nozzle_radius= setting["nozzle_radius"], # Part List
             throat_radius= setting["throat_radius"], # Part List
-            grain_number=numGrain, #Based on cross-section
+            grain_number=FlightParams.numGrains, #Based on cross-section
             grain_separation= setting["grain_separation"], # Good
             grain_density= setting["grain_density"], #Calculated mass of grain / volume of grain , for this i did - the core since it should be empty? not sure
             grain_outer_radius= setting["grain_outer_radius"], # Good
@@ -37,10 +37,10 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             interpolation_method = "linear",
             coordinate_system_orientation="combustion_chamber_to_nozzle",
             nozzle_position = setting["nozzle_position"],#eyeballed
-            grains_center_of_mass_position= 0,
+            grains_center_of_mass_position= FlightParams.grain_center_of_mass_position,
             dry_mass=setting["motor_dry_mass"], #kg thrustcurve
             dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
-            center_of_dry_mass_position= 0,
+            center_of_dry_mass_position= FlightParams.center_of_dry_mass_within_motor,
         )
 
         #Pretty Much done except grain density and maybe nozz)le position
@@ -51,52 +51,53 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             inertia = (setting["rocket_inertia_11"], setting["rocket_inertia_11"],setting["rocket_inertia_33"]), # Calculated via Open Rocket
             coordinate_system_orientation = "nose_to_tail",
             center_of_mass_without_motor = setting["rocket_CM"], # OpenRocket
-            power_off_drag ="ReferencedFiles/SPCDOFFSledge.csv", #Uploaded to drive
-            power_on_drag = "ReferencedFiles/SPCDONSledge.csv", #Uploaded to drive
+            power_off_drag ="ReferencedFiles/" + str(FlightParams.power_off_file), #Uploaded to drive
+            power_on_drag = "ReferencedFiles/" + str(FlightParams.power_on_file), #Uploaded to drive
         )
 
         # CHANGE ONCE YOU FIND A GOOD WAY TO DO SO
         # Sp25.power_off_drag *= setting["power_off_drag"]
         # Sp25.power_on_drag *= setting["power_on_drag"]
 
-        spLength = .864 + 1.02
-        noseLength = .61
         nose_cone = Sp25.add_nose(
-            length = noseLength, kind = "ogive", position = 0)
-        finSpan = 0.146
-        root_chord=0.364
-        tip_chord=0.164
-        fin_set = Sp25.add_trapezoidal_fins(n=4, root_chord= root_chord, tip_chord=tip_chord, span=finSpan,
-            position = setting["fin_position"],cant_angle=0, sweep_length=0.15)
-        boattailPos = 2.64-.152
-        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = 0.05,length = 0.152,position = boattailPos)
+            length = FlightParams.nose_cone_length, kind = "ogive", position = FlightParams.nose_position)
+        fin_set = Sp25.add_trapezoidal_fins(n=FlightParams.numFins, root_chord= FlightParams.root_chord, tip_chord=FlightParams.tip_chord, span=FlightParams.finSpan,
+            position = setting["fin_position"],cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
+        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = FlightParams.boattail_bottom_radius,length = FlightParams.bottail_length,position = FlightParams.boattailPos)
+
+        # air_brakes = Sp25.add_air_brakes(
+        #     drag_coefficient_curve="",
+        #     controller_function= None,
+        #     sampling_rate= 10,
+        #     reference_area = None,
+        #     clamp = True,
+        #     initial_observed_variables=[0, 0, 0],
+        #     override_rocket_drag= False,
+        #     name = "Air brakes"
+        # )
 
         Sp25.add_motor(MotorOne, setting["motor_position"])
         
-        topRB =  1.57 + .444
         rail_buttons = Sp25.set_rail_buttons(
-            upper_button_position= topRB,
-            lower_button_position= topRB + .444,
-            angular_position=180
+            upper_button_position= FlightParams.upper_railbutton_position,
+            lower_button_position= FlightParams.lower_railbutton_position,
+            angular_position=FlightParams.railbutton_angular_position
         )
 
         Drogue = Sp25.add_parachute(
             "Drogue",
             cd_s = setting["cd_s_drogue"],
-            trigger = "apogee"
+            trigger = FlightParams.drogueTrigger
         )
         Light = Sp25.add_parachute(
             "Light",
             cd_s = setting["cd_s_light"],
-            trigger = 110
+            trigger = FlightParams.lightTrigger
         )
 
-        # Run trajectory simulation
-        # rail_length = 5.7-(spLength-topRB)
-        rail_length = 4.572
         try:
             testFlight = Flight(
-                rocket=Sp25, environment=env,rail_length = rail_length,inclination = setting["inclination"],heading=setting["heading"], terminate_on_apogee = False
+                rocket=Sp25, environment=env,rail_length = FlightParams.rail_length,inclination = setting["inclination"],heading=setting["heading"], terminate_on_apogee = termOnApogee
             )
             inputOutput = export_flight_data(setting, testFlight, process_time() - start_time, env)
             flightData[0] += "\n" + str(inputOutput[0])
