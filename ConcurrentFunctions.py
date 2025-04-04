@@ -65,16 +65,16 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             position = setting["fin_position"],cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
         boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = FlightParams.boattail_bottom_radius,length = FlightParams.bottail_length,position = FlightParams.boattailPos)
 
-        # air_brakes = Sp25.add_air_brakes(
-        #     drag_coefficient_curve="",
-        #     controller_function= None,
-        #     sampling_rate= 10,
-        #     reference_area = None,
-        #     clamp = True,
-        #     initial_observed_variables=[0, 0, 0],
-        #     override_rocket_drag= False,
-        #     name = "Air brakes"
-        # )
+        air_brakes = Sp25.add_air_brakes(
+            drag_coefficient_curve= FlightParams.air_brake_drag_file,
+            controller_function= FlightParams.airbrake_controller_function,
+            sampling_rate= FlightParams.airbrake_sample_rate,
+            reference_area = FlightParams.airbrake_area,
+            clamp = FlightParams.airbrake_clamp,
+            initial_observed_variables=[0, 0, 0],
+            override_rocket_drag= FlightParams.override_rocketdrag_with_airbrakedrag,
+            name = "Air brakes"
+        )
 
         Sp25.add_motor(MotorOne, setting["motor_position"])
         
@@ -103,8 +103,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             flightData[0] += "\n" + str(inputOutput[0])
             flightData[1] += "\n" + str(inputOutput[1])
         except Exception as E:
-            print(E)
-            flightData[2] += "\n" + str(export_flight_error(setting))
+            flightData[2] += str(E) + "\n" + str(export_flight_error(setting))
         # Register time
         i+=1
         if(i % 10 == 0):

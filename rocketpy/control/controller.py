@@ -101,7 +101,7 @@ class _Controller:
         it with the correct number of arguments. This is a workaround to allow
         the controller function to receive sensors without breaking changes"""
         sig = signature(controller_function)
-        if len(sig.parameters) == 6:
+        if len(sig.parameters) == 7:
             # pylint: disable=unused-argument
             def new_controller_function(
                 time,
@@ -110,6 +110,7 @@ class _Controller:
                 state_history,
                 observed_variables,
                 interactive_objects,
+                env,
                 sensors,
             ):
                 return controller_function(
@@ -119,9 +120,10 @@ class _Controller:
                     state_history,
                     observed_variables,
                     interactive_objects,
+                    env
                 )
 
-        elif len(sig.parameters) == 7:
+        elif len(sig.parameters) == 8:
             new_controller_function = controller_function
         else:
             raise ValueError(
@@ -133,7 +135,7 @@ class _Controller:
             )
         return new_controller_function
 
-    def __call__(self, time, state_vector, state_history, sensors):
+    def __call__(self, time, state_vector, state_history, env, sensors):
         """Call the controller function. This is used by the simulation class.
 
         Parameters
@@ -166,6 +168,7 @@ class _Controller:
             state_history,
             self.observed_variables,
             self.interactive_objects,
+            env,
             sensors,
         )
         if observed_variables is not None:

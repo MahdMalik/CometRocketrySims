@@ -759,6 +759,7 @@ class Flight:
                         self.t,
                         self.y_sol,
                         self.solution,
+                        self.env,
                         self.sensors,
                     )
 
