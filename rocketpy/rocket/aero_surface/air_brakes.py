@@ -32,6 +32,9 @@ class AirBrakes(AeroSurface):
         the deployment level is out of bounds. Default is True.
     AirBrakes.name : str
         Name of the air brakes.
+
+    Airbrake deploy time: int
+        Time we want to deploy the airbrakes
     """
 
     def __init__(
@@ -42,6 +45,7 @@ class AirBrakes(AeroSurface):
         override_rocket_drag=False,
         deployment_level=0,
         name="AirBrakes",
+        the_airbrake_deploy_time = 0,
     ):
         """Initializes the AirBrakes class.
 
@@ -110,6 +114,7 @@ class AirBrakes(AeroSurface):
         self.override_rocket_drag = override_rocket_drag
         self.initial_deployment_level = deployment_level
         self.deployment_level = deployment_level
+        self.airbrake_deploy_time = the_airbrake_deploy_time
         self.prints = _AirBrakesPrints(self)
         self.plots = _AirBrakesPlots(self)
 

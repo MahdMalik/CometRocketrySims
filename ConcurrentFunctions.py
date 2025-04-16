@@ -62,7 +62,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         nose_cone = Sp25.add_nose(
             length = FlightParams.nose_cone_length, kind = "ogive", position = FlightParams.nose_position)
         fin_set = Sp25.add_trapezoidal_fins(n=FlightParams.numFins, root_chord= FlightParams.root_chord, tip_chord=FlightParams.tip_chord, span=FlightParams.finSpan,
-            position = setting["fin_position"],cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
+            position = FlightParams.the_fin_position,cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
         boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = FlightParams.boattail_bottom_radius,length = FlightParams.bottail_length,position = FlightParams.boattailPos)
 
         air_brakes = Sp25.add_air_brakes(
@@ -73,7 +73,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             clamp = FlightParams.airbrake_clamp,
             initial_observed_variables=[0, 0, 0],
             override_rocket_drag= FlightParams.override_rocketdrag_with_airbrakedrag,
-            name = "Air brakes"
+            name = "Air brakes",
+            airbrake_time = setting["time_to_deploy_airbrake_after_burnout"]
         )
 
         Sp25.add_motor(MotorOne, setting["motor_position"])
@@ -97,7 +98,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
 
         try:
             testFlight = Flight(
-                rocket=Sp25, environment=env,rail_length = FlightParams.rail_length,inclination = setting["inclination"],heading=setting["heading"], terminate_on_apogee = termOnApogee
+                rocket=Sp25, environment=env,rail_length = FlightParams.rail_length,inclination = setting["inclination"],
+                heading=setting["heading"], terminate_on_apogee = termOnApogee
             )
             inputOutput = export_flight_data(setting, testFlight, process_time() - start_time, env)
             flightData[0] += "\n" + str(inputOutput[0])

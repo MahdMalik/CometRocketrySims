@@ -1546,6 +1546,7 @@ class Rocket:
         return_controller=False,
         name="AirBrakes",
         controller_name="AirBrakes Controller",
+        airbrake_time = 0
     ):
         """Creates a new air brakes system, storing its parameters such as
         drag coefficient curve, controller function, sampling rate, and
@@ -1666,6 +1667,7 @@ class Rocket:
             override_rocket_drag=override_rocket_drag,
             deployment_level=0,
             name=name,
+            the_airbrake_deploy_time = airbrake_time
         )
         _controller = _Controller(
             interactive_objects=air_brakes,
