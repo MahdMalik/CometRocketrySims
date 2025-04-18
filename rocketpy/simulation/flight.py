@@ -755,13 +755,19 @@ class Flight:
                         )
 
                 for controller in node._controllers:
-                    controller(
+                    returnedValue = controller(
                         self.t,
                         self.y_sol,
                         self.solution,
                         self.env,
                         self.sensors,
                     )
+
+                    if(returnedValue != None and returnedValue == "airbrakeFalse"):
+                        print("NOT GOOD TO DEPLOY, TIME IS: " + str(self.t))
+                    elif(returnedValue != None and returnedValue == "airbrakeTrue"):
+                        print("WE GOOD TO DEPLOY WE BALL GRAHHHHH: " + str(self.t))
+
 
                 for parachute in node.parachutes:
                     # Calculate and save pressure signal

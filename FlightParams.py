@@ -81,14 +81,19 @@ rail_length = 4.572
 
 #airbrakes
 air_brake_drag_file = "ReferencedFiles/AirbrakeDrag.csv"
-airbrake_sample_rate = 10 # 10 herz, so every .1 seconds
+airbrake_sample_rate = 1 # 1 herz, so every .1 seconds
 airbrake_clamp = True
 override_rocketdrag_with_airbrakedrag = True
 airbrake_area = 2 # in meters
-airbrake_deploy_altitude = 2000
+
+halfway_to_target = 1524
+
+# airbrake_deploy_altitude = 2000
 def airbrake_controller_function(time, sampling_rate, state, state_history, observed_variables, air_brakes, env):
+    canDeployAirbrake = False
+
     deployment_time = air_brakes.airbrake_deploy_time
-    
+
     # state = [x, y, z, vx, vy, vz, e0, e1, e2, e3, wx, wy, wz]
     altitude_ASL = state[2]
     altitude_AGL = altitude_ASL - env.elevation
@@ -111,17 +116,8 @@ def airbrake_controller_function(time, sampling_rate, state, state_history, obse
     # returned_time, deployment_level, drag_coefficient = observed_variables[-1]
 
     # Check if the rocket has reached burnout
-    if time < burn_time:
-        return None
-
-    # If below 1500 meters above ground level, air_brakes are not deployed
-    if altitude_AGL < airbrake_deploy_altitude:
-        air_brakes.deployment_level = 0
-
-    if(deployment_time <= time):
-        print("waltuh current time is " + str(time))
-        new_deployment_level = 1
-        air_brakes.deployment_level = new_deployment_level
+    if (time > burn_time and deployment_time <= time and altitude_AGL > halfway_to_target):
+        canDeployAirbrake = True
     # Else calculate the deployment level
    
     # else:
@@ -141,7 +137,9 @@ def airbrake_controller_function(time, sampling_rate, state, state_history, obse
     #     air_brakes.deployment_level = new_deployment_level
 
     # Return variables of interest to be saved in the observed_variables list
+    
     return (
+        "airbrake" + str(canDeployAirbrake),
         time,
         air_brakes.deployment_level,
         air_brakes.drag_coefficient(air_brakes.deployment_level, mach_number),

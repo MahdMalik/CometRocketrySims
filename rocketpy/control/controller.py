@@ -171,8 +171,11 @@ class _Controller:
             env,
             sensors,
         )
+
         if observed_variables is not None:
             self.observed_variables.append(observed_variables)
+            return observed_variables[0]
+        return None
 
     def __str__(self):
         return f"Controller '{self.name}' with sampling rate {self.sampling_rate} Hz."
