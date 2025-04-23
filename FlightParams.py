@@ -3,12 +3,16 @@ from rocketpy.motors import motor
 
 # HERE ARE THE VARIABLES YOU WILL HAVE TO CHANGE
 
+#other stuff
+varyingPossibilities = ["airbrake", "finposition"]
+varyingVariable = varyingPossibilities[1]
+
 #motor
-propellant_mass = 4.122
+propellant_mass = 5.58
 totalMotorMass = 6.032
 grainInnerRadius = 0.022225/2
 grainOuterRadius = 0.0654558/2
-grainHeight = 0.1317752
+grainHeight = 0.1524
 motorRadius = 75 / 2 * 10**(-3)
 motorLength = .923
 the_nozzle_radius = .047625/2
@@ -16,9 +20,9 @@ the_throat_radius= .017399/2
 the_nozzle_position = .1317752 * 3 + 0.08
 grain_center_of_mass_position = 0
 center_of_dry_mass_within_motor = 0
-motor_thrust_file = "AeroTech_M1850WSledge.csv"
+motor_thrust_file = "testthrustcurve.csv"
 motor_volume = grainHeight * 0.0114332036534 + (grainHeight * .011908241951)*5
-burn_time = 2.505
+burn_time = 4.131
 numGrains = 6
 grainSeparation = 0
 

@@ -62,20 +62,21 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         nose_cone = Sp25.add_nose(
             length = FlightParams.nose_cone_length, kind = "ogive", position = FlightParams.nose_position)
         fin_set = Sp25.add_trapezoidal_fins(n=FlightParams.numFins, root_chord= FlightParams.root_chord, tip_chord=FlightParams.tip_chord, span=FlightParams.finSpan,
-            position = FlightParams.the_fin_position,cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
+            position = setting["fin_position"],cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
         boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = FlightParams.boattail_bottom_radius,length = FlightParams.bottail_length,position = FlightParams.boattailPos)
 
-        air_brakes = Sp25.add_air_brakes(
-            drag_coefficient_curve= FlightParams.air_brake_drag_file,
-            controller_function= FlightParams.airbrake_controller_function,
-            sampling_rate= FlightParams.airbrake_sample_rate,
-            reference_area = FlightParams.airbrake_area,
-            clamp = FlightParams.airbrake_clamp,
-            initial_observed_variables=[0, 0, 0],
-            override_rocket_drag= FlightParams.override_rocketdrag_with_airbrakedrag,
-            name = "Air brakes",
-            airbrake_time = setting["time_to_deploy_airbrake_after_burnout"]
-        )
+        if(setting["time_to_deploy_airbrake_after_burnout"] != -1):
+            Sp25.add_air_brakes(
+                drag_coefficient_curve= FlightParams.air_brake_drag_file,
+                controller_function= FlightParams.airbrake_controller_function,
+                sampling_rate= FlightParams.airbrake_sample_rate,
+                reference_area = FlightParams.airbrake_area,
+                clamp = FlightParams.airbrake_clamp,
+                initial_observed_variables=[0, 0, 0],
+                override_rocket_drag= FlightParams.override_rocketdrag_with_airbrakedrag,
+                name = "Air brakes",
+                airbrake_time = setting["time_to_deploy_airbrake_after_burnout"]
+            )
 
         Sp25.add_motor(MotorOne, setting["motor_position"])
         
