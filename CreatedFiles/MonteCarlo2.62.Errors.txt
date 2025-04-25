@@ -4,6 +4,42 @@
 
 
 
+float division by zero
+{'rocket_mass': 16.657953535502863, 'rocket_inertia_11': 5.730532949322991, 'rocket_inertia_33': 0.05003516422283106, 'motor_dry_mass': 4.894827599177644, 'motor_inertia_11': -0.01329977083403447, 'motor_inertia_33': 0.2389989979661043, 'motor_dry_mass_position': 0.492945818433583, 'impulse': 8995.12351997615, 'motor_position': 2.523110144776456, 'burn_time': 3.7505602416253145, 'nozzle_radius': 0.03938741876178816, 'throat_radius': 0.014584006825792969, 'grain_separation': 0.0006466660875700411, 'grain_density': 1735.3745206344345, 'grain_outer_radius': 0.04121727168553967, 'grain_initial_inner_radius': 0.021681495551964823, 'grain_initial_height': 0.12630263018656818, 'radius': 0.07904591073206921, 'nozzle_position': 0.4958502384437393, 'grains_center_of_mass_position': -3.0201638733687832, 'nose_distance_to_CM': 1.2205979372504667, 'inclination': 82.94502877773728, 'heading': 94.73742899649305, 'cd_s_drogue': 0.3095710865152219, 'cd_s_light': 16.061891696253912, 'lag_rec': 0.04332014847515167, 'lag_se': 0.08209465153285847, 'temperature': 297.4276338028145, 'atmosphere_pressure': 85311.92315274426, 'rocket_CM': 2.0380802730646033, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.62}
+
+float division by zero
+{'rocket_mass': 16.65737677202098, 'rocket_inertia_11': 5.749752781243121, 'rocket_inertia_33': 0.050007976691185854, 'motor_dry_mass': 4.8958460172249865, 'motor_inertia_11': 0.005982479915695099, 'motor_inertia_33': 0.23897232232037702, 'motor_dry_mass_position': 0.49337224822300374, 'impulse': 8938.291346767444, 'motor_position': 2.520856101170152, 'burn_time': 4.142776961259476, 'nozzle_radius': 0.04035101429058069, 'throat_radius': 0.01451332684539148, 'grain_separation': -0.0003946181326704092, 'grain_density': 1689.714339941489, 'grain_outer_radius': 0.040808978969748055, 'grain_initial_inner_radius': 0.02221628775362929, 'grain_initial_height': 0.12815664363140342, 'radius': 0.07852532882243786, 'nozzle_position': 0.49662190164573394, 'grains_center_of_mass_position': -3.0201522394029867, 'nose_distance_to_CM': 1.2220266406649296, 'inclination': 81.4179305859976, 'heading': 88.30132252166815, 'cd_s_drogue': 0.269007145441014, 'cd_s_light': 16.07401549261839, 'lag_rec': 0.19097190393938876, 'lag_se': 0.033610202921785404, 'temperature': 298.5913455863984, 'atmosphere_pressure': 85254.72990838578, 'rocket_CM': 2.0326176145089803, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.62}
+
+
+
+
+
+
+
+
+
+
+
+float division by zero
+{'rocket_mass': 16.65615600777687, 'rocket_inertia_11': 5.7375805578806185, 'rocket_inertia_33': 0.0500051437020817, 'motor_dry_mass': 4.897762859960213, 'motor_inertia_11': 0.01726281108319913, 'motor_inertia_33': 0.23897264998830423, 'motor_dry_mass_position': 0.49352784925349663, 'impulse': 8988.788611252281, 'motor_position': 2.517236270280912, 'burn_time': 4.545537470357125, 'nozzle_radius': 0.03916773439399384, 'throat_radius': 0.01500006759816294, 'grain_separation': -0.0004910327683866295, 'grain_density': 1704.3464992678362, 'grain_outer_radius': 0.04187482620905224, 'grain_initial_inner_radius': 0.021782050369875797, 'grain_initial_height': 0.12425393193527896, 'radius': 0.07986970470281651, 'nozzle_position': 0.49513422264967333, 'grains_center_of_mass_position': -3.0202151880287764, 'nose_distance_to_CM': 1.22165078874519, 'inclination': 83.21076426718027, 'heading': 91.65111420649968, 'cd_s_drogue': 0.31639878539555116, 'cd_s_light': 16.053569952538236, 'lag_rec': 0.009410804723976048, 'lag_se': 0.05989740320907719, 'temperature': 299.14029581299405, 'atmosphere_pressure': 85930.62126991728, 'rocket_CM': 2.0341944925505135, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.62}
+float division by zero
+{'rocket_mass': 16.656471256696012, 'rocket_inertia_11': 5.779251846223458, 'rocket_inertia_33': 0.050011061809224704, 'motor_dry_mass': 4.896037502961368, 'motor_inertia_11': 0.0015101528654136028, 'motor_inertia_33': 0.23896851876610434, 'motor_dry_mass_position': 0.4928534212288584, 'impulse': 8967.735160515525, 'motor_position': 2.5201894220256804, 'burn_time': 4.22956315934082, 'nozzle_radius': 0.039875897474865724, 'throat_radius': 0.01435707097628391, 'grain_separation': -0.0005176849989599047, 'grain_density': 1709.9931674253983, 'grain_outer_radius': 0.0407513588947519, 'grain_initial_inner_radius': 0.021524577160519826, 'grain_initial_height': 0.12705859714717427, 'radius': 0.07951843287435001, 'nozzle_position': 0.4946908545326734, 'grains_center_of_mass_position': -3.0202021658931413, 'nose_distance_to_CM': 1.2216052473910284, 'inclination': 83.12741064192618, 'heading': 89.22736049483892, 'cd_s_drogue': 0.2627147484819255, 'cd_s_light': 16.09024947486522, 'lag_rec': 0.008111887103370343, 'lag_se': 0.04402284062198784, 'temperature': 306.8992435337572, 'atmosphere_pressure': 85464.60320471483, 'rocket_CM': 2.029501139958434, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.62}
+
+
+
+
+
+
+
+
+
+
+float division by zero
+{'rocket_mass': 16.656031516743745, 'rocket_inertia_11': 5.721817437564919, 'rocket_inertia_33': 0.05001735311872008, 'motor_dry_mass': 4.897461604207089, 'motor_inertia_11': -0.027710985987557873, 'motor_inertia_33': 0.23896880060300726, 'motor_dry_mass_position': 0.4909842666166639, 'impulse': 8977.336315105089, 'motor_position': 2.537903209836016, 'burn_time': 4.082993960100101, 'nozzle_radius': 0.03940346253530052, 'throat_radius': 0.014271718818636403, 'grain_separation': -0.0009446898394258824, 'grain_density': 1700.934861039398, 'grain_outer_radius': 0.04105448074056363, 'grain_initial_inner_radius': 0.02159157981510007, 'grain_initial_height': 0.12836096445327186, 'radius': 0.07931325816644398, 'nozzle_position': 0.4940616650796795, 'grains_center_of_mass_position': -3.020227491546652, 'nose_distance_to_CM': 1.2226738473910652, 'inclination': 83.04970528000422, 'heading': 93.20786988172577, 'cd_s_drogue': 0.3133150382482139, 'cd_s_light': 16.049156360266583, 'lag_rec': 0.04935794176083297, 'lag_se': 0.10253649314285418, 'temperature': 312.9369408258757, 'atmosphere_pressure': 85734.64013488033, 'rocket_CM': 2.0274394759484005, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.62}
+
+
+float division by zero
+{'rocket_mass': 16.65446355544198, 'rocket_inertia_11': 5.759190605827713, 'rocket_inertia_33': 0.04999735244036981, 'motor_dry_mass': 4.896443433353448, 'motor_inertia_11': -0.022138143478081584, 'motor_inertia_33': 0.23899023191232252, 'motor_dry_mass_position': 0.49353509742006035, 'impulse': 8935.520431947989, 'motor_position': 2.518481115138484, 'burn_time': 4.554427138323011, 'nozzle_radius': 0.039565595384405544, 'throat_radius': 0.014802824211509717, 'grain_separation': 0.0005241338251765773, 'grain_density': 1708.3505078505095, 'grain_outer_radius': 0.041072365888257294, 'grain_initial_inner_radius': 0.02144238940732801, 'grain_initial_height': 0.12618889059564795, 'radius': 0.07847138095632912, 'nozzle_position': 0.4941625763168636, 'grains_center_of_mass_position': -3.0201765960899576, 'nose_distance_to_CM': 1.221773376453302, 'inclination': 82.1476737897464, 'heading': 90.06400351261574, 'cd_s_drogue': 0.28173313751933876, 'cd_s_light': 16.06903598172699, 'lag_rec': 0.2373245637022448, 'lag_se': 0.023581467097348444, 'temperature': 307.8640374477883, 'atmosphere_pressure': 85588.61577934917, 'rocket_CM': 2.0406736708210316, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.62}
 
 
 
@@ -28,4 +64,4 @@
 
 
 
-Completed 30 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 9.560256958007812 s
+Completed 15000 iterations successfully. Total CPU time: 0.34375 s. Total wall time: 718.6173195838928 s
