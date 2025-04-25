@@ -21,7 +21,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
     i=0
     for setting in flight_settings(analysis_parameters, numOfSims):
         start_time = process_time()
-        env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= windArray_u(0,5), wind_v= windArray_v(0,5)) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
+        env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"]) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
+        # env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= windArray_u(0,5), wind_v= windArray_v(0,5)) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
         MotorOne = SolidMotor(
             thrust_source="ReferencedFiles/" + FlightParams.motor_thrust_file, #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
             burn_time = setting["burn_time"],#Straight from thrustcurve.org
@@ -60,7 +61,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         # Sp25.power_on_drag *= setting["power_on_drag"]
 
         nose_cone = Sp25.add_nose(
-            length = FlightParams.nose_cone_length, kind = "ogive", position = FlightParams.nose_position)
+            length = FlightParams.nose_cone_length, kind = FlightParams.nose_cone_type, position = FlightParams.nose_position)
         fin_set = Sp25.add_trapezoidal_fins(n=FlightParams.numFins, root_chord= FlightParams.root_chord, tip_chord=FlightParams.tip_chord, span=FlightParams.finSpan,
             position = setting["fin_position"],cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
         boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = FlightParams.boattail_bottom_radius,length = FlightParams.bottail_length,position = FlightParams.boattailPos)
@@ -98,6 +99,12 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         )
 
         try:
+            MotorOne.draw()
+            MotorOne.all_info()
+
+            Sp25.draw()
+            Sp25.all_info()
+            
             testFlight = Flight(
                 rocket=Sp25, environment=env,rail_length = FlightParams.rail_length,inclination = setting["inclination"],
                 heading=setting["heading"], terminate_on_apogee = termOnApogee
