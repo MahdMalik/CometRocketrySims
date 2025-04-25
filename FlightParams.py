@@ -5,7 +5,7 @@ from rocketpy.motors import motor
 
 #other stuff
 varyingPossibilities = ["airbrake", "finposition"]
-varyingVariable = varyingPossibilities[1]
+varyingVariable = varyingPossibilities[0]
 
 #motor
 propellant_mass = 5.58
@@ -32,8 +32,8 @@ spRadius = 0.155/2
 spLength = .152 + .305 + .559 + .508 + .356 + .152
 the_center_of_mass_without_motor = 1.87
 spLength = .864 + 1.02
-power_off_file = "SPCDOFFSledge.csv"
-power_on_file = "SPCDONSledge.csv"
+power_off_file = "Sp25CDOFF4.24.csv"
+power_on_file = "Sp25CDON4.24.csv"
 
 #nose cone
 nose_cone_length = .813
