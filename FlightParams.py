@@ -1,5 +1,6 @@
 from rocketpy.mathutils.function import Function
 from rocketpy.motors import motor
+import numpy as np
 
 # HERE ARE THE VARIABLES YOU WILL HAVE TO CHANGE
 
@@ -7,51 +8,53 @@ from rocketpy.motors import motor
 varyingPossibilities = ["airbrake", "finposition"]
 varyingVariable = varyingPossibilities[1]
 
+numberSims = 2
+processes = 2
+
+generatedFilesLocation ="AAAA/"
+
 #motor
-propellant_mass = 5.58
-totalMotorMass = 6.032
-grainInnerRadius = 0.022225/2
-grainOuterRadius = 0.0654558/2
-grainHeight = 0.1524
-motorRadius = 75 / 2 * 10**(-3)
-motorLength = .923
-the_nozzle_radius = .047625/2
-the_throat_radius= .017399/2
-the_nozzle_position = .1317752 * 3 + 0.08
+propellant_mass = 4.898
+dryMotorMass = 4.896
+grainInnerRadius = (43.942 * 10 ** -3) /2
+grainOuterRadius = (82.27 * 10 ** -3) / 2
+grainHeight = 0.127
+the_nozzle_radius = (79.32 * 10 ** -3) / 2
+the_throat_radius= (29.21 * 10 ** -3) / 2
+the_nozzle_position = grainHeight * 3.9
 grain_center_of_mass_position = 0
 center_of_dry_mass_within_motor = 0
 motor_thrust_file = "testthrustcurve.csv"
-motor_volume = grainHeight * 0.0114332036534 + (grainHeight * .011908241951)*5
-burn_time = 4.131
+burn_time = 4.13
 numGrains = 6
+motorLength = grainHeight * numGrains
 grainSeparation = 0
 
 #rocket general
-spMass = 16.4
+spMass = 16.656
 spRadius = 0.155/2
 spLength = .152 + .305 + .559 + .508 + .356 + .152
-the_center_of_mass_without_motor = 1.87
-spLength = .864 + 1.02
-power_off_file = "SPCDOFFSledge.csv"
-power_on_file = "SPCDONSledge.csv"
+the_center_of_mass_without_motor = 1.89
+power_off_file = "Sp25CDOFF4.24.csv"
+power_on_file = "Sp25CDON4.24.csv"
 
 #nose cone
 nose_cone_length = .813
+nose_cone_type = "von karman"
 
 #fins
 the_fin_position = 2.62
-finSpan = 0.146
-root_chord=0.364
-tip_chord=0.164
+finSpan = 0.216
+root_chord=0.279
+tip_chord=0.091
 fin_cant_angle = 0
-fin_sweep_length = 0.15
+fin_sweep_length = 0.173
 numFins = 4
 
 #bottail
 boattailPos = 0.813+0.152+0.305+0.559+0.508+0.356+0.152
-boattailPos = 2.64-.152
-boattail_bottom_radius = 0.05
-bottail_length = 0.152
+boattail_bottom_radius = 0.129/2
+bottail_length = 0.203
 
 #parachutes
 drogueRadius = 0.61/2
@@ -61,12 +64,12 @@ lightCdS = 2.2*3.1415*(lightRadius)**2
 lag_rec = 0
 lag_se = 0
 drogueTrigger = "apogee"
-lightTrigger = 110
+lightTrigger = 450
 
 #rail buttons
-upper_railbutton_position = 1.57 + .44
-lower_railbutton_position = 1.57 + .44 + .44
-railbutton_angular_position = 180
+lower_railbutton_position = 2.79
+upper_railbutton_position = lower_railbutton_position - 0.274
+railbutton_angular_position = 135
 
 
 #environment
@@ -79,9 +82,9 @@ envParams = {
 }
 
 #final rocket stuff
-inclination = 88
+inclination = 84
 heading = 90
-rail_length = 4.572
+rail_length = 5.2
 
 #airbrakes
 air_brake_drag_file = "ReferencedFiles/AirbrakeDrag.csv"
@@ -151,12 +154,16 @@ def airbrake_controller_function(time, sampling_rate, state, state_history, obse
 
 
 
+
+
 # HERE ARE THE VARIABLES YOU DON'T HAVE TO CHANGE
-dryMotorMass = totalMotorMass - propellant_mass
+totalMotorMass = dryMotorMass + propellant_mass
 totalHeight = grainHeight * numGrains
-motor_11_inertia = (0.08333)*dryMotorMass*(motorRadius)**2
+# area = pi * r^2 * height
+motor_volume = (((np.pi * grainOuterRadius ** 2) - (np.pi * grainInnerRadius ** 2)) * totalHeight)
+motor_11_inertia = (1/12)*dryMotorMass*(grainOuterRadius)**2
 motor_density = propellant_mass/motor_volume
-motor_33_inertia = ((1/4)*dryMotorMass*(motorRadius)**2) + (1/12)*dryMotorMass*(motorLength)**2
+motor_33_inertia = ((1/4)*dryMotorMass*(grainOuterRadius)**2) + (1/12)*dryMotorMass*(motorLength)**2
 the_motor_position = spLength + nose_cone_length + grainHeight/2 - (totalHeight)/2
 the_motor_center_of_dry_mass_position = the_motor_position
 
@@ -166,8 +173,8 @@ interpolation_method = "linear"
 thrust = Function(thrust_source, "Time (s)", "Thrust (N)", interpolation_method, "zero")
 impulse = thrust.integral(0, burn_time)
 
-spCentralAxis = (spRadius**2)*spMass*2/12
-spCentralDiameter = ((1/4)*spMass*(spRadius)**2) + (1/12)*spMass*(totalHeight)**2
+spCentralAxis = (spRadius**2)*spMass*1/2
+spCentralDiameter = ((1/4)*spMass*(spRadius)**2) + (1/12)*spMass*(spLength)**2
 rocket_center_of_dry_mass_position = (the_center_of_mass_without_motor * spMass + the_motor_center_of_dry_mass_position * dryMotorMass) / (dryMotorMass + spMass)
 
 power_off = 1

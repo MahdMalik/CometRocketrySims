@@ -19,6 +19,8 @@
 
 
 
+float division by zero
+{'rocket_mass': 16.654824304225382, 'motor_dry_mass': 4.896972183297544, 'motor_dry_mass_position': 0.4931622860515742, 'impulse': 8983.034089857414, 'nozzle_radius': 0.039721249071177515, 'throat_radius': 0.015079224721509936, 'grain_density': 1706.4635585935612, 'grain_initial_inner_radius': 0.021684742555641404, 'grain_initial_height': 0.12926992486642902, 'grains_center_of_mass_position': -3.020040604991988, 'inclination': 79.98583312861064, 'heading': 84.781782372071, 'cd_s_drogue': 0.2735081766838123, 'cd_s_light': 16.068814065319113, 'lag_rec': 0.10990230821222201, 'lag_se': 0.16358275600294792, 'temperature': 304.84529188127186, 'atmosphere_pressure': 85749.26704068783, 'rocket_CM': 2.0321490740260044, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.58}
 
 
 
@@ -57,5 +59,4 @@
 
 
 
-
-Completed 15000 iterations successfully. Total CPU time: 0.265625 s. Total wall time: 743.8607654571533 s
+Completed 100020 iterations successfully. Total CPU time: 1.125 s. Total wall time: 4433.893305301666 s
