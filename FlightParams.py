@@ -8,10 +8,10 @@ import numpy as np
 varyingPossibilities = ["airbrake", "finposition"]
 varyingVariable = varyingPossibilities[1]
 
-numberSims = 2
-processes = 2
+numberSims = 100020
+processes = 60
 
-generatedFilesLocation ="AAAA/"
+generatedFilesLocation ="AAA/"
 
 #motor
 propellant_mass = 4.898
