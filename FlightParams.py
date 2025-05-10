@@ -11,7 +11,7 @@ varyingVariable = varyingPossibilities[1]
 numberSims = 100020
 processes = 60
 
-generatedFilesLocation ="AAAA/"
+generatedFilesLocation ="IrecSims/"
 
 #motor
 propellant_mass = 4.898
