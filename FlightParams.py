@@ -8,8 +8,11 @@ import numpy as np
 varyingPossibilities = ["airbrake", "finposition"]
 varyingVariable = varyingPossibilities[1]
 
-numberSims = 100020
-processes = 60
+numberSims = 5
+processes = 5
+
+latitude = 31.0437
+longitude = -103.532806
 
 generatedFilesLocation ="IrecSims/"
 

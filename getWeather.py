@@ -15,15 +15,12 @@ url = "https://api.open-meteo.com/v1/forecast"
 params = {
 	"latitude": 31.0437,
 	"longitude": -103.532806,
-	"hourly": ["temperature_2m", "wind_speed_10m", "wind_speed_100m", "wind_direction_10m", "wind_direction_100m", "wind_gusts_10m", "wind_speed_700hPa", "wind_speed_850hPa", "wind_speed_925hPa", "wind_speed_1000hPa", "wind_direction_1000hPa", "wind_direction_925hPa", "wind_direction_850hPa", "wind_direction_700hPa", "temperature_100m", "temperature_925hPa", "temperature_850hPa", "temperature_700hPa"],
+    "hourly": ["temperature_2m", "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m", "wind_speed_700hPa", "wind_speed_850hPa", "wind_speed_925hPa", "wind_direction_925hPa", "wind_direction_850hPa", "wind_direction_700hPa", "temperature_925hPa", "temperature_850hPa", "temperature_700hPa"],
 	"models": "ecmwf_ifs025",
-    "start_date": "2025-06-11",
-	"end_date": "2025-06-13"
+	"timezone": "America/Chicago",
+	"forecast_days": 1
 }
-
-
 responses = openmeteo.weather_api(url, params=params)
-
 
 # Process first location. Add a for-loop for multiple locations or weather models
 response = responses[0]
@@ -36,22 +33,17 @@ print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
 hourly = response.Hourly()
 hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
 hourly_wind_speed_10m = hourly.Variables(1).ValuesAsNumpy()
-hourly_wind_speed_100m = hourly.Variables(2).ValuesAsNumpy()
-hourly_wind_direction_10m = hourly.Variables(3).ValuesAsNumpy()
-hourly_wind_direction_100m = hourly.Variables(4).ValuesAsNumpy()
-hourly_wind_gusts_10m = hourly.Variables(5).ValuesAsNumpy()
-hourly_wind_speed_700hPa = hourly.Variables(6).ValuesAsNumpy()
-hourly_wind_speed_850hPa = hourly.Variables(7).ValuesAsNumpy()
-hourly_wind_speed_925hPa = hourly.Variables(8).ValuesAsNumpy()
-hourly_wind_speed_1000hPa = hourly.Variables(9).ValuesAsNumpy()
-hourly_wind_direction_1000hPa = hourly.Variables(10).ValuesAsNumpy()
-hourly_wind_direction_925hPa = hourly.Variables(11).ValuesAsNumpy()
-hourly_wind_direction_850hPa = hourly.Variables(12).ValuesAsNumpy()
-hourly_wind_direction_700hPa = hourly.Variables(13).ValuesAsNumpy()
-hourly_temperature_1000hPa = hourly.Variables(14).ValuesAsNumpy()
-hourly_temperature_925hPa = hourly.Variables(15).ValuesAsNumpy()
-hourly_temperature_850hPa = hourly.Variables(16).ValuesAsNumpy()
-hourly_temperature_700hPa = hourly.Variables(17).ValuesAsNumpy()
+hourly_wind_direction_10m = hourly.Variables(2).ValuesAsNumpy()
+hourly_wind_gusts_10m = hourly.Variables(3).ValuesAsNumpy()
+hourly_wind_speed_700hPa = hourly.Variables(4).ValuesAsNumpy()
+hourly_wind_speed_850hPa = hourly.Variables(5).ValuesAsNumpy()
+hourly_wind_speed_925hPa = hourly.Variables(6).ValuesAsNumpy()
+hourly_wind_direction_925hPa = hourly.Variables(7).ValuesAsNumpy()
+hourly_wind_direction_850hPa = hourly.Variables(8).ValuesAsNumpy()
+hourly_wind_direction_700hPa = hourly.Variables(9).ValuesAsNumpy()
+hourly_temperature_925hPa = hourly.Variables(10).ValuesAsNumpy()
+hourly_temperature_850hPa = hourly.Variables(11).ValuesAsNumpy()
+hourly_temperature_700hPa = hourly.Variables(12).ValuesAsNumpy()
 
 hourly_data = {"date": pd.date_range(
 	start = pd.to_datetime(hourly.Time(), unit = "s", utc = True),
@@ -62,24 +54,20 @@ hourly_data = {"date": pd.date_range(
 
 hourly_data["temperature_2m"] = hourly_temperature_2m
 hourly_data["wind_speed_10m"] = hourly_wind_speed_10m
-hourly_data["wind_speed_100m"] = hourly_wind_speed_100m
 hourly_data["wind_direction_10m"] = hourly_wind_direction_10m
-hourly_data["wind_direction_100m"] = hourly_wind_direction_100m
 hourly_data["wind_gusts_10m"] = hourly_wind_gusts_10m
 hourly_data["wind_speed_700hPa"] = hourly_wind_speed_700hPa
 hourly_data["wind_speed_850hPa"] = hourly_wind_speed_850hPa
 hourly_data["wind_speed_925hPa"] = hourly_wind_speed_925hPa
-hourly_data["wind_speed_1000hPa"] = hourly_wind_speed_1000hPa
-hourly_data["wind_direction_1000hPa"] = hourly_wind_direction_1000hPa
 hourly_data["wind_direction_925hPa"] = hourly_wind_direction_925hPa
 hourly_data["wind_direction_850hPa"] = hourly_wind_direction_850hPa
 hourly_data["wind_direction_700hPa"] = hourly_wind_direction_700hPa
-hourly_data["temperature_1000hPa"] = hourly_temperature_1000hPa
 hourly_data["temperature_925hPa"] = hourly_temperature_925hPa
 hourly_data["temperature_850hPa"] = hourly_temperature_850hPa
 hourly_data["temperature_700hPa"] = hourly_temperature_700hPa
 
 hourly_dataframe = pd.DataFrame(data = hourly_data)
+print(hourly_dataframe)
 
 hourly_dataframe.to_csv("wallahiThisBetterWork1.csv", index=False)
 
