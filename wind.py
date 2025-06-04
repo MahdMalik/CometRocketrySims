@@ -51,6 +51,8 @@ def makeWind(hour):
     wind_speed_925hPa = hourly.Variables(11).ValuesAsNumpy()[hour] / 3600 * 1000
     wind_speed_100m = hourly.Variables(12).ValuesAsNumpy()[hour] / 3600 * 1000
     wind_direction_100m = hourly.Variables(13).ValuesAsNumpy()[hour]
+
+    print("wind speed: " + str(wind_speed_100m))
     
     wind_u = [[10, wind_speed_10m * math.cos((((360-wind_direction_10m)-90)*math.pi)/180)], 
               [100, wind_speed_100m * math.cos((((360-wind_direction_100m)-90)*math.pi)/180)], 

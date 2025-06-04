@@ -8,8 +8,8 @@ import numpy as np
 varyingPossibilities = ["airbrake", "finposition"]
 varyingVariable = varyingPossibilities[1]
 
-numberSims = 5
-processes = 5
+numberSims = 1
+processes = 1
 
 latitude = 31.0437
 longitude = -103.532806
