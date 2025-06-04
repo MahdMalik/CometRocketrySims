@@ -25,22 +25,22 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         # env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= windArray_u(0,5), wind_v= windArray_v(0,5)) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
         MotorOne = SolidMotor(
             thrust_source="ReferencedFiles/" + FlightParams.motor_thrust_file, #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
-            burn_time = setting["burn_time"],#Straight from thrustcurve.org
-            reshape_thrust_curve=(setting["burn_time"], setting["impulse"]),
+            burn_time = FlightParams.burn_time,#Straight from thrustcurve.org
+            reshape_thrust_curve=(FlightParams.burn_time, setting["impulse"]),
             nozzle_radius= setting["nozzle_radius"], # Part List
             throat_radius= setting["throat_radius"], # Part List
             grain_number=FlightParams.numGrains, #Based on cross-section
-            grain_separation= setting["grain_separation"], # Good
+            grain_separation= FlightParams.grainSeparation, # Good
             grain_density= setting["grain_density"], #Calculated mass of grain / volume of grain , for this i did - the core since it should be empty? not sure
-            grain_outer_radius= setting["grain_outer_radius"], # Good
+            grain_outer_radius= FlightParams.grainOuterRadius, # Good
             grain_initial_inner_radius= setting["grain_initial_inner_radius"], # Good
             grain_initial_height= setting["grain_initial_height"] , # Good
             interpolation_method = "linear",
             coordinate_system_orientation="combustion_chamber_to_nozzle",
-            nozzle_position = setting["nozzle_position"],#eyeballed
+            nozzle_position = FlightParams.the_nozzle_position,#eyeballed
             grains_center_of_mass_position= FlightParams.grain_center_of_mass_position,
             dry_mass=setting["motor_dry_mass"], #kg thrustcurve
-            dry_inertia=(setting["motor_inertia_11"], setting["motor_inertia_11"], setting["motor_inertia_33"]), #based off drawing
+            dry_inertia=(FlightParams.motor_11_inertia, FlightParams.motor_11_inertia, FlightParams.motor_33_inertia), #based off drawing
             center_of_dry_mass_position= FlightParams.center_of_dry_mass_within_motor,
         )
 
@@ -48,8 +48,8 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
 
         Sp25 = Rocket(
             mass = setting["rocket_mass"], #OpenRocket
-            radius = setting["radius"], #OpenRocket
-            inertia = (setting["rocket_inertia_11"], setting["rocket_inertia_11"],setting["rocket_inertia_33"]), # Calculated via Open Rocket
+            radius = FlightParams.spRadius, #OpenRocket
+            inertia = (FlightParams.spCentralDiameter, FlightParams.spCentralDiameter, FlightParams.spCentralAxis), # Calculated via Open Rocket
             coordinate_system_orientation = "nose_to_tail",
             center_of_mass_without_motor = setting["rocket_CM"], # OpenRocket
             power_off_drag ="ReferencedFiles/" + str(FlightParams.power_off_file), #Uploaded to drive
@@ -64,7 +64,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             length = FlightParams.nose_cone_length, kind = FlightParams.nose_cone_type, position = FlightParams.nose_position)
         fin_set = Sp25.add_trapezoidal_fins(n=FlightParams.numFins, root_chord= FlightParams.root_chord, tip_chord=FlightParams.tip_chord, span=FlightParams.finSpan,
             position = setting["fin_position"],cant_angle=FlightParams.fin_cant_angle, sweep_length=FlightParams.fin_sweep_length)
-        boattail = Sp25.add_tail(top_radius = setting["radius"], bottom_radius = FlightParams.boattail_bottom_radius,length = FlightParams.bottail_length,position = FlightParams.boattailPos)
+        boattail = Sp25.add_tail(top_radius = FlightParams.spRadius, bottom_radius = FlightParams.boattail_bottom_radius,length = FlightParams.bottail_length,position = FlightParams.boattailPos)
 
         if(setting["time_to_deploy_airbrake_after_burnout"] != -1):
             Sp25.add_air_brakes(
@@ -79,7 +79,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
                 airbrake_time = setting["time_to_deploy_airbrake_after_burnout"]
             )
 
-        Sp25.add_motor(MotorOne, setting["motor_position"])
+        Sp25.add_motor(MotorOne, FlightParams.the_motor_position)
         
         rail_buttons = Sp25.set_rail_buttons(
             upper_button_position= FlightParams.upper_railbutton_position,
