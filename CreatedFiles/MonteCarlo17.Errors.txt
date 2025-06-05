@@ -3,9 +3,13 @@
 
 
 
+<<<<<<< HEAD
 
 
 
 
 
 Completed 1 iterations successfully. Total CPU time: 0.125 s. Total wall time: 9.37385082244873 s
+=======
+Completed 5 iterations successfully. Total CPU time: 0.046875 s. Total wall time: 7.888748407363892 s
+>>>>>>> 92d5a39e62ef8a30dd5d338d485cfe177256bd3f

@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 {'out_of_rail_time': 0.3533301701981642, 'out_of_rail_velocity': np.float64(33.586994554936155), 'max_velocity': np.float64(302.5380840739076), 'apogee_time': np.float64(23.21690548907758), 'apogee_altitude': np.float64(2965.6447174052214), 'apogee_x': np.float64(911.1539071696325), 'apogee_y': np.float64(-28.633689252741824), 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': np.float64(1.5131645296753464), 'out_of_rail_static_margin': np.float64(1.5536861750076152), 'out_of_rail_stability_margin': np.float64(1.5568131590280978), 'execution_time': 5.3125}
 
 {'out_of_rail_time': 0.3533301701981642, 'out_of_rail_velocity': np.float64(33.586994554936155), 'max_velocity': np.float64(302.5380840739076), 'apogee_time': np.float64(23.21690548907758), 'apogee_altitude': np.float64(2965.6447174052214), 'apogee_x': np.float64(911.1539071696325), 'apogee_y': np.float64(-28.633689252741824), 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': np.float64(1.5131645296753464), 'out_of_rail_static_margin': np.float64(1.5536861750076152), 'out_of_rail_stability_margin': np.float64(1.5568131590280978), 'execution_time': 5.28125}
@@ -19,3 +20,15 @@
 
 {'out_of_rail_time': 0.3533301701981642, 'out_of_rail_velocity': np.float64(33.586994554936155), 'max_velocity': np.float64(302.5380840739076), 'apogee_time': np.float64(23.21690548907758), 'apogee_altitude': np.float64(2965.6447174052214), 'apogee_x': np.float64(911.1539071696325), 'apogee_y': np.float64(-28.633689252741824), 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': np.float64(1.5131645296753464), 'out_of_rail_static_margin': np.float64(1.5536861750076152), 'out_of_rail_stability_margin': np.float64(1.5568131590280978), 'execution_time': 5.265625}
 Completed 1 iterations successfully. Total CPU time: 0.140625 s. Total wall time: 9.874729633331299 s
+=======
+{'out_of_rail_time': 0.3544242071091993, 'out_of_rail_velocity': 33.46312082363945, 'max_velocity': 301.5864745267381, 'apogee_time': 23.58510388786144, 'apogee_altitude': 3056.139739419205, 'apogee_x': 221.00920983930348, 'apogee_y': 149.55456966269605, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5556933112079974, 'out_of_rail_static_margin': 1.5978831344232294, 'out_of_rail_stability_margin': 1.6008092790625263, 'execution_time': 4.125}
+
+{'out_of_rail_time': 0.35312022167799834, 'out_of_rail_velocity': 33.60831362224605, 'max_velocity': 303.2552750991552, 'apogee_time': 23.63383202543897, 'apogee_altitude': 3071.673695575148, 'apogee_x': 288.06417371860636, 'apogee_y': 171.90787537395397, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5309259385146834, 'out_of_rail_static_margin': 1.5713844435372168, 'out_of_rail_stability_margin': 1.5743259296019456, 'execution_time': 4.1875}
+
+{'out_of_rail_time': 0.35412632758750634, 'out_of_rail_velocity': 33.50056260780145, 'max_velocity': 301.92725747115276, 'apogee_time': 23.571253781710325, 'apogee_altitude': 3053.3180836116258, 'apogee_x': 274.4256669151594, 'apogee_y': 158.06116808419122, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5039584308224947, 'out_of_rail_static_margin': 1.5448549257814053, 'out_of_rail_stability_margin': 1.5477757547607582, 'execution_time': 4.28125}
+
+{'out_of_rail_time': 0.353581350875132, 'out_of_rail_velocity': 33.56200185606166, 'max_velocity': 304.05030964997655, 'apogee_time': 23.71328051469662, 'apogee_altitude': 3091.8258705492203, 'apogee_x': 251.653878486188, 'apogee_y': 195.04349829560846, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.508559610411218, 'out_of_rail_static_margin': 1.5502303786246918, 'out_of_rail_stability_margin': 1.5531319534015602, 'execution_time': 4.40625}
+
+{'out_of_rail_time': 0.35340342673976, 'out_of_rail_velocity': 33.579742338243015, 'max_velocity': 302.43705716634145, 'apogee_time': 23.48275629279743, 'apogee_altitude': 3041.963695749169, 'apogee_x': 184.44281609988488, 'apogee_y': 150.19664248980294, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5550739860623952, 'out_of_rail_static_margin': 1.596725922184455, 'out_of_rail_stability_margin': 1.5997056881696081, 'execution_time': 4.546875}
+Completed 5 iterations successfully. Total CPU time: 0.09375 s. Total wall time: 8.392404794692993 s
+>>>>>>> 92d5a39e62ef8a30dd5d338d485cfe177256bd3f
