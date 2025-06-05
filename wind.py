@@ -22,6 +22,9 @@ def makeWind(hour, day):
     current_date = now.date()  
     current_date = str(current_date)
 
+    if(day < 10):
+        day = "0" + str(day)
+
     params = {
         "latitude": FlightParams.latitude,
         "longitude": FlightParams.longitude,
