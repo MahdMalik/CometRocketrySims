@@ -10,7 +10,7 @@ import requests_cache
 from retry_requests import retry
 
 
-def makeWind(hour):
+def makeWind(hour, day):
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
@@ -28,17 +28,14 @@ def makeWind(hour):
         "hourly": ["temperature_2m", "temperature_925hPa", "temperature_850hPa", "temperature_700hPa", "wind_speed_10m", "wind_speed_100m", "wind_speed_925hPa", "wind_speed_850hPa", "wind_speed_700hPa", "wind_direction_10m",  "wind_direction_100m", "wind_direction_925hPa", "wind_direction_850hPa", "wind_direction_700hPa"],
         "models": "ecmwf_ifs025",
         "timezone": "America/Chicago",
-        "start_date": "2025-06-11",
-        "end_date": "2025-06-11"
+        "start_date": f"2025-06-{day}",
+        "end_date": f"2025-06-{day}"
     }
 
     responses = openmeteo.weather_api(url, params=params)
     response = responses[0]
 
     hourly = response.Hourly()
-
-    print("Data: ")
-    print(hourly.Variables(0).ValuesAsNumpy()[hour])
 
     temperature_2m = hourly.Variables(0).ValuesAsNumpy()[hour]
     temperature_925hPa = hourly.Variables(1).ValuesAsNumpy()[hour]
