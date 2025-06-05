@@ -112,8 +112,6 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
             inputOutput = export_flight_data(setting, testFlight, process_time() - start_time, env)
             flightData[0] += "\n" + str(inputOutput[0])
             flightData[1] += "\n" + str(inputOutput[1])
-
-            testFlight.all_info()
         except Exception as E:
             flightData[2] += str(E) + "\n" + str(export_flight_error(setting))
         # Register time

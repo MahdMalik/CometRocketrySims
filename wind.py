@@ -28,8 +28,8 @@ def makeWind(hour):
         "hourly": ["temperature_2m", "temperature_925hPa", "temperature_850hPa", "temperature_700hPa", "wind_speed_10m", "wind_speed_100m", "wind_speed_925hPa", "wind_speed_850hPa", "wind_speed_700hPa", "wind_direction_10m",  "wind_direction_100m", "wind_direction_925hPa", "wind_direction_850hPa", "wind_direction_700hPa"],
         "models": "ecmwf_ifs025",
         "timezone": "America/Chicago",
-        "start_date": current_date,
-        "end_date": current_date
+        "start_date": "2025-06-11",
+        "end_date": "2025-06-11"
     }
 
     responses = openmeteo.weather_api(url, params=params)
@@ -38,21 +38,19 @@ def makeWind(hour):
     hourly = response.Hourly()
 
     temperature_2m = hourly.Variables(0).ValuesAsNumpy()[hour]
-    wind_speed_10m = hourly.Variables(1).ValuesAsNumpy()[hour] / 3600 * 1000
-    wind_direction_10m = hourly.Variables(2).ValuesAsNumpy()[hour]
-    wind_speed_700hPa = hourly.Variables(3).ValuesAsNumpy()[hour] / 3600 * 1000
-    wind_speed_850hPa = hourly.Variables(4).ValuesAsNumpy()[hour] / 3600 * 1000
-    wind_direction_925hPa = hourly.Variables(5).ValuesAsNumpy()[hour]
-    wind_direction_850hPa = hourly.Variables(6).ValuesAsNumpy()[hour]
-    wind_direction_700hPa = hourly.Variables(7).ValuesAsNumpy()[hour]
-    temperature_925hPa = hourly.Variables(8).ValuesAsNumpy()[hour]
-    temperature_850hPa = hourly.Variables(9).ValuesAsNumpy()[hour]
-    temperature_700hPa = hourly.Variables(10).ValuesAsNumpy()[hour]
-    wind_speed_925hPa = hourly.Variables(11).ValuesAsNumpy()[hour] / 3600 * 1000
-    wind_speed_100m = hourly.Variables(12).ValuesAsNumpy()[hour] / 3600 * 1000
-    wind_direction_100m = hourly.Variables(13).ValuesAsNumpy()[hour]
-
-    print("wind speed: " + str(wind_speed_100m))
+    temperature_925hPa = hourly.Variables(1).ValuesAsNumpy()[hour]
+    temperature_850hPa = hourly.Variables(2).ValuesAsNumpy()[hour]
+    temperature_700hPa = hourly.Variables(3).ValuesAsNumpy()[hour]
+    wind_speed_10m = hourly.Variables(4).ValuesAsNumpy()[hour] / 3600 * 1000
+    wind_speed_100m = hourly.Variables(5).ValuesAsNumpy()[hour] / 3600 * 1000
+    wind_speed_925hPa = hourly.Variables(6).ValuesAsNumpy()[hour] / 3600 * 1000
+    wind_speed_850hPa = hourly.Variables(7).ValuesAsNumpy()[hour] / 3600 * 1000
+    wind_speed_700hPa = hourly.Variables(8).ValuesAsNumpy()[hour] / 3600 * 1000
+    wind_direction_10m = hourly.Variables(9).ValuesAsNumpy()[hour]
+    wind_direction_100m = hourly.Variables(10).ValuesAsNumpy()[hour]
+    wind_direction_925hPa = hourly.Variables(11).ValuesAsNumpy()[hour]
+    wind_direction_850hPa = hourly.Variables(12).ValuesAsNumpy()[hour]
+    wind_direction_700hPa = hourly.Variables(13).ValuesAsNumpy()[hour]
     
     wind_u = [[10, wind_speed_10m * math.cos((((360-wind_direction_10m)-90)*math.pi)/180)], 
               [100, wind_speed_100m * math.cos((((360-wind_direction_100m)-90)*math.pi)/180)], 
