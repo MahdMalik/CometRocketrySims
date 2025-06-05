@@ -5,11 +5,16 @@ import numpy as np
 # HERE ARE THE VARIABLES YOU WILL HAVE TO CHANGE
 
 #other stuff
-varyingPossibilities = ["airbrake", "finposition"]
-varyingVariable = varyingPossibilities[1]
+varyingPossibilities = ["airbrake", "finposition", "weatherHour"]
+varyingVariable = varyingPossibilities[2]
 
-numberSims = 15000
-processes = 60
+numberSims = 5
+processes = 5
+
+latitude = 31.0437
+longitude = -103.532806
+
+generatedFilesLocation ="IrecSims/"
 
 #motor
 propellant_mass = 4.898
