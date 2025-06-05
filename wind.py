@@ -37,6 +37,9 @@ def makeWind(hour):
 
     hourly = response.Hourly()
 
+    print("Data: ")
+    print(hourly.Variables(0).ValuesAsNumpy()[hour])
+
     temperature_2m = hourly.Variables(0).ValuesAsNumpy()[hour]
     temperature_925hPa = hourly.Variables(1).ValuesAsNumpy()[hour]
     temperature_850hPa = hourly.Variables(2).ValuesAsNumpy()[hour]
