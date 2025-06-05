@@ -9,7 +9,7 @@ varyingPossibilities = ["airbrake", "finposition", "weatherHour"]
 varyingVariable = varyingPossibilities[2]
 
 numberSims = 1
-processes = 10
+processes = 1
 
 latitude = 31.0437
 longitude = -103.532806
