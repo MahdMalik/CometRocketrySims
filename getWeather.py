@@ -21,11 +21,11 @@ current_date = str(current_date)
 params = {
 	"latitude": FlightParams.latitude,
 	"longitude": FlightParams.longitude,
-	"hourly": ["temperature_2m", "temperature_925hPa", "temperature_850hPa", "temperature_700hPa", "wind_speed_10m", "wind_speed_100m", "wind_speed_925hPa", "wind_speed_850hPa", "wind_speed_700hPa", "wind_direction_10m",  "wind_direction_100m", "wind_direction_925hPa", "wind_direction_850hPa", "wind_direction_700hPa"],
+	"hourly": ["wind_speed_10m", "wind_speed_100m", "wind_speed_925hPa", "wind_speed_850hPa", "wind_speed_700hPa", "wind_direction_10m",  "wind_direction_100m", "wind_direction_925hPa", "wind_direction_850hPa", "wind_direction_700hPa"],
 	"models": "ecmwf_ifs025",
     "timezone": "America/Chicago",
-	"start_date": "2025-06-11",
-	"end_date": "2025-06-11"
+	"start_date": "2025-05-32",
+	"end_date": "2025-05-32"
 }
 responses = openmeteo.weather_api(url, params=params)
 
@@ -38,20 +38,16 @@ print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
 
 # Process hourly data. The order of variables needs to be the same as requested.
 hourly = response.Hourly()
-hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
-hourly_temperature_925hPa = hourly.Variables(1).ValuesAsNumpy()
-hourly_temperature_850hPa = hourly.Variables(2).ValuesAsNumpy()
-hourly_temperature_700hPa = hourly.Variables(3).ValuesAsNumpy()
-hourly_wind_speed_10m = hourly.Variables(4).ValuesAsNumpy() / 3600 * 1000
-hourly_wind_speed_100m = hourly.Variables(5).ValuesAsNumpy() / 3600 * 1000
-hourly_wind_speed_925hPa = hourly.Variables(6).ValuesAsNumpy() / 3600 * 1000
-hourly_wind_speed_850hPa = hourly.Variables(7).ValuesAsNumpy() / 3600 * 1000
-hourly_wind_speed_700hPa = hourly.Variables(8).ValuesAsNumpy() / 3600 * 1000
-hourly_wind_direction_10m = hourly.Variables(9).ValuesAsNumpy()
-hourly_wind_direction_100m = hourly.Variables(10).ValuesAsNumpy()
-hourly_wind_direction_925hPa = hourly.Variables(11).ValuesAsNumpy()
-hourly_wind_direction_850hPa = hourly.Variables(12).ValuesAsNumpy()
-hourly_wind_direction_700hPa = hourly.Variables(13).ValuesAsNumpy()
+hourly_wind_speed_10m = hourly.Variables(0).ValuesAsNumpy() / 3600 * 1000
+hourly_wind_speed_100m = hourly.Variables(1).ValuesAsNumpy() / 3600 * 1000
+hourly_wind_speed_925hPa = hourly.Variables(2).ValuesAsNumpy() / 3600 * 1000
+hourly_wind_speed_850hPa = hourly.Variables(3).ValuesAsNumpy() / 3600 * 1000
+hourly_wind_speed_700hPa = hourly.Variables(4).ValuesAsNumpy() / 3600 * 1000
+hourly_wind_direction_10m = hourly.Variables(5).ValuesAsNumpy()
+hourly_wind_direction_100m = hourly.Variables(6).ValuesAsNumpy()
+hourly_wind_direction_925hPa = hourly.Variables(7).ValuesAsNumpy()
+hourly_wind_direction_850hPa = hourly.Variables(8).ValuesAsNumpy()
+hourly_wind_direction_700hPa = hourly.Variables(9).ValuesAsNumpy()
 
 print(hourly.Time())
 print(hourly.TimeEnd())
@@ -63,10 +59,6 @@ hourly_data = {"date": pd.date_range(
 	inclusive = "left"
 )}
 
-hourly_data["temperature_2m"] = hourly_temperature_2m
-hourly_data["temperature_925hPa"] = hourly_temperature_925hPa
-hourly_data["temperature_850hPa"] = hourly_temperature_850hPa
-hourly_data["temperature_700hPa"] = hourly_temperature_700hPa
 hourly_data["wind_speed_10m"] = hourly_wind_speed_10m
 hourly_data["wind_speed_100m"] = hourly_wind_speed_100m
 hourly_data["wind_speed_925hPa"] = hourly_wind_speed_925hPa
