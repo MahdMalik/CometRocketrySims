@@ -136,7 +136,7 @@ def getAverageWindPerWeekFromHour(hour):
     currentMonth = datetime.now().month
 
     while(True):
-        data = getWeatherFromApi(currentDay, currentMonth, hour)
+        data = getWeatherFromApi(currentMonth, currentDay, hour)
         weatherData["wind_speed_10m"] += data["wind_speed_10m"] / daysInWeek
         weatherData["wind_speed_100m"] += data["wind_speed_100m"] / daysInWeek
         weatherData["wind_speed_925hPa"] += data["wind_speed_925hPa"] / daysInWeek
@@ -162,7 +162,7 @@ def getAverageWindPerWeekFromHour(hour):
 
 def makeWind(day, hour):    
     month = datetime.now().month
-    weather = getWeatherFromApi(day, month, hour)
+    weather = getWeatherFromApi(month, day, hour)
     return getFinalWindFromWeatherDictionary(weather)
 
 def windArray_u(direction, speed):
