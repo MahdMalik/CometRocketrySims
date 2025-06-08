@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 {'out_of_rail_time': 0.35375839426766326, 'out_of_rail_velocity': 33.538957966741755, 'max_velocity': 301.93837776188644, 'apogee_time': 23.284736523066574, 'apogee_altitude': 2984.956838113944, 'apogee_x': 637.7570809113699, 'apogee_y': -236.7660898918077, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5908415090840915, 'out_of_rail_static_margin': 1.6333086564881658, 'out_of_rail_stability_margin': 1.6364353948307204, 'execution_time': 3.671875}
 
 {'out_of_rail_time': 0.35238355693455753, 'out_of_rail_velocity': 33.69332535294604, 'max_velocity': 303.6408952486111, 'apogee_time': 23.167872481353236, 'apogee_altitude': 2963.055169350367, 'apogee_x': 893.3646013962405, 'apogee_y': -217.6799141404227, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5302561598598685, 'out_of_rail_static_margin': 1.5701489423583792, 'out_of_rail_stability_margin': 1.5733177449773152, 'execution_time': 4.15625}
@@ -19,3 +20,7 @@
 
 {'out_of_rail_time': 0.35340167565337466, 'out_of_rail_velocity': 33.57769620765462, 'max_velocity': 302.42012196735163, 'apogee_time': 23.039288015822383, 'apogee_altitude': 2931.105504652705, 'apogee_x': 909.576005852131, 'apogee_y': -208.35281660543737, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5225157021397535, 'out_of_rail_static_margin': 1.5635802825152885, 'out_of_rail_stability_margin': 1.5667741754864983, 'execution_time': 4.203125}
 Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 8.329140663146973 s
+=======
+{'out_of_rail_time': 0.3533432301830063, 'out_of_rail_velocity': np.float64(33.57979176518925), 'max_velocity': np.float64(302.5110769737861), 'apogee_time': np.float64(23.35475935638636), 'apogee_altitude': np.float64(2998.140390196168), 'apogee_x': np.float64(633.8178318387401), 'apogee_y': np.float64(-361.6805557534401), 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': np.float64(1.5131645296753464), 'out_of_rail_static_margin': np.float64(1.5536881119080506), 'out_of_rail_stability_margin': np.float64(1.55675682399743), 'execution_time': 1.984375}
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.7065720558166504 s
+>>>>>>> d99b30e0607ce811869e5c56a739d036e922460b

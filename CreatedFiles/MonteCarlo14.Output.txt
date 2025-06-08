@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 {'out_of_rail_time': 0.3539413811411986, 'out_of_rail_velocity': 33.513042234976616, 'max_velocity': 301.92857541805, 'apogee_time': 23.25197653997523, 'apogee_altitude': 2970.894846665717, 'apogee_x': 875.9381089767331, 'apogee_y': 8.1318222348783, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.4808602895024001, 'out_of_rail_static_margin': 1.5211435516653324, 'out_of_rail_stability_margin': 1.5242426696091693, 'execution_time': 3.8125}
 
 {'out_of_rail_time': 0.352509921484953, 'out_of_rail_velocity': 33.67737550049407, 'max_velocity': 304.23199085880924, 'apogee_time': 23.302291079138048, 'apogee_altitude': 2991.652907026562, 'apogee_x': 917.4530078959748, 'apogee_y': 9.431679285897733, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5041384897024987, 'out_of_rail_static_margin': 1.5438327374269325, 'out_of_rail_stability_margin': 1.5469767592108725, 'execution_time': 3.734375}
@@ -19,3 +20,7 @@
 
 {'out_of_rail_time': 0.35389744566636444, 'out_of_rail_velocity': 33.52903682422216, 'max_velocity': 301.70362990795564, 'apogee_time': 23.21472376937121, 'apogee_altitude': 2965.2897024162035, 'apogee_x': 812.7778150557591, 'apogee_y': -11.504463065057728, 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': 1.5079231988220383, 'out_of_rail_static_margin': 1.5486676290992987, 'out_of_rail_stability_margin': 1.5518081330938542, 'execution_time': 4.125}
 Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 7.949512720108032 s
+=======
+{'out_of_rail_time': 0.3533175158784276, 'out_of_rail_velocity': np.float64(33.59105011203092), 'max_velocity': np.float64(302.7009398116325), 'apogee_time': np.float64(23.494965451183337), 'apogee_altitude': np.float64(3034.8666393930985), 'apogee_x': np.float64(471.0275722503637), 'apogee_y': np.float64(108.42508178505614), 'impact_x': 0, 'impact_y': 0, 'initial_static_margin': np.float64(1.5131645296753464), 'out_of_rail_static_margin': np.float64(1.5536842982755192), 'out_of_rail_stability_margin': np.float64(1.556667961084173), 'execution_time': 1.890625}
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.657853364944458 s
+>>>>>>> d99b30e0607ce811869e5c56a739d036e922460b

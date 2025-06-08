@@ -1,0 +1,600 @@
+<<<<<<< HEAD
+=======
+TOTAL SIMS IS: 1
+
+
+CURRENT HOUR IS 10, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.9941518306732178 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567680605500074, 1.5567680605500074
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 11, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.8559024333953857 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556786385837268, 1.556786385837268
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 12, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.9731533527374268 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568131590280978, 1.5568131590280978
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 13, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.653414726257324 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568337947554984, 1.5568337947554984
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 2276.5253928790744, y = -130.0987553459246
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 14, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.851764440536499 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568336360673878, 1.5568336360673878
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 2223.4267651442974, y = -122.31139433783008
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 15, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.681293487548828 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.55682565235503, 1.55682565235503
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 16, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.7998757362365723 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568161433660874, 1.5568161433660874
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 17, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.6535346508026123 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568106133135855, 1.5568106133135855
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 18, CURRENT DAY IS: 11
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.782641887664795 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556807237909039, 1.556807237909039
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 10, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.573491334915161 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566851033932132, 1.5566851033932132
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 11, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.686610698699951 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567004366570016, 1.5567004366570016
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 12, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.6876864433288574 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.55672205139146, 1.55672205139146
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 13, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.717707872390747 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567436659443858, 1.5567436659443858
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 14, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.871398448944092 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556760455999252, 1.556760455999252
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 15, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.083393573760986 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567831504582208, 1.5567831504582208
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 16, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.8081066608428955 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568219215909538, 1.5568219215909538
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 17, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.578191041946411 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556871300578631, 1.556871300578631
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 2690.8448936923833, y = 2185.8691664831463
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 18, CURRENT DAY IS: 12
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.659787178039551 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5569367792323472, 1.5569367792323472
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 2853.178356858601, y = 2380.142588855595
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 10, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.842750310897827 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567179209003423, 1.5567179209003423
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 11, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.8134710788726807 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566840474665382, 1.5566840474665382
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 12, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.73169207572937 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566691607105725, 1.5566691607105725
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 13, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.609477996826172 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566678807996397, 1.5566678807996397
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 14, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.657853364944458 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556667961084173, 1.556667961084173
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 15, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.881136894226074 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556673056289738, 1.556673056289738
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 16, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.6451048851013184 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566877399305588, 1.5566877399305588
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 17, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.57285737991333 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567162221406432, 1.5567162221406432
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+CURRENT HOUR IS 18, CURRENT DAY IS: 13
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.7065720558166504 s
+Number of simulations: 1
+Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin - Standard Deviation: 0.000 m
+PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.55675682399743, 1.55675682399743
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Simulated Landing Position x = 0.0, y = 0.0
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+>>>>>>> d99b30e0607ce811869e5c56a739d036e922460b
