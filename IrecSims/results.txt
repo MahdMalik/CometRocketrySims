@@ -1,16 +1,22 @@
-<<<<<<< HEAD
-=======
 TOTAL SIMS IS: 1
 
 
 CURRENT HOUR IS 10, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.9941518306732178 s
+Completed 1 iterations successfully. Total CPU time: 0.046875 s. Total wall time: 4.873929738998413 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567680605500074, 1.5567680605500074
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042002848999125, 1.7042002848999125
 
+
+Apogee Altitude -         Mean Value: 2873.731 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2873.7305434586656, 2873.7305434586656
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -18,7 +24,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -26,13 +31,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 11, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.8559024333953857 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.48225998878479 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556786385837268, 1.556786385837268
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042091277514506, 1.7042091277514506
 
+
+Apogee Altitude -         Mean Value: 2867.948 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2867.947983095439, 2867.947983095439
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -40,7 +53,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -48,13 +60,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 12, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.9731533527374268 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 5.2665324211120605 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568131590280978, 1.5568131590280978
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042237928008352, 1.7042237928008352
 
+
+Apogee Altitude -         Mean Value: 2858.472 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2858.4722799607957, 2858.4722799607957
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -62,7 +82,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -70,13 +89,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 13, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.653414726257324 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.441983461380005 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568337947554984, 1.5568337947554984
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042375726165995, 1.7042375726165995
 
+
+Apogee Altitude -         Mean Value: 2851.166 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2851.166188265467, 2851.166188265467
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -84,7 +111,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 2276.5253928790744, y = -130.0987553459246
 
 
 
@@ -92,13 +118,21 @@ Simulated Landing Position x = 2276.5253928790744, y = -130.0987553459246
 
 
 CURRENT HOUR IS 14, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.851764440536499 s
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 4.771718263626099 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568336360673878, 1.5568336360673878
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042403253633447, 1.7042403253633447
 
+
+Apogee Altitude -         Mean Value: 2851.856 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2851.8562195490454, 2851.8562195490454
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -106,7 +140,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 2223.4267651442974, y = -122.31139433783008
 
 
 
@@ -114,13 +147,21 @@ Simulated Landing Position x = 2223.4267651442974, y = -122.31139433783008
 
 
 CURRENT HOUR IS 15, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.681293487548828 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.533207178115845 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.55682565235503, 1.55682565235503
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.70423923627529, 1.70423923627529
 
+
+Apogee Altitude -         Mean Value: 2855.351 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2855.3509276897557, 2855.3509276897557
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -128,7 +169,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -136,13 +176,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 16, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.7998757362365723 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.669708967208862 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568161433660874, 1.5568161433660874
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042829721348196, 1.7042829721348196
 
+
+Apogee Altitude -         Mean Value: 2831.581 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2831.5806618122065, 2831.5806618122065
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -150,7 +198,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -158,13 +205,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 17, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.6535346508026123 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.536739110946655 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568106133135855, 1.5568106133135855
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042666473060897, 1.7042666473060897
 
+
+Apogee Altitude -         Mean Value: 2841.890 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2841.8895679110665, 2841.8895679110665
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -172,7 +227,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -180,13 +234,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 18, CURRENT DAY IS: 11
-Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.782641887664795 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.403294563293457 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556807237909039, 1.556807237909039
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042963709252485, 1.7042963709252485
 
+
+Apogee Altitude -         Mean Value: 2824.506 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2824.5057755141142, 2824.5057755141142
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -194,7 +256,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -202,13 +263,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 10, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.573491334915161 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 5.023385047912598 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566851033932132, 1.5566851033932132
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7041858344698748, 1.7041858344698748
 
+
+Apogee Altitude -         Mean Value: 2894.778 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2894.7775072260174, 2894.7775072260174
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -216,7 +285,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -224,13 +292,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 11, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.686610698699951 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.98732328414917 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567004366570016, 1.5567004366570016
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.704189684894947, 1.704189684894947
 
+
+Apogee Altitude -         Mean Value: 2886.261 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2886.2612148572966, 2886.2612148572966
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -238,7 +314,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -246,13 +321,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 12, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.6876864433288574 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.813969850540161 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.55672205139146, 1.55672205139146
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042173074997324, 1.7042173074997324
 
+
+Apogee Altitude -         Mean Value: 2862.044 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2862.044171274935, 2862.044171274935
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -260,7 +343,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -268,13 +350,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 13, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.717707872390747 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.9115049839019775 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567436659443858, 1.5567436659443858
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.704237042970712, 1.704237042970712
 
+
+Apogee Altitude -         Mean Value: 2849.625 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2849.6250282055694, 2849.6250282055694
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -282,7 +372,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -290,13 +379,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 14, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.871398448944092 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.725106239318848 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556760455999252, 1.556760455999252
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042302263885183, 1.7042302263885183
 
+
+Apogee Altitude -         Mean Value: 2854.344 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2854.344194571384, 2854.344194571384
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -304,7 +401,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -312,13 +408,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 15, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.083393573760986 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.8223350048065186 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567831504582208, 1.5567831504582208
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042375668869425, 1.7042375668869425
 
+
+Apogee Altitude -         Mean Value: 2851.877 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2851.877417523518, 2851.877417523518
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -326,7 +430,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -334,13 +437,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 16, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.8081066608428955 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.85765814781189 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5568219215909538, 1.5568219215909538
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042170751833619, 1.7042170751833619
 
+
+Apogee Altitude -         Mean Value: 2868.118 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2868.1179186958493, 2868.1179186958493
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -348,7 +459,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -356,13 +466,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 17, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.578191041946411 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.775236129760742 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556871300578631, 1.556871300578631
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042591703945567, 1.7042591703945567
 
+
+Apogee Altitude -         Mean Value: 2840.902 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2840.9021311815713, 2840.9021311815713
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -370,7 +488,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 2690.8448936923833, y = 2185.8691664831463
 
 
 
@@ -378,13 +495,21 @@ Simulated Landing Position x = 2690.8448936923833, y = 2185.8691664831463
 
 
 CURRENT HOUR IS 18, CURRENT DAY IS: 12
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.659787178039551 s
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 4.610122919082642 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5569367792323472, 1.5569367792323472
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042461086813945, 1.7042461086813945
 
+
+Apogee Altitude -         Mean Value: 2848.775 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2848.775494970658, 2848.775494970658
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -392,7 +517,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 2853.178356858601, y = 2380.142588855595
 
 
 
@@ -400,13 +524,21 @@ Simulated Landing Position x = 2853.178356858601, y = 2380.142588855595
 
 
 CURRENT HOUR IS 10, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.842750310897827 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 5.027403354644775 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567179209003423, 1.5567179209003423
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7041892188454129, 1.7041892188454129
 
+
+Apogee Altitude -         Mean Value: 2884.169 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2884.1686524709567, 2884.1686524709567
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -414,7 +546,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -422,13 +553,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 11, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.8134710788726807 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.488706111907959 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566840474665382, 1.5566840474665382
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7041976753346644, 1.7041976753346644
 
+
+Apogee Altitude -         Mean Value: 2876.678 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2876.67842902453, 2876.67842902453
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -436,7 +575,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -444,13 +582,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 12, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.73169207572937 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 5.195892095565796 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566691607105725, 1.5566691607105725
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042145031433047, 1.7042145031433047
 
+
+Apogee Altitude -         Mean Value: 2864.223 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2864.223135725714, 2864.223135725714
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -458,7 +604,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -466,13 +611,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 13, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.609477996826172 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.894791126251221 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566678807996397, 1.5566678807996397
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042365421526728, 1.7042365421526728
 
+
+Apogee Altitude -         Mean Value: 2850.817 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2850.8167704353023, 2850.8167704353023
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -480,7 +633,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -488,13 +640,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 14, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.657853364944458 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 5.2703447341918945 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556667961084173, 1.556667961084173
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7042618084913723, 1.7042618084913723
 
+
+Apogee Altitude -         Mean Value: 2835.346 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2835.3460040069826, 2835.3460040069826
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -502,7 +662,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -510,13 +669,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 15, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 3.881136894226074 s
+Completed 1 iterations successfully. Total CPU time: 0.046875 s. Total wall time: 4.624408721923828 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.556673056289738, 1.556673056289738
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.704297620677815, 1.704297620677815
 
+
+Apogee Altitude -         Mean Value: 2816.395 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2816.3950862593797, 2816.3950862593797
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -524,7 +691,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -532,13 +698,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 16, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.6451048851013184 s
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 5.082899570465088 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5566877399305588, 1.5566877399305588
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7043335718107528, 1.7043335718107528
 
+
+Apogee Altitude -         Mean Value: 2799.495 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2799.494725796737, 2799.494725796737
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -546,7 +720,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -554,13 +727,21 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 17, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.57285737991333 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.988285303115845 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.5567162221406432, 1.5567162221406432
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7043511622304472, 1.7043511622304472
 
+
+Apogee Altitude -         Mean Value: 2790.704 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2790.7041197267195, 2790.7041197267195
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
 
 
 
@@ -568,7 +749,6 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
 
 
 
@@ -576,12 +756,26 @@ Simulated Landing Position x = 0.0, y = 0.0
 
 
 CURRENT HOUR IS 18, CURRENT DAY IS: 13
-Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 3.7065720558166504 s
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.749237537384033 s
 Number of simulations: 1
-Out Of Rail Stability Margin -         Mean Value: 1.557 
+Out Of Rail Stability Margin -         Mean Value: 1.704 
 Out Of Rail Stability Margin - Standard Deviation: 0.000 m
 PROBABILITY THE Out Of Rail Stability Margin IS IN BETWEEN 1.5 AND 4 IS: 100.0%
-There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.55675682399743, 1.55675682399743
+There is a 90% chance that the mean of the Out Of Rail Stability Margin falls within THIS RANGE: 1.7043576898313302, 1.7043576898313302
+
+
+Apogee Altitude -         Mean Value: 2786.802 
+Apogee Altitude - Standard Deviation: 0.000 m
+PROBABILITY THE Apogee Altitude IS IN BETWEEN 3017.52 AND 3078.48 IS: 0.0%
+There is a 90% chance that the mean of the Apogee Altitude falls within THIS RANGE: 2786.8021317818766, 2786.8021317818766
+
+We have the hypothesis that our mean is greater than or equal to 3048. With our critical percent, our critical value is -1.6448536269514729. Then, our test statistic is -inf
+Since our test statistic is more extreme than our critical value, we can reject the null hypothesis that the mean is 3048.
+
+
+
+
+----------------------------------------------------------------------------------------------------
 
 
 
@@ -590,11 +784,3 @@ There is a 90% chance that the mean of the Out Of Rail Stability Margin falls wi
 ----------------------------------------------------------------------------------------------------
 
 
-Simulated Landing Position x = 0.0, y = 0.0
-
-
-
-----------------------------------------------------------------------------------------------------
-
-
->>>>>>> d99b30e0607ce811869e5c56a739d036e922460b

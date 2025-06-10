@@ -17,27 +17,27 @@ longitude = -103.532806
 generatedFilesLocation ="IrecSims/"
 
 #motor
-propellant_mass = 4.898
-dryMotorMass = 4.896
-grainInnerRadius = (43.942 * 10 ** -3) /2
-grainOuterRadius = (82.27 * 10 ** -3) / 2
-grainHeight = 0.127
-the_nozzle_radius = (79.32 * 10 ** -3) / 2
-the_throat_radius= (29.21 * 10 ** -3) / 2
-the_nozzle_position = grainHeight * 3.9
+propellant_mass = 10.476-5.578
+dryMotorMass = 5.578
+grainInnerRadius = .02921/2
+grainOuterRadius = .0806/2
+grainHeight = 0.12488164
+the_nozzle_radius = .05224
+the_throat_radius= .0216
+the_nozzle_position = grainHeight * 4.25
 grain_center_of_mass_position = 0
 center_of_dry_mass_within_motor = 0
-motor_thrust_file = "testthrustcurve.csv"
-burn_time = 4.13
+motor_thrust_file = "updatedthrustcurve.csv"
+burn_time = 3.611
 numGrains = 6
-motorLength = grainHeight * numGrains
-grainSeparation = 0
+grainSeparation = .003175
+motorLength = (grainHeight + grainSeparation) * numGrains - grainSeparation
 
 #rocket general
-spMass = 16.656
-spRadius = 0.155/2
-spLength = .152 + .305 + .559 + .508 + .356 + .152
-the_center_of_mass_without_motor = 1.89
+spMass = 17.052
+spRadius = 0.154686/2
+spLength = 0.152+0.305+0.559+0.864+0.152
+the_center_of_mass_without_motor = 1.809
 power_off_file = "Sp25CDOFF4.24.csv"
 power_on_file = "Sp25CDON4.24.csv"
 
@@ -55,7 +55,7 @@ fin_sweep_length = 0.173
 numFins = 4
 
 #bottail
-boattailPos = 0.813+0.152+0.305+0.559+0.508+0.356+0.152
+boattailPos = 0.813+0.152+0.305+0.559+0.864+0.152
 boattail_bottom_radius = 0.129/2
 bottail_length = 0.203
 
@@ -70,24 +70,24 @@ drogueTrigger = "apogee"
 lightTrigger = 450
 
 #rail buttons
-lower_railbutton_position = 2.79
-upper_railbutton_position = lower_railbutton_position - 0.274
-railbutton_angular_position = 135
+lower_railbutton_position = 2.84
+upper_railbutton_position = 1.96
+railbutton_angular_position = 130
 
 
 #environment
-fahrenheit_temp = 80
+fahrenheit_temp = 85
 envParams = {
-    "latitude": 32.9823279,
-    "longitude": -106.9490122,
-    "elevation": 1400.556,
+    "latitude": 31.043722,
+    "longitude": -103.532806,
+    "elevation": 915,
     "type": "custom_atmosphere",
 }
 
 #final rocket stuff
 inclination = 84
 heading = 90
-rail_length = 5.2
+rail_length = 4.09
 
 #airbrakes
 air_brake_drag_file = "ReferencedFiles/AirbrakeDrag.csv"

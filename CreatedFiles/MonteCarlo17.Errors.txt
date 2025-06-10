@@ -1,15 +1,2 @@
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-Completed 1 iterations successfully. Total CPU time: 0.046875 s. Total wall time: 8.185274839401245 s
-=======
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 3.57285737991333 s
->>>>>>> d99b30e0607ce811869e5c56a739d036e922460b
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.988285303115845 s

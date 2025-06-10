@@ -60,7 +60,7 @@ def getWeatherFromApi(month, day, hour):
 
 def getFinalWindFromWeatherDictionary(weather):
     wind_u = [[10, weather["wind_speed_10m"] * math.cos((((360 - weather["wind_direction_10m"]) - 90) * math.pi) / 180)],
-        [20, (weather["wind_speed_10m"] + (weather["wind_speed_100m"] - weather["wind_speed_10m"]) / 9) * math.cos((((360 - (weather["wind_direction_10m"] + (weather["wind_direction_100m"] - weather["wind_direction_10m"]) / 9)) - 90) * math.pi) / 180)],
+        # [20, (weather["wind_speed_10m"] + (weather["wind_speed_100m"] - weather["wind_speed_10m"]) / 9) * math.cos((((360 - (weather["wind_direction_10m"] + (weather["wind_direction_100m"] - weather["wind_direction_10m"]) / 9)) - 90) * math.pi) / 180)],
         [30, (weather["wind_speed_10m"] + 2 * (weather["wind_speed_100m"] - weather["wind_speed_10m"]) / 9) * math.cos((((360 - (weather["wind_direction_10m"] + 2 * (weather["wind_direction_100m"] - weather["wind_direction_10m"]) / 9)) - 90) * math.pi) / 180)],
         [40, (weather["wind_speed_10m"] + 3 * (weather["wind_speed_100m"] - weather["wind_speed_10m"]) / 9) * math.cos((((360 - (weather["wind_direction_10m"] + 3 * (weather["wind_direction_100m"] - weather["wind_direction_10m"]) / 9)) - 90) * math.pi) / 180)],
         [50, (weather["wind_speed_10m"] + 4 * (weather["wind_speed_100m"] - weather["wind_speed_10m"]) / 9) * math.cos((((360 - (weather["wind_direction_10m"] + 4 * (weather["wind_direction_100m"] - weather["wind_direction_10m"]) / 9)) - 90) * math.pi) / 180)],
