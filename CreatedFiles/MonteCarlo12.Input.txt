@@ -1,3 +1,3 @@
 
 {'rocket_mass': 17.052, 'motor_dry_mass': 5.578, 'motor_dry_mass_position': 0.5453896459036671, 'impulse': 8926.0720303, 'nozzle_radius': 0.05224, 'throat_radius': 0.0216, 'grain_density': 1474.8863164004988, 'grain_initial_inner_radius': 0.014605, 'grain_initial_height': 0.12488164, 'grains_center_of_mass_position': -3.0781855459036667, 'inclination': 84.0, 'heading': 90.0, 'cd_s_drogue': 0.283470896375, 'cd_s_light': 16.0730920625, 'lag_rec': 0.0, 'lag_se': 0.0, 'temperature': 302.59444444444443, 'atmosphere_pressure': 90800.44912625008, 'rocket_CM': 1.9874062540963324, 'time_to_deploy_airbrake_after_burnout': -1.0, 'fin_position': 2.62}
-Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 5.195892095565796 s
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.397391319274902 s
