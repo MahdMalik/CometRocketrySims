@@ -11,6 +11,9 @@ from retry_requests import retry
 
 daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
+#def weekForecast():
+
+# Now Obsolete
 def getWeatherFromApi(month, day, hour):
 
     # Setup the Open-Meteo API client with cache and retry on error
@@ -58,6 +61,7 @@ def getWeatherFromApi(month, day, hour):
     return {"wind_speed_10m": wind_speed_10m, "wind_speed_100m": wind_speed_100m, "wind_speed_925hPa": wind_speed_925hPa, "wind_speed_850hPa": wind_speed_850hPa, "wind_speed_700hPa": wind_speed_700hPa,
             "wind_direction_10m": wind_direction_10m, "wind_direction_100m": wind_direction_100m, "wind_direction_925hPa": wind_direction_925hPa, "wind_direction_850hPa": wind_direction_850hPa, "wind_direction_700hPa": wind_direction_700hPa}
 
+# Now Obsolete
 def getFinalWindFromWeatherDictionary(weather):
     wind_u = [[10, weather["wind_speed_10m"] * math.cos((((360 - weather["wind_direction_10m"]) - 90) * math.pi) / 180)],
         # [20, (weather["wind_speed_10m"] + (weather["wind_speed_100m"] - weather["wind_speed_10m"]) / 9) * math.cos((((360 - (weather["wind_direction_10m"] + (weather["wind_direction_100m"] - weather["wind_direction_10m"]) / 9)) - 90) * math.pi) / 180)],
@@ -123,6 +127,7 @@ def getFinalWindFromWeatherDictionary(weather):
 
     return {"u": wind_u, "v": wind_v}
 
+# Now Obsolete
 def getAverageWindPerWeekFromHour(hour):
     weatherData = {"wind_speed_10m": 0, "wind_speed_100m": 0, "wind_speed_925hPa": 0, "wind_speed_850hPa": 0, "wind_speed_700hPa": 0,
             "wind_direction_10m": 0, "wind_direction_100m": 0, "wind_direction_925hPa": 0, "wind_direction_850hPa": 0, "wind_direction_700hPa": 0}
@@ -160,11 +165,13 @@ def getAverageWindPerWeekFromHour(hour):
     
     return getFinalWindFromWeatherDictionary(weatherData)
 
+# Now Obsolete
 def makeWind(day, hour):    
     month = datetime.now().month
     weather = getWeatherFromApi(month, day, hour)
     return getFinalWindFromWeatherDictionary(weather)
 
+# Now Obsolete
 def windArray_u(direction, speed):
     i = 0
     numReadings = 150 # Total num of wind changes
@@ -199,6 +206,7 @@ def windArray_u(direction, speed):
         row+=1
     return windArrayU
 
+# Now Obsolete
 def windArray_v(direction, speed):
     i = 0
     numReadings = 150

@@ -1,0 +1,6 @@
+<<<<<<< HEAD
+=======
+
+{'out_of_rail_time': 0.2655947496693643, 'out_of_rail_velocity': np.float64(26.53119965330403), 'max_velocity': np.float64(290.5915721992952), 'apogee_time': np.float64(22.896077800135156), 'apogee_altitude': np.float64(2852.4293985829895), 'apogee_x': np.float64(689.2176246844791), 'apogee_y': np.float64(-125.5167420485476), 'impact_x': np.float64(1516.310127939505), 'impact_y': np.float64(502.2576549007436), 'initial_static_margin': np.float64(1.943282462061212), 'out_of_rail_static_margin': np.float64(1.977375822698956), 'out_of_rail_stability_margin': np.float64(1.9792462029963012), 'execution_time': 2.59375}
+Completed 1 iterations successfully. Total CPU time: 0.015625 s. Total wall time: 4.682631254196167 s
+>>>>>>> 4a9f87dca2cd43ef9e289812985aee6852235586

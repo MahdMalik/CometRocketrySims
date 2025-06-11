@@ -1,3 +1,8 @@
 
+<<<<<<< HEAD
 {'out_of_rail_time': 0.26169187189180454, 'out_of_rail_velocity': 26.075403378441955, 'max_velocity': 290.34201262611407, 'apogee_time': 23.033568031108615, 'apogee_altitude': 2885.651938881516, 'apogee_x': 411.7767343695812, 'apogee_y': 58.61258343135647, 'impact_x': 2561.03346474108, 'impact_y': 85.84833903021303, 'initial_static_margin': 1.6678549458364509, 'out_of_rail_static_margin': 1.702413916479977, 'out_of_rail_stability_margin': 1.7041870995368729, 'execution_time': 2.84375}
 Completed 1 iterations successfully. Total CPU time: 0.046875 s. Total wall time: 4.799754858016968 s
+=======
+{'out_of_rail_time': 0.2655938053332514, 'out_of_rail_velocity': np.float64(26.531294512858402), 'max_velocity': np.float64(290.5539671682291), 'apogee_time': np.float64(22.997750655955073), 'apogee_altitude': np.float64(2876.4768896536616), 'apogee_x': np.float64(531.9969612723734), 'apogee_y': np.float64(-121.74298210021172), 'impact_x': np.float64(2403.5936107233033), 'impact_y': np.float64(710.8508610250069), 'initial_static_margin': np.float64(1.943282462061212), 'out_of_rail_static_margin': np.float64(1.9773756811527834), 'out_of_rail_stability_margin': np.float64(1.9792144918090477), 'execution_time': 2.5625}
+Completed 1 iterations successfully. Total CPU time: 0.03125 s. Total wall time: 4.822683572769165 s
+>>>>>>> 4a9f87dca2cd43ef9e289812985aee6852235586

@@ -9,7 +9,7 @@ import FlightParams
 import logging
 
 # Configure logging
-def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_cpu_time, termOnApogee, wind):
+def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_cpu_time, termOnApogee):
     logging.basicConfig(
     filename='app.log',  # Change this to your desired log file
     level=logging.INFO,
@@ -21,7 +21,7 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
     i=0
     for setting in flight_settings(analysis_parameters, numOfSims):
         start_time = process_time()
-        env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u = wind["u"], wind_v = wind["v"]) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
+        env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], file=envParams["file"]) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
         # env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= windArray_u(0,5), wind_v= windArray_v(0,5)) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
         MotorOne = SolidMotor(
             thrust_source="ReferencedFiles/" + FlightParams.motor_thrust_file, #Thrustcurve.org Mike Haberer - Rock Sim, Also uploaded to Google
