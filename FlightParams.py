@@ -81,7 +81,7 @@ envParams = {
     "latitude": 31.043722,
     "longitude": -103.532806,
     "elevation": 915,
-    "type": "Windy",
+    "type": "windy",
     "file": "ECMWF"
 }
 

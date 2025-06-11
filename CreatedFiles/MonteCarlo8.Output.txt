@@ -1,0 +1,3 @@
+
+{'out_of_rail_time': 0.2655934031721644, 'out_of_rail_velocity': 26.532317840959287, 'max_velocity': 290.4522944802248, 'apogee_time': 23.719730301727207, 'apogee_altitude': 2990.0283737964382, 'apogee_x': 486.2805868345681, 'apogee_y': -200.46612324368894, 'impact_x': 985.1180987871456, 'impact_y': -164.19897830449594, 'initial_static_margin': 1.943282462061212, 'out_of_rail_static_margin': 1.9773756208730213, 'out_of_rail_stability_margin': 1.9792423047422705, 'execution_time': 2.34375}
+Completed 1 iterations successfully. Total CPU time: 0.0 s. Total wall time: 4.938040494918823 s
