@@ -36,8 +36,8 @@ motorLength = (grainHeight + grainSeparation) * numGrains - grainSeparation
 #rocket general
 spMass = 17.052
 spRadius = 0.154686/2
-spLength = 0.152+0.305+0.559+0.864+0.152
-the_center_of_mass_without_motor = 1.809
+spLength = 0.152+0.305+0.508+0.864+0.152
+the_center_of_mass_without_motor = 1.78
 power_off_file = "Sp25CDOFF4.24.csv"
 power_on_file = "Sp25CDON4.24.csv"
 
@@ -46,7 +46,7 @@ nose_cone_length = .813
 nose_cone_type = "von karman"
 
 #fins
-the_fin_position = 2.62
+the_fin_position = 2.57
 finSpan = 0.216
 root_chord=0.279
 tip_chord=0.091
@@ -55,7 +55,7 @@ fin_sweep_length = 0.173
 numFins = 4
 
 #bottail
-boattailPos = 0.813+0.152+0.305+0.559+0.864+0.152
+boattailPos = 0.813+0.152+0.305+0.508+0.864+0.152
 boattail_bottom_radius = 0.129/2
 bottail_length = 0.203
 
@@ -70,7 +70,7 @@ drogueTrigger = "apogee"
 lightTrigger = 450
 
 #rail buttons
-lower_railbutton_position = 2.84
+lower_railbutton_position = 2.79
 upper_railbutton_position = 1.96
 railbutton_angular_position = 130
 
@@ -81,13 +81,14 @@ envParams = {
     "latitude": 31.043722,
     "longitude": -103.532806,
     "elevation": 915,
-    "type": "custom_atmosphere",
+    "type": "Windy",
+    "file": "ECMWF"
 }
 
 #final rocket stuff
 inclination = 84
 heading = 90
-rail_length = 4.09
+rail_length = 4.1416
 
 #airbrakes
 air_brake_drag_file = "ReferencedFiles/AirbrakeDrag.csv"
