@@ -11,15 +11,18 @@ import logging
 # Configure logging
 def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_cpu_time, termOnApogee, launchDate):
     logging.basicConfig(
-    filename='app.log',  # Change this to your desired log file
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filemode='a',  # 'w' for overwrite, 'a' for append
+        filename='app.log',  # Change this to your desired log file
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        filemode='a',  # 'w' for overwrite, 'a' for append
     )
     flightData = ["", "", ""]
     env = Environment(latitude=envParams["latitude"], longitude=envParams["longitude"], elevation=envParams["elevation"], date=launchDate)
     i=0
-    for setting in flight_settings(analysis_parameters, numOfSims):
+    
+    settings = flight_settings(analysis_parameters, numOfSims)
+
+    for setting in settings:
         start_time = process_time()
         env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], file=envParams["file"]) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)
         # env.set_atmospheric_model(type=envParams["type"], pressure= setting["atmosphere_pressure"], temperature= setting["temperature"], wind_u= windArray_u(0,5), wind_v= windArray_v(0,5)) # Wind: (wind direction: 0 = North to South wind/90 = East to West wind, wind speed: m/s)

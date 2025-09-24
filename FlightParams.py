@@ -8,8 +8,8 @@ import numpy as np
 varyingPossibilities = ["airbrake", "finposition", "weatherHour"]
 varyingVariable = varyingPossibilities[2]
 
-numberSims = 1
-processes = 1
+numberSims = 105
+processes = 15
 
 latitude = 31.0437
 longitude = -103.532806
@@ -81,7 +81,7 @@ envParams = {
     "latitude": 31.043722,
     "longitude": -103.532806,
     "elevation": 915,
-    "type": "windy",
+    "type": "standard_atmosphere",
     "file": "ECMWF"
 }
 
