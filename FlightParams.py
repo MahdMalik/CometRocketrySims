@@ -8,8 +8,8 @@ import numpy as np
 varyingPossibilities = ["airbrake", "finposition", "weatherHour"]
 varyingVariable = varyingPossibilities[2]
 
-numberSims = 105
-processes = 15
+numberSims = 40
+processes = 10
 
 latitude = 31.0437
 longitude = -103.532806
@@ -128,26 +128,7 @@ def airbrake_controller_function(time, sampling_rate, state, state_history, obse
 
     # Check if the rocket has reached burnout
     if (time > burn_time and deployment_time <= time and altitude_AGL > halfway_to_target):
-        canDeployAirbrake = True
-    # Else calculate the deployment level
-   
-    # else:
-    #     # Controller logic
-    #     new_deployment_level = (
-    #         air_brakes.deployment_level + 0.1 * vz + 0.01 * previous_vz**2
-    #     )
-
-    #     # Limiting the speed of the air_brakes to 0.2 per second
-    #     # Since this function is called every 1/sampling_rate seconds
-    #     # the max change in deployment level per call is 0.2/sampling_rate
-    #     max_change = 0.2 / sampling_rate
-    #     lower_bound = air_brakes.deployment_level - max_change
-    #     upper_bound = air_brakes.deployment_level + max_change
-    #     new_deployment_level = min(max(new_deployment_level, lower_bound), upper_bound)
-
-    #     air_brakes.deployment_level = new_deployment_level
-
-    # Return variables of interest to be saved in the observed_variables list
+        air_brakes.deployment_level = 1
     
     return (
         "airbrake" + str(canDeployAirbrake),
