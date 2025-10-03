@@ -1,3 +1,4 @@
+import math
 from rocketpy.mathutils.function import Function
 from rocketpy.motors import motor
 import numpy as np
@@ -86,7 +87,7 @@ envParams = {
 }
 
 #final rocket stuff
-inclination = 84
+inclination = 89
 heading = 90
 rail_length = 4.1416
 
@@ -99,19 +100,55 @@ airbrake_area = 2 # in meters
 
 halfway_to_target = 1524
 
+def getPitch(q):
+    def quat_conjugate(q):
+        w, x, y, z = q
+        return np.array([w, -x, -y, -z])
+
+    def quat_mul(a, b):
+        aw, ax, ay, az = a
+        bw, bx, by, bz = b
+        return np.array([
+            aw*bw - ax*bx - ay*by - az*bz,
+            aw*bx + ax*bw + ay*bz - az*by,
+            aw*by - ax*bz + ay*bw + az*bx,
+            aw*bz + ax*by - ay*bx + az*bw
+        ])
+
+    def rotate_vector_by_quat(v, q):
+        qv = np.array([0.0, v[0], v[1], v[2]])
+        qc = quat_conjugate(q)
+        return quat_mul(quat_mul(q, qv), qc)[1:]  # vector part
+
+    # World up vector
+    up = np.array([0.0, 0.0, 1.0])
+    obj_up = rotate_vector_by_quat(up, q)
+
+    # Angle from flat plane (XY plane)
+    theta = np.arccos(np.clip(obj_up[2], -1.0, 1.0))  # radians
+    pitch = np.degrees(theta)
+    return pitch
+
 # airbrake_deploy_altitude = 2000
 def airbrake_controller_function(time, sampling_rate, state, state_history, observed_variables, air_brakes, env):
     canDeployAirbrake = False
 
     deployment_time = air_brakes.airbrake_deploy_time
 
+
     # state = [x, y, z, vx, vy, vz, e0, e1, e2, e3, wx, wy, wz]
     altitude_ASL = state[2]
-    altitude_AGL = altitude_ASL - env.elevation
+    above_ground_altitude = altitude_ASL - env.elevation
     vx, vy, vz = state[3], state[4], state[5]
+    e0, e1, e2, e3 = state[6], state[7], state[8], state[9]
+
+    print(f"E0: {e0}, E1: {e1}, E2: {e2}, E3: {e3}")
+
 
     # Get winds in x and y directions
     wind_x, wind_y = env.wind_velocity_x(altitude_ASL), env.wind_velocity_y(altitude_ASL)
+
+    y_velocity = abs(vy - wind_y)
 
     # Calculate Mach number, by first getting entire speed
     free_stream_speed = (
@@ -126,9 +163,16 @@ def airbrake_controller_function(time, sampling_rate, state, state_history, obse
     # If we wanted to we could get the returned values from observed_variables:
     # returned_time, deployment_level, drag_coefficient = observed_variables[-1]
 
+    # Example quaternion in (w, x, y, z)
+    pitch = getPitch(np.array([e0, e1, e2, e3]))  # ~15° rotation around Y
+
+    print("Angle from flat plane (deg):", pitch)
+
     # Check if the rocket has reached burnout
-    if (time > burn_time and deployment_time <= time and altitude_AGL > halfway_to_target):
+    if (time > burn_time and vy > 0):
         air_brakes.deployment_level = 1
+        canDeployAirbrake = True
+        print("WE CAN DEPLOY!")
     
     return (
         "airbrake" + str(canDeployAirbrake),

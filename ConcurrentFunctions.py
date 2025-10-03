@@ -102,11 +102,11 @@ def runFlightWithMonteCarlo(numOfSims, envParams, analysis_parameters, initial_c
         )
 
         try:
-            MotorOne.draw()
-            MotorOne.all_info()
+            # MotorOne.draw()
+            # MotorOne.all_info()
 
-            Sp25.draw()
-            Sp25.all_info()
+            # Sp25.draw()
+            # Sp25.all_info()
             
             testFlight = Flight(
                 rocket=Sp25, environment=env,rail_length = FlightParams.rail_length,inclination = setting["inclination"],

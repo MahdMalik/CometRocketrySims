@@ -768,7 +768,6 @@ class Flight:
                     elif(returnedValue != None and returnedValue == "airbrakeTrue"):
                         print("WE GOOD TO DEPLOY WE BALL GRAHHHHH: " + str(self.t))
 
-
                 for parachute in node.parachutes:
                     # Calculate and save pressure signal
                     (
