@@ -1551,8 +1551,15 @@ class Environment:
         time_array = np.array(response["data"]["hours"])
         time_units = "milliseconds since 1970-01-01 00:00:00"
         launch_time_in_units = netCDF4.date2num(self.datetime_date, time_units)
+
+        launch_time_in_units = netCDF4.date2num(self.datetime_date, time_units)
+
+        print("self.datetime_date =", self.datetime_date)
+        print("type:", type(self.datetime_date))
+
         # Find the index of the closest time in time_array to the launch time
-        time_index = (np.abs(time_array - launch_time_in_units)).argmin()
+        time_index = (np.abs(np.subtract(time_array, launch_time_in_units))).argmin()
+        print(time_index)
 
         # Define available pressure levels
         pressure_levels = np.array(
