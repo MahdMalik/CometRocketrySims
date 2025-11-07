@@ -38,9 +38,12 @@ for vel in velocities:
     # Initialize and run
     session.tui.solve.initialize.set_defaults("x-velocity", str(vel))
     session.tui.solve.initialize.initialize_flow()
-    session.tui.solve.set.transient_controls.time_step_size(".01")
-    session.tui.solve.set.transient_controls.max_iterations_per_time_step("50")
-    session.tui.solve.set.transient_controls.number_of_time_steps("100")
+    #session.tui.solution.initialization.hybrid_initialize()
+    session.tui.solve.set.transient_controls.time_step_size(".5")
+    session.tui.solve.set.transient_controls.max_iterations_per_time_step("1")
+    session.tui.solve.set.transient_controls.number_of_time_steps("1")
+
+    session.tui.solution.run_calculation.dual_time_iterate()
 
     # Get drag report
     drag = session.tui.report.forces.wall_forces(
@@ -56,6 +59,8 @@ for vel in velocities:
     session.tui.file.write_case(
         fr"C:\Users\Public\Documents\test\squared_{vel}.cas"
     )
+
+
 
 # Print summary
 print("\n--- Simulation Drag Results ---")

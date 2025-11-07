@@ -1,4 +1,4 @@
-Auto-Transcript Start Time:  04:26:58, 07 Nov 2025 Central Standard Time 
+Auto-Transcript Start Time:  04:57:24, 07 Nov 2025 Central Standard Time 
 Current Directory: "C:\Users\AIAA UT Dallas\Documents\Comet Rocketry Sims\CometRocketryRocketpySims"
 Information: The server has started and is running.
 
@@ -23,46 +23,46 @@ Host spawning Node 0 on machine "AIAA-UTD-Computer" (win64).
 -------------------------------------------------------------------------------
 ID    Hostname           Core   O.S.         PID    Vendor          
 -------------------------------------------------------------------------------
-n29   AIAA-UTD-Computer  30/64  Windows-x64  39468  AMD Ryzen       
-n28   AIAA-UTD-Computer  29/64  Windows-x64  37624  AMD Ryzen       
-n27   AIAA-UTD-Computer  28/64  Windows-x64  19668  AMD Ryzen       
-n26   AIAA-UTD-Computer  27/64  Windows-x64  10588  AMD Ryzen       
-n25   AIAA-UTD-Computer  26/64  Windows-x64  31560  AMD Ryzen       
-n24   AIAA-UTD-Computer  25/64  Windows-x64  21792  AMD Ryzen       
-n23   AIAA-UTD-Computer  24/64  Windows-x64  3320   AMD Ryzen       
-n22   AIAA-UTD-Computer  23/64  Windows-x64  37560  AMD Ryzen       
-n21   AIAA-UTD-Computer  22/64  Windows-x64  21800  AMD Ryzen       
-n20   AIAA-UTD-Computer  21/64  Windows-x64  37864  AMD Ryzen       
-n19   AIAA-UTD-Computer  20/64  Windows-x64  9788   AMD Ryzen       
-n18   AIAA-UTD-Computer  19/64  Windows-x64  29612  AMD Ryzen       
-n17   AIAA-UTD-Computer  18/64  Windows-x64  27244  AMD Ryzen       
-n16   AIAA-UTD-Computer  17/64  Windows-x64  39752  AMD Ryzen       
-n15   AIAA-UTD-Computer  16/64  Windows-x64  37380  AMD Ryzen       
-n14   AIAA-UTD-Computer  15/64  Windows-x64  40220  AMD Ryzen       
-n13   AIAA-UTD-Computer  14/64  Windows-x64  40200  AMD Ryzen       
-n12   AIAA-UTD-Computer  13/64  Windows-x64  40180  AMD Ryzen       
-n11   AIAA-UTD-Computer  12/64  Windows-x64  40160  AMD Ryzen       
-n10   AIAA-UTD-Computer  11/64  Windows-x64  40140  AMD Ryzen       
+n29   AIAA-UTD-Computer  30/64  Windows-x64  52036  AMD Ryzen       
+n28   AIAA-UTD-Computer  29/64  Windows-x64  51404  AMD Ryzen       
+n27   AIAA-UTD-Computer  28/64  Windows-x64  38148  AMD Ryzen       
+n26   AIAA-UTD-Computer  27/64  Windows-x64  45832  AMD Ryzen       
+n25   AIAA-UTD-Computer  26/64  Windows-x64  51864  AMD Ryzen       
+n24   AIAA-UTD-Computer  25/64  Windows-x64  32936  AMD Ryzen       
+n23   AIAA-UTD-Computer  24/64  Windows-x64  22136  AMD Ryzen       
+n22   AIAA-UTD-Computer  23/64  Windows-x64  47848  AMD Ryzen       
+n21   AIAA-UTD-Computer  22/64  Windows-x64  52352  AMD Ryzen       
+n20   AIAA-UTD-Computer  21/64  Windows-x64  6056   AMD Ryzen       
+n19   AIAA-UTD-Computer  20/64  Windows-x64  27892  AMD Ryzen       
+n18   AIAA-UTD-Computer  19/64  Windows-x64  37732  AMD Ryzen       
+n17   AIAA-UTD-Computer  18/64  Windows-x64  40540  AMD Ryzen       
+n16   AIAA-UTD-Computer  17/64  Windows-x64  14280  AMD Ryzen       
+n15   AIAA-UTD-Computer  16/64  Windows-x64  28088  AMD Ryzen       
+n14   AIAA-UTD-Computer  15/64  Windows-x64  52992  AMD Ryzen       
+n13   AIAA-UTD-Computer  14/64  Windows-x64  50732  AMD Ryzen       
+n12   AIAA-UTD-Computer  13/64  Windows-x64  10820  AMD Ryzen       
+n11   AIAA-UTD-Computer  12/64  Windows-x64  30236  AMD Ryzen       
+n10   AIAA-UTD-Computer  11/64  Windows-x64  51304  AMD Ryzen       
 -------------------------------------------------------------------------------
 ID    Hostname           Core   O.S.         PID    Vendor          
 -------------------------------------------------------------------------------
-n9    AIAA-UTD-Computer  10/64  Windows-x64  40120  AMD Ryzen       
-n8    AIAA-UTD-Computer  9/64   Windows-x64  40100  AMD Ryzen       
-n7    AIAA-UTD-Computer  8/64   Windows-x64  40080  AMD Ryzen       
-n6    AIAA-UTD-Computer  7/64   Windows-x64  40060  AMD Ryzen       
-n5    AIAA-UTD-Computer  6/64   Windows-x64  40044  AMD Ryzen       
-n4    AIAA-UTD-Computer  5/64   Windows-x64  40020  AMD Ryzen       
-n3    AIAA-UTD-Computer  4/64   Windows-x64  40004  AMD Ryzen       
-n2    AIAA-UTD-Computer  3/64   Windows-x64  39984  AMD Ryzen       
-n1    AIAA-UTD-Computer  2/64   Windows-x64  39956  AMD Ryzen       
-n0*   AIAA-UTD-Computer  1/64   Windows-x64  5952   AMD Ryzen       
-host  AIAA-UTD-Computer         Windows-x64  41260  AMD Ryzen       
+n9    AIAA-UTD-Computer  10/64  Windows-x64  37384  AMD Ryzen       
+n8    AIAA-UTD-Computer  9/64   Windows-x64  28552  AMD Ryzen       
+n7    AIAA-UTD-Computer  8/64   Windows-x64  45876  AMD Ryzen       
+n6    AIAA-UTD-Computer  7/64   Windows-x64  44908  AMD Ryzen       
+n5    AIAA-UTD-Computer  6/64   Windows-x64  52820  AMD Ryzen       
+n4    AIAA-UTD-Computer  5/64   Windows-x64  51368  AMD Ryzen       
+n3    AIAA-UTD-Computer  4/64   Windows-x64  44292  AMD Ryzen       
+n2    AIAA-UTD-Computer  3/64   Windows-x64  51224  AMD Ryzen       
+n1    AIAA-UTD-Computer  2/64   Windows-x64  32100  AMD Ryzen       
+n0*   AIAA-UTD-Computer  1/64   Windows-x64  9976   AMD Ryzen       
+host  AIAA-UTD-Computer         Windows-x64  44068  AMD Ryzen       
 
 MPI Option Selected: intel
 Selected system interconnect: default
 -------------------------------------------------------------------------------
 
-Cleanup script file is C:\\Users\\AIAA UT Dallas\\Documents\\Comet Rocketry Sims\\CometRocketryRocketpySims\\cleanup-fluent-AIAA-UTD-Computer-41260.bat
+Cleanup script file is C:\\Users\\AIAA UT Dallas\\Documents\\Comet Rocketry Sims\\CometRocketryRocketpySims\\cleanup-fluent-AIAA-UTD-Computer-44068.bat
 
 Graphics driver currently in use: dx11
 
@@ -112,8 +112,6 @@ Building...
      parallel,
 Done.
 (inlet)
-(inlet)
-(inlet)
 
 Posting ANSYS Product Improvement Program performance data 
 Done.
@@ -122,5 +120,5 @@ Services Shutdown...Done.
 Server Shutdown...Done.
 Queue Cleared...Done.
 Shutdown Complete.
-Auto-Transcript Stop Time:  04:28:48, 07 Nov 2025 Central Standard Time 
-Total Transcript Time: 1 Minute 50 Second.
+Auto-Transcript Stop Time:  04:58:32, 07 Nov 2025 Central Standard Time 
+Total Transcript Time: 1 Minute 8 Second.
