@@ -1,0 +1,52 @@
+Auto-Transcript Start Time:  04:00:42, 07 Nov 2025 Central Standard Time 
+Current Directory: "C:\Users\AIAA UT Dallas\Documents\Comet Rocketry Sims\CometRocketryRocketpySims"
+Information: The server has started and is running.
+
+              Welcome to ANSYS Fluent 2025 R2
+
+              Copyright 1987-2025 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Jun 16 2025 10:42:46 EDT  Build Id: 10204  
+ 
+Connected License Server List:	1055@AIAA-UTD-Computer
+
+     --------------------------------------------------------------
+     This is an academic version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "AIAA-UTD-Computer" (win64).
+
+-------------------------------------------------------------------------------
+ID    Hostname           Core  O.S.         PID    Vendor          
+-------------------------------------------------------------------------------
+n3    AIAA-UTD-Computer  4/64  Windows-x64  47476  AMD Ryzen       
+n2    AIAA-UTD-Computer  3/64  Windows-x64  41236  AMD Ryzen       
+n1    AIAA-UTD-Computer  2/64  Windows-x64  42880  AMD Ryzen       
+n0*   AIAA-UTD-Computer  1/64  Windows-x64  42764  AMD Ryzen       
+host  AIAA-UTD-Computer        Windows-x64  48220  AMD Ryzen       
+
+MPI Option Selected: intel
+Selected system interconnect: default
+-------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\AIAA UT Dallas\\Documents\\Comet Rocketry Sims\\CometRocketryRocketpySims\\cleanup-fluent-AIAA-UTD-Computer-48220.bat
+
+Graphics driver currently in use: dx11
+
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+>>> 
+Posting ANSYS Product Improvement Program performance data 
+Done.
+Shutting down Server...
+Services Shutdown...Done.
+Server Shutdown...Done.
+Queue Cleared...Done.
+Shutdown Complete.
+Auto-Transcript Stop Time:  04:01:21, 07 Nov 2025 Central Standard Time 
+Total Transcript Time: 0 Minute 38 Second.

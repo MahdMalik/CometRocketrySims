@@ -1,0 +1,124 @@
+Auto-Transcript Start Time:  03:57:49, 07 Nov 2025 Central Standard Time 
+Current Directory: "C:\Users\AIAA UT Dallas\Documents\Comet Rocketry Sims\CometRocketryRocketpySims"
+Information: The server has started and is running.
+
+              Welcome to ANSYS Fluent 2025 R2
+
+              Copyright 1987-2025 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Jun 16 2025 10:42:46 EDT  Build Id: 10204  
+ 
+Connected License Server List:	1055@AIAA-UTD-Computer
+
+     --------------------------------------------------------------
+     This is an academic version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "AIAA-UTD-Computer" (win64).
+
+-------------------------------------------------------------------------------
+ID    Hostname           Core  O.S.         PID    Vendor          
+-------------------------------------------------------------------------------
+n3    AIAA-UTD-Computer  4/64  Windows-x64  39352  AMD Ryzen       
+n2    AIAA-UTD-Computer  3/64  Windows-x64  44764  AMD Ryzen       
+n1    AIAA-UTD-Computer  2/64  Windows-x64  45600  AMD Ryzen       
+n0*   AIAA-UTD-Computer  1/64  Windows-x64  42804  AMD Ryzen       
+host  AIAA-UTD-Computer        Windows-x64  46584  AMD Ryzen       
+
+MPI Option Selected: intel
+Selected system interconnect: default
+-------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\AIAA UT Dallas\\Documents\\Comet Rocketry Sims\\CometRocketryRocketpySims\\cleanup-fluent-AIAA-UTD-Computer-46584.bat
+
+Graphics driver currently in use: dx11
+
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+>>> Fast-loading "C:\PROGRA~1\ANSYSI~1\v252\fluent\fluent25.2.0\\addons\afd\lib\hdfio.bin"
+Done.
+
+AIAA-UTD-Computer has other FLUENT parallel processes running.                       Process affinity not being set.
+
+Reading from AIAA-UTD-Computer:"C:\Users\AIAA UT Dallas\Desktop\CFDTESTING-selected\LeadingEdgeStudy\LeadingEdgeStudy_files\dp0\FFF\Fluent\FFF.1-32.cas.h5" in NODE0 mode ...
+  Reading mesh ...
+Warning: reading 30 partition grid onto 4 compute node machine.
+         will auto partition.
+     4620519 cells,     1 cell zone  ...
+        4620519 mixed cells,  zone id: 3
+     9432033 faces,     6 face zones ...
+        9090083 mixed interior faces,  zone id: 2
+         167754 triangular wall faces,  zone id: 6
+           4660 triangular pressure-outlet faces,  zone id: 7
+           4658 triangular velocity-inlet faces,  zone id: 8
+           2002 triangular wall faces,  zone id: 5
+         162876 mixed symmetry faces,  zone id: 9
+      873303 nodes,     1 node zone  ...
+  Done.
+
+
+Building...
+     mesh
+	auto partitioning mesh by Metis (fast, Laplace),
+	distributing mesh
+		parts....,
+		faces....,
+		nodes....,
+		cells....,
+        bandwidth reduction using Reverse Cuthill-McKee: 1160568/7118 = 163.047
+     materials,
+     interface,
+     domains,
+	mixture
+     zones,
+	rocket
+	inlet
+	outlet
+	walls
+	interior-fluid
+	floor
+	fluid
+     parallel,
+Done.
+(inlet)
+
+Writing to AIAA-UTD-Computer:"C:\Users\AIAA.dat.h5" in NODE0 mode and compression level 1 ...
+  Writing results.
+HDF5-DIAG: Error detected in HDF5 (1.14.5) MPI-process 0:
+  #000: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5F.c line 653 in H5Fcreate(): unable to synchronously create file
+    major: File accessibility
+    minor: Unable to create file
+  #001: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5F.c line 608 in H5F__create_api_common(): unable to create file
+    major: File accessibility
+    minor: Unable to open file
+  #002: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5VLcallback.c line 3445 in H5VL_file_create(): file create failed
+    major: Virtual Object Layer
+    minor: Unable to create file
+  #003: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5VLcallback.c line 3411 in H5VL__file_create(): file create failed
+    major: Virtual Object Layer
+    minor: Unable to create file
+  #004: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5VLnative_file.c line 94 in H5VL__native_file_create(): unable to create file
+    major: File accessibility
+    minor: Unable to open file
+  #005: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5Fint.c line 1897 in H5F_open(): can't try opening file
+    major: File accessibility
+    minor: Unable to open file
+  #006: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5FD.c line 787 in H5FD_open(): can't open file
+    major: Virtual File Layer
+    minor: Unable to open file
+  #007: C:\\ANSYSDev\\conancache\\.conan\\data\\hdf5\\1.14.5\\_\\_\\build\\071d848637553ae1e3dffa636f4fe03a44b8b0c5\\src\\src\\H5FDsec2.c line 326 in H5FD__sec2_open(): unable to open file: name = 'C:\\Users\\AIAA.dat.h5', errno = 13, error message = 'Permission denied', flags = 13, o_flags = 302
+    major: File accessibility
+    minor: Unable to open file
+
+0: mpt_accept: warning: connection timed out after 120 seconds
+999999: mpt_accept: warning: connection timed out after 120 seconds
+===============Message from the Cortex Process================================
+
+Fatal error in one of the compute processes.
+
+==============================================================================
